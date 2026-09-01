@@ -1,0 +1,28 @@
+.list {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  list-style: none;
+  font-size: var(--text-sm);
+}
+
+.list a,
+.current {
+  display: block;
+  padding: var(--space-1) var(--space-2);
+  border-radius: var(--radius-sm);
+}
+
+.list a {
+  color: var(--color-text);
+}
+
+.list a:hover {
+  color: var(--color-link);
+  background: var(--color-surface);
+}
+
+.current {
+  color: var(--color-text-muted);
+  font-weight: 700;
+}

@@ -1,0 +1,28 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npx next *)",
+      "Bash(npx eslint *)",
+      "Bash(cat /tmp/pfst4-dev.log 2>&1 | tail -30)",
+      "Read(//tmp/**)",
+      "Bash(curl -s http://localhost:3000/styleguide -o /dev/null -w \"status: %{http_code}\\\\n\")",
+      "Bash(curl -s http://localhost:3000/styleguide)",
+      "Bash(curl -s \"http://localhost:3000/_next/static/chunks/%5Broot-of-the-server%5D__0-se27x._.css\")",
+      "Bash(node -e ' *)",
+      "Bash(node --experimental-fetch -e ' *)",
+      "Bash(curl -s \"http://localhost:3000/wp-test\")",
+      "Bash(node \"C:/Users/fanta/AppData/Local/Temp/claude/c--Users-fanta-Desktop-pfst4/d30f0792-766c-499f-b394-7fa25e1b9f59/scratchpad/probe2.js\")",
+      "Bash(npm install *)",
+      "Bash(node -e \"if \\(!require\\('fs'\\).existsSync\\('src/app/[...slug]'\\)\\) console.log\\('needs dir'\\)\")",
+      "Bash(curl -sIL \"http://localhost:3000/fakultet/opcenito/ustroj/zavodi-katedre-i-studiji/\")",
+      "Bash(node \"C:/Users/fanta/AppData/Local/Temp/claude/c--Users-fanta-Desktop-pfst4/d30f0792-766c-499f-b394-7fa25e1b9f59/scratchpad/probe3.js\")",
+      "Bash(node \"C:/Users/fanta/AppData/Local/Temp/claude/c--Users-fanta-Desktop-pfst4/d30f0792-766c-499f-b394-7fa25e1b9f59/scratchpad/probe4.js\")",
+      "Bash(curl -s -o /dev/null -w \"HTTP %{http_code}\\\\n\" \"http://localhost:3000/novosti/pfst-career-day-2026\")",
+      "Bash(curl -s -o /dev/null -w \"HTTP %{http_code}\\\\n\" \"http://localhost:3000/this-page-does-not-exist-xyz\")",
+      "Bash(curl -sL -o /dev/null -w \"HTTP %{http_code}\\\\n\" \"http://localhost:3000/fakultet/opcenito/ustroj/fakultetsko-vijece\")",
+      "Bash(node scripts/block-inventory.mjs)",
+      "Bash(npm run *)",
+      "Bash(node scratch-check.mjs)"
+    ]
+  }
+}

@@ -1,0 +1,36 @@
+.rail {
+  border-left: 2px solid var(--color-border);
+  padding-left: var(--space-4);
+}
+
+.list,
+.children {
+  list-style: none;
+}
+
+.children {
+  margin: var(--space-1) 0 var(--space-2) var(--space-4);
+}
+
+.list > li > a {
+  display: block;
+  padding: var(--space-2) 0;
+  color: var(--color-text);
+}
+
+.children a {
+  display: block;
+  padding: var(--space-1) 0;
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+}
+
+.list a:hover,
+.children a:hover {
+  color: var(--color-link);
+}
+
+.active {
+  color: var(--color-link);
+  font-weight: 600;
+}

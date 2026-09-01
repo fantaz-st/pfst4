@@ -1,0 +1,18 @@
+.banner {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-4);
+  padding: var(--space-2) var(--space-4);
+  background: var(--color-navy-900);
+  color: var(--color-white);
+  font-size: var(--text-sm);
+  text-align: center;
+}
+
+.banner a {
+  color: var(--color-white);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}

@@ -1,0 +1,32 @@
+.breadcrumbs {
+  margin-bottom: var(--space-4);
+}
+
+.list {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-1);
+  list-style: none;
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+}
+
+.list li:not(:last-child)::after {
+  content: "/";
+  margin-left: var(--space-1);
+  color: var(--color-border);
+}
+
+.list a {
+  color: var(--color-text-muted);
+}
+
+.list a:hover {
+  color: var(--color-link);
+  text-decoration: underline;
+}
+
+.list li[aria-current="page"] {
+  color: var(--color-text);
+}

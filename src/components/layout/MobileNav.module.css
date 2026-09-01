@@ -1,0 +1,59 @@
+.mobileNav {
+  display: block;
+}
+
+.toggle {
+  font: inherit;
+  padding: var(--space-2) var(--space-3);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  color: var(--color-text);
+  cursor: pointer;
+}
+
+.panel {
+  position: absolute;
+  inset-inline: 0;
+  top: 100%;
+  background: var(--color-background);
+  border-bottom: 1px solid var(--color-border);
+  box-shadow: var(--shadow-md);
+}
+
+.list {
+  list-style: none;
+  padding: var(--space-4) var(--space-5);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.list > li > a {
+  display: block;
+  padding: var(--space-2) 0;
+  color: var(--color-text);
+  font-weight: 600;
+}
+
+.sublist {
+  list-style: none;
+  margin-left: var(--space-4);
+}
+
+.sublist a {
+  display: block;
+  padding: var(--space-1) 0;
+  color: var(--color-text-muted);
+}
+
+.list a:hover,
+.sublist a:hover {
+  color: var(--color-link);
+}
+
+@media (min-width: 64rem) {
+  .mobileNav {
+    display: none;
+  }
+}

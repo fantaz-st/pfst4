@@ -1,0 +1,18 @@
+.page {
+  max-width: 80rem;
+  margin: 0 auto;
+  padding: var(--space-6) var(--space-5);
+}
+
+.eyebrow {
+  font-size: var(--text-sm);
+  font-weight: 600;
+  color: var(--cilj-color, var(--color-text-muted));
+  margin-bottom: var(--space-1);
+}
+
+.heading {
+  border-left: 6px solid var(--cilj-color, var(--color-border));
+  padding-left: var(--space-4);
+  margin-bottom: var(--space-6);
+}

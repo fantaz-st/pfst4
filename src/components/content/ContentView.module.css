@@ -1,0 +1,20 @@
+.postWrapper {
+  max-width: 80rem;
+  margin: 0 auto;
+  padding: var(--space-6) var(--space-5);
+}
+
+.layout {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-6);
+  max-width: 80rem;
+  margin: 0 auto;
+  padding: var(--space-6) var(--space-5);
+}
+
+@media (min-width: 64rem) {
+  .layout {
+    grid-template-columns: 1fr 16rem;
+  }
+}
