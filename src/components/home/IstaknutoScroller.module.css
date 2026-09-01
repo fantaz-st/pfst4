@@ -72,7 +72,6 @@
 
 .image {
   object-fit: cover;
-  filter: grayscale(1) contrast(1.08); /* design's .grayscale utility, verbatim */
 }
 
 .title {

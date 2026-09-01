@@ -1,6 +1,7 @@
 .wrap {
   position: relative;
-  padding: clamp(3.75rem, 8vh, 9.375rem) var(--home-gutter, clamp(1.25rem, 4vw, 4.5rem));
+  padding: clamp(3.75rem, 8vh, 9.375rem)
+    var(--home-gutter, clamp(1.25rem, 4vw, 4.5rem));
 }
 
 .wrap.enhanced {
@@ -68,9 +69,9 @@
 }
 
 .inner.enhanced .quote p {
-  max-width: 20em;
+  max-width: 30em;
   font-family: var(--font-display);
-  font-size: clamp(1.625rem, 4.4vw, 5.25rem); /* clamp(26px,4.4vw,84px) */
+  font-size: clamp(1.625rem, 3.2vw, 5.25rem); /* clamp(26px,4.4vw,84px) */
   font-weight: 800;
   line-height: 1;
   letter-spacing: -0.04em;

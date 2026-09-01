@@ -7,9 +7,12 @@ import SiteChrome from "@/components/layout/SiteChrome";
 import HomePage from "@/components/home/HomePage";
 
 const LANGUAGE = "hr";
-const FEATURED_FIRST = 6;
-const NEWS_FIRST = 6;
-const EMPTY_PAGE = { nodes: [], pageInfo: { hasNextPage: false, endCursor: null } };
+const FEATURED_FIRST = 5;
+const NEWS_FIRST = 10;
+const EMPTY_PAGE = {
+  nodes: [],
+  pageInfo: { hasNextPage: false, endCursor: null },
+};
 
 export const metadata = {
   title: "Pomorski fakultet u Splitu",
@@ -26,13 +29,20 @@ export default async function Home() {
       {
         first: FEATURED_FIRST,
         after: null,
-        where: { categoryName: FEATURED_CATEGORY_SLUG, language: toLanguageCodeEnum(LANGUAGE) },
+        where: {
+          categoryName: FEATURED_CATEGORY_SLUG,
+          language: toLanguageCodeEnum(LANGUAGE),
+        },
       },
       { tags: ["wp"] },
     ),
     wpFetch(
       NEWS_POSTS,
-      { first: NEWS_FIRST, after: null, where: buildNewsWhere({ language: LANGUAGE }) },
+      {
+        first: NEWS_FIRST,
+        after: null,
+        where: buildNewsWhere({ language: LANGUAGE }),
+      },
       { tags: ["wp"] },
     ),
   ]);

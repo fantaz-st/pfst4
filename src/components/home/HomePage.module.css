@@ -59,7 +59,8 @@
   flex-direction: column;
   justify-content: center;
   /* clamp(110px,14vh,180px) clamp(20px,4vw,72px) clamp(40px,6vh,80px) */
-  padding: clamp(6.875rem, 14vh, 11.25rem) var(--home-gutter) clamp(2.5rem, 6vh, 5rem);
+  padding: clamp(6.875rem, 14vh, 11.25rem) var(--home-gutter)
+    clamp(2.5rem, 6vh, 5rem);
 }
 
 .heroTitle {
@@ -137,13 +138,20 @@
   padding: clamp(1.75rem, 4.4vh, 3.5rem) var(--home-gutter);
   border-bottom: 2px solid var(--home-color-divider);
   font-family: var(--font-display);
+
+  transition:
+    color 0.2s ease,
+    background-color 0.2s ease;
+}
+
+.quickLinkLabel {
+  font-family: var(--font-display);
   font-weight: 800;
   font-size: clamp(1.625rem, 4.6vw, 5.125rem); /* clamp(26px,4.6vw,82px) */
   line-height: 0.94;
   letter-spacing: -0.04em;
   text-transform: uppercase;
   color: var(--home-color-text);
-  transition: color 0.2s ease, background-color 0.2s ease;
 }
 
 .quickLinks a:last-child {
@@ -177,7 +185,8 @@
 
 .novosti {
   /* clamp(60px,12vh,150px) clamp(20px,4vw,72px) clamp(40px,8vh,100px) */
-  padding: clamp(3.75rem, 12vh, 9.375rem) var(--home-gutter) clamp(2.5rem, 8vh, 6.25rem);
+  padding: clamp(3.75rem, 12vh, 9.375rem) var(--home-gutter)
+    clamp(2.5rem, 8vh, 6.25rem);
   border-top: 2px solid var(--home-color-text);
 }
 
@@ -236,6 +245,18 @@
   color: var(--home-color-accent);
 }
 
+@media (max-width: 48rem) {
+  .novostiRow {
+    grid-template-columns: 1fr;
+    gap: 0.5rem;
+    align-items: start;
+  }
+
+  .novostiArrow {
+    justify-self: end;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .novostiRow {
     transition: none;
@@ -274,7 +295,10 @@
 
 .statList {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(13.75rem, 1fr)); /* minmax(220px,1fr) */
+  grid-template-columns: repeat(
+    auto-fit,
+    minmax(13.75rem, 1fr)
+  ); /* minmax(220px,1fr) */
   gap: clamp(2rem, 5vw, 5.625rem); /* clamp(32px,5vw,90px) */
   list-style: none;
   margin: 0;
@@ -367,7 +391,9 @@
   font-size: clamp(0.8125rem, 1.1vw, 1.0625rem); /* clamp(13px,1.1vw,17px) */
   letter-spacing: 0.05em;
   text-transform: uppercase;
-  transition: background-color 0.2s ease, color 0.2s ease;
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease;
 }
 
 .enrollCta:hover {

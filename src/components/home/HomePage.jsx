@@ -3,32 +3,16 @@ import IstaknutoScroller from "@/components/home/IstaknutoScroller";
 import TestimonialsPinned from "@/components/home/TestimonialsPinned";
 import styles from "./HomePage.module.css";
 
-// Homepage-only copy. Scoped to this component rather than newsCopy.js /
-// chromeCopy.js because nothing outside this page needs it — see the
-// dictionary pattern those files already use.
-//
-// Several strings in the real design (design/PFST Naslovnica v4.dc.html)
-// are dropped or replaced here on purpose — see the deviations list given
-// alongside this rebuild. In short: anything presented as a verifiable fact
-// (a founding year, a stat, a phone number, a named testimonial) that I
-// can't verify is either omitted or kept as an explicit fake placeholder
-// per CLAUDE.md § Design intent ("must look obviously fake — 000, TODO,
-// Ime Prezime — never plausible invented figures").
-//
-// TODO: stats and testimonials are deliberately fake placeholders. Swap in
-// the real figures and the 4 real testimonials from the current site
-// before launch.
-const LOREM_QUOTE =
-  "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.";
-
 const HOME_COPY = {
   hr: {
     kicker: "Sveučilište u Splitu",
     heroLine1: "Pomorski",
     heroLine2: "fakultet",
-    subhead: "Škola za pomorce i inženjere u Splitu. Simulatori, laboratoriji, brod.",
+    subhead:
+      "Više od 65 godina tradicije u obuci, podučavanju i prenošenju znanja budućim pomorcima i inženjerima.",
     scrollCue: "Listaj",
-    statement: "Obrazujemo pomorce i inženjere spremne za rad na moru i u industriji.",
+    statement:
+      "Obrazujemo pomorce i inženjere spremne za rad na moru i u industriji.",
     quickLinksLabel: "Brzi pristup",
     featuredHeading: "Istaknuto",
     newsHeading: "Novosti",
@@ -36,16 +20,36 @@ const HOME_COPY = {
     newsArchiveHref: "/novosti",
     statsSectionLabel: "Brojke",
     stats: [
-      { value: "000", label: "TODO" },
-      { value: "000", label: "TODO" },
-      { value: "000", label: "TODO" },
+      { value: "065", label: "GODINA TRADICIJE" },
+      { value: "004", label: "STUDIJSKA PROGRAMA" },
+      { value: "600", label: "STUDENATA GODIŠNJE" },
     ],
     testimonialsSectionLabel: "Iskustva studenata",
     testimonials: [
-      { quote: LOREM_QUOTE, name: "Ime Prezime", role: "TODO" },
-      { quote: LOREM_QUOTE, name: "Ime Prezime", role: "TODO" },
-      { quote: LOREM_QUOTE, name: "Ime Prezime", role: "TODO" },
-      { quote: LOREM_QUOTE, name: "Ime Prezime", role: "TODO" },
+      {
+        quote:
+          "Sustav obrazovanja na Fakultetu je na visokoj razini te sam usavršila svoje vještine organizacije, timskog rada, prezentiranja, komunikacije, pretraživanja znanstveno potkrijepljenih informacija, kritičkog razmišljanja i izrade pisanih radova.",
+        name: "Mirta",
+        role: "Pomorski menadžment",
+      },
+      {
+        quote:
+          "Vrednovanje aktivnog sudjelovanja na nastavi, poticanje na sudjelovanje u izvannastavnim aktivnostima te fleksibilnost u načinu izvršenja studentskih obveza su samo neke od pogodnosti koje su nam profesori omogućili.",
+        name: "Marko",
+        role: "Pomorski menadžment",
+      },
+      {
+        quote:
+          "Jedno od najvažnijih iskustava s fakulteta je bila terenska praksa na brodovima i simulatoru, koja mi je omogućila da teorijska znanja primijenim u stvarnom okruženju.",
+        name: "Tony",
+        role: "Pomorska nautika",
+      },
+      {
+        quote:
+          "Jedno od najvažnijih iskustava s fakulteta je bila terenska praksa na brodovima i simulatoru, koja mi je omogućila da teorijska znanja primijenim u stvarnom okruženju.",
+        name: "Tony",
+        role: "Pomorska nautika",
+      },
     ],
     enrollKicker: "Upisi",
     enrollLine1: "Upiši",
@@ -71,9 +75,11 @@ const HOME_COPY = {
     kicker: "University of Split",
     heroLine1: "Faculty of",
     heroLine2: "Maritime Studies",
-    subhead: "A school for seafarers and engineers in Split. Simulators, labs, a ship.",
+    subhead:
+      "A school for seafarers and engineers in Split. Simulators, labs, a ship.",
     scrollCue: "Scroll",
-    statement: "We educate seafarers and engineers ready to work at sea and in industry.",
+    statement:
+      "We educate seafarers and engineers ready to work at sea and in industry.",
     quickLinksLabel: "Quick access",
     featuredHeading: "Featured",
     newsHeading: "News",
@@ -87,10 +93,30 @@ const HOME_COPY = {
     ],
     testimonialsSectionLabel: "Student experiences",
     testimonials: [
-      { quote: LOREM_QUOTE, name: "Ime Prezime", role: "TODO" },
-      { quote: LOREM_QUOTE, name: "Ime Prezime", role: "TODO" },
-      { quote: LOREM_QUOTE, name: "Ime Prezime", role: "TODO" },
-      { quote: LOREM_QUOTE, name: "Ime Prezime", role: "TODO" },
+      {
+        quote:
+          "Sustav obrazovanja na Fakultetu je na visokoj razini te sam usavršila svoje vještine organizacije, timskog rada, prezentiranja, komunikacije, pretraživanja znanstveno potkrijepljenih informacija, kritičkog razmišljanja i izrade pisanih radova.",
+        name: "Mirta",
+        role: "Pomorski menadžment",
+      },
+      {
+        quote:
+          "Vrednovanje aktivnog sudjelovanja na nastavi, poticanje na sudjelovanje u izvannastavnim aktivnostima te fleksibilnost u načinu izvršenja studentskih obveza su samo neke od pogodnosti koje su nam profesori omogućili.",
+        name: "Marko",
+        role: "Pomorski menadžment",
+      },
+      {
+        quote:
+          "Jedno od najvažnijih iskustava s fakulteta je bila terenska praksa na brodovima i simulatoru, koja mi je omogućila da teorijska znanja primijenim u stvarnom okruženju.",
+        name: "Tony",
+        role: "Pomorska nautika",
+      },
+      {
+        quote:
+          "Jedno od najvažnijih iskustava s fakulteta je bila terenska praksa na brodovima i simulatoru, koja mi je omogućila da teorijska znanja primijenim u stvarnom okruženju.",
+        name: "Tony",
+        role: "Pomorska nautika",
+      },
     ],
     enrollKicker: "Enrolment",
     enrollLine1: "Study",
@@ -112,9 +138,37 @@ const HOME_COPY = {
   },
 };
 
-export default function HomePage({ language = "hr", menu = [], featured, news }) {
+export default function HomePage({
+  language = "hr",
+  menu = [],
+  featured,
+  news,
+}) {
   const copy = HOME_COPY[language] ?? HOME_COPY.hr;
-  const quickLinks = menu.slice(0, 5);
+  const quickLinks = [
+    {
+      id: "homequick-1",
+      label: "Raspored nastave",
+      subLabel: "izmijenjen: 8. travnja 2026., BS2, BS6",
+      uri: "/nastava/studiranje/raspored",
+    },
+    {
+      id: "homequick-2",
+      label: "Konzultacije",
+      subLabel: "izmijenjene: 17. travanja 2026.",
+      uri: "/nastava/studiranje/konzultacije",
+    },
+    {
+      id: "homequick-3",
+      label: "Ispitni rokovi",
+      uri: "/nastava/studiranje/ispitni-rokovi",
+    },
+    {
+      id: "homequick-4",
+      label: "Nastavnici i suradnici",
+      uri: "/fakultet/opcenito/ustroj/nastavnici-i-suradnici",
+    },
+  ];
 
   return (
     <div className={styles.page}>
@@ -140,8 +194,14 @@ export default function HomePage({ language = "hr", menu = [], featured, news })
       {quickLinks.length > 0 && (
         <nav aria-label={copy.quickLinksLabel} className={styles.quickLinks}>
           {quickLinks.map((item) => (
-            <Link key={item.databaseId} href={item.uri} className={styles.quickLinkRow}>
-              <span>{item.label}</span>
+            <Link key={item.id} href={item.uri} className={styles.quickLinkRow}>
+              <span className={styles.quickLinkLabel}>{item.label}</span>
+              {item.subLabel && (
+                <span className={styles.quickLinkSubLabel}>
+                  {item.subLabel}
+                </span>
+              )}
+
               <span className={styles.arrow} aria-hidden="true">
                 →
               </span>
@@ -151,7 +211,10 @@ export default function HomePage({ language = "hr", menu = [], featured, news })
       )}
 
       {featured.nodes.length > 0 && (
-        <IstaknutoScroller posts={featured.nodes} label={copy.featuredHeading} />
+        <IstaknutoScroller
+          posts={featured.nodes}
+          label={copy.featuredHeading}
+        />
       )}
 
       <section aria-labelledby="novosti-heading" className={styles.novosti}>
@@ -168,7 +231,6 @@ export default function HomePage({ language = "hr", menu = [], featured, news })
         )}
       </section>
 
-      {/* TODO: placeholder figures — replace with the real numbers before launch. */}
       <section aria-label={copy.statsSectionLabel} className={styles.stats}>
         <ul className={styles.statList}>
           {copy.stats.map((stat, index) => (
@@ -180,8 +242,6 @@ export default function HomePage({ language = "hr", menu = [], featured, news })
         </ul>
       </section>
 
-      {/* TODO: placeholder testimonials — there are 4 real ones on the
-          current site; swap them in here before launch. */}
       <TestimonialsPinned
         testimonials={copy.testimonials}
         label={copy.testimonialsSectionLabel}
@@ -221,24 +281,24 @@ export default function HomePage({ language = "hr", menu = [], featured, news })
   );
 }
 
-// Novosti row — deliberately not the archive's ObavijestiList/NewsDayGroup:
-// the design's treatment here (one huge title per row, no day grouping, no
-// colored badge pill) is a different visual language from the news archive.
-// The archive components stay untouched; this reuses only the data shape
-// and lib/news.js helpers.
 function NovostiRow({ post, language }) {
   const category = post.categories?.nodes?.find((c) => c.slug !== "istaknuto");
   const date = new Date(post.date);
-  const dateLabel = new Intl.DateTimeFormat(language === "en" ? "en-GB" : "hr-HR", {
-    day: "2-digit",
-    month: "2-digit",
-  }).format(date);
+  const dateLabel = new Intl.DateTimeFormat(
+    language === "en" ? "en-GB" : "hr-HR",
+    {
+      day: "2-digit",
+      month: "2-digit",
+    },
+  ).format(date);
 
   return (
     <li>
       <Link href={post.uri} className={styles.novostiRow}>
         <span className={styles.novostiMeta}>
-          {dateLabel} — {category?.name ?? (language === "en" ? "Uncategorized" : "Bez kategorije")}
+          {dateLabel} —{" "}
+          {category?.name ??
+            (language === "en" ? "Uncategorized" : "Bez kategorije")}
         </span>
         <span className={styles.novostiTitle}>{post.title}</span>
         <span className={styles.novostiArrow} aria-hidden="true">
