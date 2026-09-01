@@ -5,30 +5,74 @@ import PostMeta from "@/components/news/PostMeta";
 import styles from "./ContentView.module.css";
 
 export default function ContentView({ node }) {
+  const children = node.children?.nodes ?? [];
+  const hasContent = Array.isArray(node.blocks) && node.blocks.length > 0;
+
+  const pageHeader = (
+    <header className={styles.pageHeader}>
+      <Breadcrumbs page={node} />
+      <h1 className={styles.title}>{node.title}</h1>
+    </header>
+  );
+
+  const childPagesList =
+    children.length > 0 ? (
+      <section
+        className={styles.childPages}
+        aria-labelledby="child-pages-heading"
+      >
+        <div className={styles.childPagesHeader}>
+          <p className={styles.kicker}>Sadržaj</p>
+          <h2 id="child-pages-heading">Povezane stranice</h2>
+        </div>
+        <ul className={styles.childPagesList}>
+          {children.map((child) => (
+            <li key={child.id}>
+              <a href={child.uri}>{child.title}</a>
+            </li>
+          ))}
+        </ul>
+      </section>
+    ) : null;
+
   if (node.__typename !== "Page") {
     return (
-      <div className={styles.postWrapper}>
-        <article className="prose">
-          <h1>{node.title}</h1>
+      <div className={styles.pageShell}>
+        <article className={`${styles.article} prose`}>
+          {pageHeader}
           <PostMeta post={node} />
           <BlockRenderer blocks={node.blocks} />
+          {childPagesList}
         </article>
       </div>
     );
   }
 
   return (
-    <div className={styles.layout}>
-      <div className={styles.content}>
-        <Breadcrumbs page={node} />
-        <article className="prose">
-          <h1>{node.title}</h1>
-          <BlockRenderer blocks={node.blocks} />
-        </article>
+    <div className={styles.pageShell}>
+      <div className={styles.layout}>
+        <div className={styles.content}>
+          {pageHeader}
+          <article className={`${styles.article} prose`}>
+            {hasContent ? <BlockRenderer blocks={node.blocks} /> : null}
+            {!hasContent && children.length > 0 ? (
+              <div className={styles.emptyContentState}>
+                <p>
+                  Odabrana sekcija sadrži sljedeće stranice i dokumente povezane
+                  s ovom temom.
+                </p>
+              </div>
+            ) : null}
+          </article>
+          {children.length > 0 && !hasContent ? (
+            <div className={styles.childrenListWrap}>{childPagesList}</div>
+          ) : null}
+          {children.length > 0 && hasContent ? childPagesList : null}
+        </div>
+        <aside className={styles.sidebar}>
+          <SectionRail page={node} />
+        </aside>
       </div>
-      <aside className={styles.sidebar}>
-        <SectionRail page={node} />
-      </aside>
     </div>
   );
 }

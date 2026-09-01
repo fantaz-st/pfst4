@@ -5,7 +5,16 @@ export default function SectionRail({ page }) {
   const siblings = page.parent?.node?.children?.nodes ?? [];
   const children = page.children?.nodes ?? [];
 
-  if (siblings.length === 0 && children.length === 0) return null;
+  if (siblings.length === 0 && children.length === 0) {
+    return (
+      <nav className={styles.empty} aria-label="Sadržaj sekcije">
+        <p className={styles.emptyTitle}>Nema povezanih stranica</p>
+        <p className={styles.emptyText}>
+          U ovoj sekciji još nema drugih članova izbornika.
+        </p>
+      </nav>
+    );
+  }
 
   const items = siblings.length > 0 ? siblings : [page];
 
