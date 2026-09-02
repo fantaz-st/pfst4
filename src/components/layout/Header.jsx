@@ -7,7 +7,12 @@ import LanguageSwitcher from "./LanguageSwitcher";
 import SearchOverlay from "./SearchOverlay";
 import styles from "./Header.module.css";
 
-export default function Header({ menu, currentLanguage, translations }) {
+export default function Header({
+  menu,
+  currentLanguage,
+  translations,
+  currentUri,
+}) {
   const copy = getChromeCopy(currentLanguage);
 
   return (
@@ -32,9 +37,11 @@ export default function Header({ menu, currentLanguage, translations }) {
         </div>
 
         <MobileNav
+          key={currentUri || "root"}
           menu={menu}
           language={currentLanguage}
           translations={translations}
+          currentUri={currentUri}
         />
       </div>
     </header>

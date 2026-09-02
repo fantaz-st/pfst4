@@ -7,9 +7,46 @@ import LanguageSwitcher from "./LanguageSwitcher";
 import SearchOverlay from "./SearchOverlay";
 import styles from "./MobileNav.module.css";
 
-export default function MobileNav({ menu, language = "hr", translations }) {
+function normalizeUri(uri) {
+  if (!uri) return "";
+  try {
+    return (
+      new URL(uri, "http://localhost").pathname
+        .replace(/\/{2,}/g, "/")
+        .replace(/(?<!^)\/$/, "") || "/"
+    );
+  } catch {
+    return uri.replace(/\/{2,}/g, "/").replace(/(?<!^)\/$/, "") || "/";
+  }
+}
+
+function findMenuPath(items, currentUri, ancestors = []) {
+  for (const item of items) {
+    if (normalizeUri(item.uri) === currentUri) return [...ancestors, item];
+    const path = findMenuPath(item.children, currentUri, [...ancestors, item]);
+    if (path) return path;
+  }
+  return null;
+}
+
+function getInitialLevels(menu, currentUri) {
+  const path = currentUri ? findMenuPath(menu, normalizeUri(currentUri)) : null;
+  return path
+    ? path
+        .slice(0, -1)
+        .map((item) => ({ label: item.label, children: item.children }))
+    : [];
+}
+
+export default function MobileNav({
+  menu,
+  language = "hr",
+  translations,
+  currentUri,
+}) {
   const [open, setOpen] = useState(false);
-  const [levels, setLevels] = useState([]);
+  const initialLevels = getInitialLevels(menu, currentUri);
+  const [levels, setLevels] = useState(initialLevels);
   const copy = getChromeCopy(language);
   const panelId = useId();
   const toggleRef = useRef(null);
@@ -27,18 +64,22 @@ export default function MobileNav({ menu, language = "hr", translations }) {
     const previousOverflow = document.body.style.overflow;
     document.body.style.overflow = "hidden";
     function onKeyDown(event) {
-      if (event.key === "Escape") close();
+      if (event.key === "Escape") {
+        setOpen(false);
+        setLevels(getInitialLevels(menu, currentUri));
+        toggleRef.current?.focus();
+      }
     }
     document.addEventListener("keydown", onKeyDown);
     return () => {
       document.body.style.overflow = previousOverflow;
       document.removeEventListener("keydown", onKeyDown);
     };
-  }, [open]);
+  }, [currentUri, menu, open]);
 
   function close() {
     setOpen(false);
-    setLevels([]);
+    setLevels(initialLevels);
     toggleRef.current?.focus();
   }
 
@@ -100,6 +141,11 @@ export default function MobileNav({ menu, language = "hr", translations }) {
                   <Link
                     ref={index === 0 ? firstLinkRef : undefined}
                     href={item.uri}
+                    aria-current={
+                      normalizeUri(item.uri) === normalizeUri(currentUri)
+                        ? "page"
+                        : undefined
+                    }
                     onClick={close}
                   >
                     {item.label}
@@ -117,6 +163,11 @@ export default function MobileNav({ menu, language = "hr", translations }) {
                 <Link
                   ref={index === 0 ? firstLinkRef : undefined}
                   href={item.uri}
+                  aria-current={
+                    normalizeUri(item.uri) === normalizeUri(currentUri)
+                      ? "page"
+                      : undefined
+                  }
                   onClick={close}
                 >
                   {item.label}

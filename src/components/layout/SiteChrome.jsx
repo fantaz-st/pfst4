@@ -10,7 +10,12 @@ import styles from "./SiteChrome.module.css";
 // their own params — the [...slug] catch-alls — can pass real per-page
 // translations, while everything else falls back to translations=null
 // (the Header then links the switcher to / or /en/ instead of hiding it).
-export default async function SiteChrome({ language, translations = null, children }) {
+export default async function SiteChrome({
+  language,
+  translations = null,
+  currentUri,
+  children,
+}) {
   const menu = await getMainMenu(language);
   const copy = getChromeCopy(language);
 
@@ -20,7 +25,12 @@ export default async function SiteChrome({ language, translations = null, childr
         {copy.skipToContent}
       </a>
       <HeaderScroll>
-        <Header menu={menu} currentLanguage={language} translations={translations} />
+        <Header
+          menu={menu}
+          currentLanguage={language}
+          translations={translations}
+          currentUri={currentUri}
+        />
       </HeaderScroll>
       <main id="main-content" className={styles.main}>
         {children}

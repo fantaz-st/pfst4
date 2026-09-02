@@ -137,6 +137,10 @@
 .back:hover {
   color: var(--color-link-hover);
 }
+.list a[aria-current="page"] {
+  color: var(--color-link-hover);
+  font-weight: 800;
+}
 .list button:hover .arrow,
 .list button:focus-visible .arrow {
   transform: translateX(0.2rem) rotate(45deg);
