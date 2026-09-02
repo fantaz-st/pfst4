@@ -309,6 +309,12 @@ export const SITE_SEARCH = /* GraphQL */ `
         uri
         excerpt
         date
+        categories(first: 10) {
+          nodes {
+            name
+            slug
+          }
+        }
       }
     }
   }

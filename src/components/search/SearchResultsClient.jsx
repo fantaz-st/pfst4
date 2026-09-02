@@ -4,7 +4,43 @@ import Link from "next/link";
 import { useState, useTransition } from "react";
 import { loadMoreSearch } from "@/lib/actions";
 import { renderWpHtml } from "@/lib/html";
+import homeStyles from "@/components/home/HomePage.module.css";
 import styles from "./SearchResults.module.css";
+
+function ArticleResults({ items, language }) {
+  return (
+    <ul className={`${homeStyles.novostiList} ${styles.articleList}`}>
+      {items.map((post) => {
+        const category = post.categories?.nodes?.find(
+          (item) => item.slug !== "istaknuto",
+        );
+        const dateLabel = new Intl.DateTimeFormat(
+          language === "en" ? "en-GB" : "hr-HR",
+          { day: "2-digit", month: "2-digit" },
+        ).format(new Date(post.date));
+
+        return (
+          <li key={post.id}>
+            <Link
+              href={post.uri}
+              className={`${homeStyles.novostiRow} ${styles.articleRow}`}
+            >
+              <span className={homeStyles.novostiMeta}>
+                {dateLabel} -{" "}
+                {category?.name ??
+                  (language === "en" ? "Uncategorized" : "Bez kategorije")}
+              </span>
+              <span className={homeStyles.novostiTitle}>{post.title}</span>
+              <span className={homeStyles.novostiArrow} aria-hidden="true">
+                →
+              </span>
+            </Link>
+          </li>
+        );
+      })}
+    </ul>
+  );
+}
 
 function ResultList({ items }) {
   return (
@@ -58,7 +94,7 @@ export default function SearchResultsClient({ query, language, data, copy }) {
           {language === "en" ? "Articles" : "Članci"}
         </h2>
         {posts.nodes.length ? (
-          <ResultList items={posts.nodes} />
+          <ArticleResults items={posts.nodes} language={language} />
         ) : (
           <p>{copy.empty}</p>
         )}
