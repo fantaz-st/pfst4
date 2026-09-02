@@ -126,6 +126,9 @@ export async function getRelatedPosts(post, language = DEFAULT_LANGUAGE) {
 export function buildNewsWhere({
   categorySlug,
   ciljeviSlugs,
+  search,
+  dateFrom,
+  dateTo,
   language = DEFAULT_LANGUAGE,
 } = {}) {
   const where = { language: toLanguageCodeEnum(language) };
@@ -137,6 +140,14 @@ export function buildNewsWhere({
   if (ciljeviSlugs?.length > 0) {
     where.taxQuery = {
       taxArray: [{ taxonomy: "CILJ", terms: ciljeviSlugs, field: "SLUG" }],
+    };
+  }
+
+  if (search) where.search = search;
+  if (dateFrom || dateTo) {
+    where.dateQuery = {
+      ...(dateFrom ? { after: dateFrom, inclusive: true } : {}),
+      ...(dateTo ? { before: dateTo, inclusive: true } : {}),
     };
   }
 

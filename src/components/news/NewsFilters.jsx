@@ -45,11 +45,56 @@ export default function NewsFilters({
   }
 
   const orderedCiljevi = sortByGoalNumber(ciljevi);
+  const selectedSearch = searchParams.get("q") ?? "";
+  const selectedFrom = searchParams.get("od") ?? "";
+  const selectedTo = searchParams.get("do") ?? "";
+
+  function submit(event) {
+    event.preventDefault();
+    const formData = new FormData(event.currentTarget);
+    push((params) => {
+      ["q", "od", "do"].forEach((key) => params.delete(key));
+      ["q", "od", "do"].forEach((key) => {
+        const value = formData.get(key);
+        if (value) params.set(key, value);
+      });
+    });
+  }
 
   return (
-    <div className={styles.filters}>
+    <aside className={styles.filters}>
+      <form className={styles.form} onSubmit={submit}>
+        <label htmlFor="news-search">
+          {language === "en" ? "Search" : "Pretraži"}
+        </label>
+        <div className={styles.searchRow}>
+          <input
+            id="news-search"
+            name="q"
+            type="search"
+            defaultValue={selectedSearch}
+          />
+          <button type="submit">
+            {language === "en" ? "Apply" : "Primijeni"}
+          </button>
+        </div>
+        <div className={styles.dates}>
+          <label>
+            Od
+            <input name="od" type="date" defaultValue={selectedFrom} />
+          </label>
+          <label>
+            Do
+            <input name="do" type="date" defaultValue={selectedTo} />
+          </label>
+        </div>
+      </form>
       {categories.length > 0 && (
-        <div className={styles.categories} role="group" aria-label={copy.filterByCategoryLabel}>
+        <div
+          className={styles.categories}
+          role="group"
+          aria-label={copy.filterByCategoryLabel}
+        >
           <button
             type="button"
             className={styles.pill}
@@ -83,7 +128,9 @@ export default function NewsFilters({
                 key={term.slug}
                 className={styles.tile}
                 data-checked={checked}
-                style={{ "--tile-color": meta?.color ?? "var(--color-gray-500)" }}
+                style={{
+                  "--tile-color": meta?.color ?? "var(--color-gray-500)",
+                }}
               >
                 <input
                   type="checkbox"
@@ -98,6 +145,6 @@ export default function NewsFilters({
           })}
         </div>
       </fieldset>
-    </div>
+    </aside>
   );
 }

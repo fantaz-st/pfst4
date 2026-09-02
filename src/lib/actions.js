@@ -14,6 +14,9 @@ export async function loadMoreNews({
   after,
   categorySlug,
   ciljeviSlugs,
+  search,
+  dateFrom,
+  dateTo,
   language,
   first = 20,
 }) {
@@ -22,7 +25,14 @@ export async function loadMoreNews({
     {
       first,
       after,
-      where: buildNewsWhere({ categorySlug, ciljeviSlugs, language }),
+      where: buildNewsWhere({
+        categorySlug,
+        ciljeviSlugs,
+        search,
+        dateFrom,
+        dateTo,
+        language,
+      }),
     },
     { tags: ["wp"] },
   );

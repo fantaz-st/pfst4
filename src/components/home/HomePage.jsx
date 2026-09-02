@@ -1,6 +1,7 @@
 import Link from "next/link";
 import IstaknutoScroller from "@/components/home/IstaknutoScroller";
 import TestimonialsPinned from "@/components/home/TestimonialsPinned";
+import ArticleList from "@/components/news/ArticleList";
 import styles from "./HomePage.module.css";
 
 const HOME_COPY = {
@@ -216,13 +217,12 @@ export default function HomePage({
           <h2 id="novosti-heading">{copy.newsHeading}</h2>
           <Link href={copy.newsArchiveHref}>{copy.allNewsLink} →</Link>
         </div>
-        {news.nodes.length === 0 ? null : (
-          <ul className={styles.novostiList}>
-            {news.nodes.map((post) => (
-              <NovostiRow key={post.id} post={post} language={language} />
-            ))}
-          </ul>
-        )}
+        <ArticleList
+          initialPosts={news.nodes}
+          initialPageInfo={news.pageInfo}
+          language={language}
+          variant="home"
+        />
       </section>
 
       <section aria-label={copy.statsSectionLabel} className={styles.stats}>
@@ -272,33 +272,5 @@ export default function HomePage({
         </div>
       </section>
     </div>
-  );
-}
-
-function NovostiRow({ post, language }) {
-  const category = post.categories?.nodes?.find((c) => c.slug !== "istaknuto");
-  const date = new Date(post.date);
-  const dateLabel = new Intl.DateTimeFormat(
-    language === "en" ? "en-GB" : "hr-HR",
-    {
-      day: "2-digit",
-      month: "2-digit",
-    },
-  ).format(date);
-
-  return (
-    <li>
-      <Link href={post.uri} className={styles.novostiRow}>
-        <span className={styles.novostiMeta}>
-          {dateLabel} —{" "}
-          {category?.name ??
-            (language === "en" ? "Uncategorized" : "Bez kategorije")}
-        </span>
-        <span className={styles.novostiTitle}>{post.title}</span>
-        <span className={styles.novostiArrow} aria-hidden="true">
-          →
-        </span>
-      </Link>
-    </li>
   );
 }

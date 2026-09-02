@@ -1,46 +1,11 @@
 "use client";
 
 import Link from "next/link";
-import { useState, useTransition } from "react";
+import { useState } from "react";
 import { loadMoreSearch } from "@/lib/actions";
 import { renderWpHtml } from "@/lib/html";
-import homeStyles from "@/components/home/HomePage.module.css";
+import ArticleList from "@/components/news/ArticleList";
 import styles from "./SearchResults.module.css";
-
-function ArticleResults({ items, language }) {
-  return (
-    <ul className={`${homeStyles.novostiList} ${styles.articleList}`}>
-      {items.map((post) => {
-        const category = post.categories?.nodes?.find(
-          (item) => item.slug !== "istaknuto",
-        );
-        const dateLabel = new Intl.DateTimeFormat(
-          language === "en" ? "en-GB" : "hr-HR",
-          { day: "2-digit", month: "2-digit" },
-        ).format(new Date(post.date));
-
-        return (
-          <li key={post.id}>
-            <Link
-              href={post.uri}
-              className={`${homeStyles.novostiRow} ${styles.articleRow}`}
-            >
-              <span className={homeStyles.novostiMeta}>
-                {dateLabel} -{" "}
-                {category?.name ??
-                  (language === "en" ? "Uncategorized" : "Bez kategorije")}
-              </span>
-              <span className={homeStyles.novostiTitle}>{post.title}</span>
-              <span className={homeStyles.novostiArrow} aria-hidden="true">
-                →
-              </span>
-            </Link>
-          </li>
-        );
-      })}
-    </ul>
-  );
-}
 
 function ResultList({ items }) {
   return (
@@ -62,29 +27,7 @@ export default function SearchResultsClient({ query, language, data, copy }) {
   const [posts, setPosts] = useState(
     data?.posts ?? { nodes: [], pageInfo: {} },
   );
-  const [isPending, startTransition] = useTransition();
-
-  function load(type) {
-    const source = type === "pages" ? pages : posts;
-    startTransition(async () => {
-      const next = await loadMoreSearch({
-        after: source.pageInfo.endCursor,
-        query,
-        type,
-        language,
-      });
-      if (type === "pages")
-        setPages((current) => ({
-          nodes: [...current.nodes, ...next.nodes],
-          pageInfo: next.pageInfo,
-        }));
-      else
-        setPosts((current) => ({
-          nodes: [...current.nodes, ...next.nodes],
-          pageInfo: next.pageInfo,
-        }));
-    });
-  }
+  const [isPending, setIsPending] = useState(false);
 
   return (
     <main className={styles.results}>
@@ -94,22 +37,15 @@ export default function SearchResultsClient({ query, language, data, copy }) {
           {language === "en" ? "Articles" : "Članci"}
         </h2>
         {posts.nodes.length ? (
-          <ArticleResults items={posts.nodes} language={language} />
+          <ArticleList
+            initialPosts={posts.nodes}
+            initialPageInfo={posts.pageInfo}
+            language={language}
+            mode="search"
+            query={query}
+          />
         ) : (
           <p>{copy.empty}</p>
-        )}
-        {posts.pageInfo.hasNextPage && (
-          <button
-            type="button"
-            onClick={() => load("posts")}
-            disabled={isPending}
-          >
-            {isPending
-              ? "..."
-              : language === "en"
-                ? "Load more articles"
-                : "Učitaj još članaka"}
-          </button>
         )}
       </section>
       <section aria-labelledby="page-results-heading">
@@ -124,7 +60,23 @@ export default function SearchResultsClient({ query, language, data, copy }) {
         {pages.pageInfo.hasNextPage && (
           <button
             type="button"
-            onClick={() => load("pages")}
+            onClick={() => {
+              const source = pages;
+              setIsPending(true);
+              loadMoreSearch({
+                after: source.pageInfo.endCursor,
+                query,
+                type: "pages",
+                language,
+              })
+                .then((next) =>
+                  setPages((current) => ({
+                    nodes: [...current.nodes, ...next.nodes],
+                    pageInfo: next.pageInfo,
+                  })),
+                )
+                .finally(() => setIsPending(false));
+            }}
             disabled={isPending}
           >
             {isPending
