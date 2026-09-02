@@ -39,8 +39,15 @@
   display: block;
 }
 
+.desktopSearch {
+  display: block;
+}
+
 @media (max-width: 63.999rem) {
   .desktopLanguage {
+    display: none;
+  }
+  .desktopSearch {
     display: none;
   }
   .signLogo {

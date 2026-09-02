@@ -11,6 +11,7 @@ const CHROME_COPY = {
     footerNavLabel: "Izbornik u podnožju",
     languageSwitcherLabel: "Odabir jezika",
     menuLabel: "Izbornik",
+    openSubmenu: "Otvori podizbornik",
     backMenu: "Natrag",
     notFoundTitle: "Stranica nije pronađena",
     notFoundDescription: "Stranica koju tražite ne postoji ili je premještena.",
@@ -24,6 +25,7 @@ const CHROME_COPY = {
     footerNavLabel: "Footer menu",
     languageSwitcherLabel: "Language selection",
     menuLabel: "Menu",
+    openSubmenu: "Open submenu",
     backMenu: "Back",
     notFoundTitle: "Page not found",
     notFoundDescription:

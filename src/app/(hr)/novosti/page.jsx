@@ -73,9 +73,6 @@ export default async function NewsArchivePage({ searchParams }) {
       </div>
 
       <section aria-labelledby="obavijesti-heading" className={styles.section}>
-        <div className={styles.sectionHeading}>
-          <h2 id="obavijesti-heading">Obavijesti</h2>
-        </div>
         <div className={styles.newsLayout}>
           <Suspense>
             <NewsFilters

@@ -27,7 +27,9 @@ export default function Header({ menu, currentLanguage, translations }) {
           />
         </div>
 
-        <SearchOverlay language={currentLanguage} />
+        <div className={styles.desktopSearch}>
+          <SearchOverlay language={currentLanguage} />
+        </div>
 
         <MobileNav
           menu={menu}

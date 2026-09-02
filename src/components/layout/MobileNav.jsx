@@ -4,6 +4,7 @@ import { useEffect, useId, useRef, useState } from "react";
 import Link from "next/link";
 import { getChromeCopy } from "@/lib/chromeCopy";
 import LanguageSwitcher from "./LanguageSwitcher";
+import SearchOverlay from "./SearchOverlay";
 import styles from "./MobileNav.module.css";
 
 export default function MobileNav({ menu, language = "hr", translations }) {
@@ -70,11 +71,14 @@ export default function MobileNav({ menu, language = "hr", translations }) {
         </span>
       </button>
       <div id={panelId} className={styles.panel} hidden={!open}>
-        <LanguageSwitcher
-          currentLanguage={language}
-          translations={translations}
-          className="mobileDropdown"
-        />
+        <div className={styles.panelTools}>
+          <SearchOverlay language={language} />
+          <LanguageSwitcher
+            currentLanguage={language}
+            translations={translations}
+            className="mobileDropdown"
+          />
+        </div>
         <div className={styles.panelHeader}>
           {levels.length > 0 && (
             <button
@@ -92,14 +96,23 @@ export default function MobileNav({ menu, language = "hr", translations }) {
           {currentItems.map((item, index) => (
             <li key={item.databaseId}>
               {item.children.length > 0 ? (
-                <button
-                  ref={index === 0 ? firstLinkRef : undefined}
-                  type="button"
-                  onClick={() => openLevel(item)}
-                >
-                  {item.label}
-                  <span className={styles.arrow} aria-hidden="true" />
-                </button>
+                <div className={styles.itemRow}>
+                  <Link
+                    ref={index === 0 ? firstLinkRef : undefined}
+                    href={item.uri}
+                    onClick={close}
+                  >
+                    {item.label}
+                  </Link>
+                  <button
+                    type="button"
+                    className={styles.submenuButton}
+                    aria-label={`${copy.openSubmenu}: ${item.label}`}
+                    onClick={() => openLevel(item)}
+                  >
+                    <span className={styles.arrow} aria-hidden="true" />
+                  </button>
+                </div>
               ) : (
                 <Link
                   ref={index === 0 ? firstLinkRef : undefined}
