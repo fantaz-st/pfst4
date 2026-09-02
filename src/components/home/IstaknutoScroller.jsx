@@ -3,6 +3,8 @@
 import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { getFeaturedCategory } from "@/lib/news";
+import CategoryBadge from "@/components/news/CategoryBadge";
 import styles from "./IstaknutoScroller.module.css";
 
 export default function IstaknutoScroller({ posts, label }) {
@@ -102,6 +104,11 @@ export default function IstaknutoScroller({ posts, label }) {
               <h3 className={styles.title}>
                 <Link href={post.uri}>{post.title}</Link>
               </h3>
+              <CategoryBadge
+                category={getFeaturedCategory(post)}
+                language={post.language?.slug ?? "hr"}
+                className={styles.featuredBadge}
+              />
             </article>
           </li>
         ))}

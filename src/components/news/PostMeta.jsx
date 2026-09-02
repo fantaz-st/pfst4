@@ -1,9 +1,14 @@
-import { getPostCategories, formatDayLabel } from "@/lib/news";
+import {
+  getPostCategories,
+  getPrimaryCategory,
+  formatDayLabel,
+} from "@/lib/news";
 import CategoryBadge from "./CategoryBadge";
 import styles from "./PostMeta.module.css";
 
 export default function PostMeta({ post }) {
   const categories = getPostCategories(post);
+  const primaryCategory = getPrimaryCategory(post);
   const language = post.language?.slug ?? "hr";
 
   return (
@@ -19,6 +24,10 @@ export default function PostMeta({ post }) {
               <CategoryBadge category={category} language={language} />
             </li>
           ))
+        ) : primaryCategory ? (
+          <li>
+            <CategoryBadge category={primaryCategory} language={language} />
+          </li>
         ) : (
           <li>
             <CategoryBadge category={null} language={language} />

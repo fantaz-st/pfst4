@@ -2,6 +2,7 @@
 
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { sortByGoalNumber, getCiljMeta } from "@/lib/ciljevi";
+import { getCategoryColorVariant } from "@/lib/categoryColors";
 import { getNewsCopy } from "@/lib/newsCopy";
 import styles from "./NewsFilters.module.css";
 
@@ -108,6 +109,7 @@ export default function NewsFilters({
               key={category.slug}
               type="button"
               className={styles.pill}
+              data-variant={getCategoryColorVariant(category)}
               aria-pressed={selectedCategory === category.slug}
               onClick={() => selectCategory(category.slug)}
             >

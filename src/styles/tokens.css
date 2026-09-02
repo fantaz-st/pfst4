@@ -49,14 +49,28 @@
   --color-link-hover: var(--color-accent-700);
   --color-focus-ring: var(--color-accent);
 
-  --color-badge-natjecaji-bg: var(--color-accent-200);
-  --color-badge-natjecaji-text: var(--color-navy);
-  --color-badge-najave-bg: var(--color-accent-100);
-  --color-badge-najave-text: var(--color-accent-800);
-  --color-badge-sluzbeno-bg: var(--color-accent-100);
-  --color-badge-sluzbeno-text: var(--color-accent-800);
-  --color-badge-erasmus-bg: var(--color-accent-300);
-  --color-badge-erasmus-text: var(--color-navy);
+  --color-badge-bez-kategorije-bg: #edf1f2;
+  --color-badge-bez-kategorije-text: #3b5058;
+  --color-badge-natjecaji-bg: #f9d8d8;
+  --color-badge-natjecaji-text: #741f1f;
+  --color-badge-najave-bg: #fff0bd;
+  --color-badge-najave-text: #634a00;
+  --color-badge-sluzbeno-bg: #d4e9f0;
+  --color-badge-sluzbeno-text: #0b4f61;
+  --color-badge-erasmus-bg: #d9efdd;
+  --color-badge-erasmus-text: #155b2a;
+  --color-badge-nastava-bg: #e6def6;
+  --color-badge-nastava-text: #432267;
+  --color-badge-projekti-bg: #d4efed;
+  --color-badge-projekti-text: #075a58;
+  --color-badge-referada-bg: #dce7f7;
+  --color-badge-referada-text: #173c70;
+  --color-badge-savjetovanja-bg: #f3dce8;
+  --color-badge-savjetovanja-text: #721b49;
+  --color-badge-istaknuto-bg: #ffe5cf;
+  --color-badge-istaknuto-text: #7a3500;
+  --color-badge-stipendije-bg: #e8efc8;
+  --color-badge-stipendije-text: #3f520d;
 
   --color-gray-100: var(--color-neutral-100);
   --color-navy-900: var(--color-navy);

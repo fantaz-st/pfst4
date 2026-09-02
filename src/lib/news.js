@@ -62,8 +62,24 @@ export function getPostCategories(post) {
   );
 }
 
+export function getFeaturedCategory(post) {
+  return (post.categories?.nodes ?? []).find(
+    (category) => category.slug === FEATURED_CATEGORY_SLUG,
+  ) ?? null;
+}
+
+export function getDisplayCategories(post) {
+  const categories = getPostCategories(post);
+  const featuredCategory = getFeaturedCategory(post);
+  return featuredCategory ? [...categories, featuredCategory] : categories;
+}
+
 export function getPrimaryCategory(post) {
-  return getPostCategories(post)[0] ?? null;
+  return (
+    getPostCategories(post)[0] ??
+    getFeaturedCategory(post) ??
+    null
+  );
 }
 
 export async function getRelatedPosts(post, language = DEFAULT_LANGUAGE) {

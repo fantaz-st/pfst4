@@ -29,3 +29,38 @@
   background: var(--color-badge-erasmus-bg);
   color: var(--color-badge-erasmus-text);
 }
+
+.badge[data-variant="bez-kategorije"] {
+  background: var(--color-badge-bez-kategorije-bg);
+  color: var(--color-badge-bez-kategorije-text);
+}
+
+.badge[data-variant="nastava"] {
+  background: var(--color-badge-nastava-bg);
+  color: var(--color-badge-nastava-text);
+}
+
+.badge[data-variant="projekti"] {
+  background: var(--color-badge-projekti-bg);
+  color: var(--color-badge-projekti-text);
+}
+
+.badge[data-variant="referada"] {
+  background: var(--color-badge-referada-bg);
+  color: var(--color-badge-referada-text);
+}
+
+.badge[data-variant="savjetovanja"] {
+  background: var(--color-badge-savjetovanja-bg);
+  color: var(--color-badge-savjetovanja-text);
+}
+
+.badge[data-variant="istaknuto"] {
+  background: var(--color-badge-istaknuto-bg);
+  color: var(--color-badge-istaknuto-text);
+}
+
+.badge[data-variant="stipendije"] {
+  background: var(--color-badge-stipendije-bg);
+  color: var(--color-badge-stipendije-text);
+}

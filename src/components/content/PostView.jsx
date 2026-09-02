@@ -31,7 +31,7 @@ export default async function PostView({ node }) {
             </div>
           )}
           <header className={styles.pageHeader}>
-            <p className={styles.kicker}>Novosti</p>
+            {/* <p className={styles.kicker}>Novosti</p> */}
             <h1 className={styles.title}>{node.title}</h1>
             <PostMeta post={node} />
           </header>

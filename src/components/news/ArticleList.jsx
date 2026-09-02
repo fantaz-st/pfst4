@@ -3,7 +3,8 @@
 import Link from "next/link";
 import { useState, useTransition } from "react";
 import { loadMoreNews, loadMoreSearch } from "@/lib/actions";
-import { getPrimaryCategory, getFallbackCategoryLabel } from "@/lib/news";
+import { getDisplayCategories } from "@/lib/news";
+import CategoryBadge from "./CategoryBadge";
 import styles from "./ArticleList.module.css";
 
 export default function ArticleList({
@@ -53,7 +54,7 @@ export default function ArticleList({
         className={`${styles.list} ${variant === "home" ? styles.homeList : ""}`}
       >
         {posts.map((post) => {
-          const category = getPrimaryCategory(post);
+          const categories = getDisplayCategories(post);
           const dateLabel = new Intl.DateTimeFormat(
             language === "en" ? "en-GB" : "hr-HR",
             { day: "2-digit", month: "2-digit" },
@@ -65,8 +66,18 @@ export default function ArticleList({
                 className={`${styles.row} ${variant === "home" ? styles.homeRow : ""}`}
               >
                 <span className={styles.meta}>
-                  {dateLabel} -{" "}
-                  {category?.name ?? getFallbackCategoryLabel(language)}
+                  <span>{dateLabel}</span>
+                  {categories.length > 0 ? (
+                    categories.map((category) => (
+                      <CategoryBadge
+                        key={category.slug}
+                        category={category}
+                        language={language}
+                      />
+                    ))
+                  ) : (
+                    <CategoryBadge category={null} language={language} />
+                  )}
                 </span>
                 <span className={styles.title}>{post.title}</span>
                 <span className={styles.arrow} aria-hidden="true">
