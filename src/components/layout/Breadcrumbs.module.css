@@ -12,7 +12,7 @@
   font-weight: 800;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: #605d5d;
+  color: var(--color-neutral-600);
 }
 
 .list li {
@@ -23,7 +23,7 @@
 .list li:not(:last-child)::after {
   content: "/";
   margin-left: 0.5rem;
-  color: color-mix(in srgb, #201e1d 40%, transparent);
+  color: var(--color-divider);
 }
 
 .list a {
@@ -32,9 +32,9 @@
 
 .list a:hover,
 .list a:focus-visible {
-  color: #1b4bd8;
+  color: var(--color-cyan);
 }
 
 .list li[aria-current="page"] {
-  color: #201e1d;
+  color: var(--color-navy);
 }

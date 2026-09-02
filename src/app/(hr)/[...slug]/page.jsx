@@ -1,4 +1,4 @@
-import { hrContentRoute } from "@/lib/contentRoutes";
+import { hrContentRoute } from "@/lib/contentRoute";
 
 export const dynamicParams = true;
 

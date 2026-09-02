@@ -22,11 +22,17 @@ export default function TestimonialsPinned({ testimonials, label }) {
   const [enhanced, setEnhanced] = useState(false);
 
   useEffect(() => {
-    const wrap = wrapRef.current;
-    const quotes = quoteRefs.current.filter(Boolean);
-    if (!wrap || quotes.length < 2) return;
+    if (testimonials.length < 2) return;
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
+    const frame = window.requestAnimationFrame(() => setEnhanced(true));
+    return () => window.cancelAnimationFrame(frame);
+  }, [testimonials.length]);
+
+  useEffect(() => {
+    const wrap = wrapRef.current;
+    const quotes = quoteRefs.current.filter(Boolean);
+    if (!enhanced || !wrap || quotes.length < 2) return;
     let cancelled = false;
 
     Promise.all([import("gsap"), import("gsap/ScrollTrigger")]).then(
@@ -34,30 +40,30 @@ export default function TestimonialsPinned({ testimonials, label }) {
         if (cancelled) return;
         gsap.registerPlugin(ScrollTrigger);
 
-        setEnhanced(true);
-
         const tl = gsap.timeline({
           scrollTrigger: {
             trigger: wrap,
             start: "top top",
-            end: "+=" + quotes.length * 60 + "%",
+            end: "+=" + quotes.length * 70 + "%",
             pin: true,
             scrub: 0.6,
             invalidateOnRefresh: true,
           },
         });
 
+        tl.set(quotes.slice(1), { opacity: 0 }, 0);
+
         quotes.forEach((el, i) => {
           if (i === 0) return;
-          tl.to(quotes[i - 1], { opacity: 0, yPercent: -12, duration: 0.5, ease: "power2.in" }, i * 0.9).fromTo(
+          tl.to(quotes[i - 1], { opacity: 0, duration: 0.5 }, i * 0.9).to(
             el,
-            { opacity: 0, yPercent: 14 },
-            { opacity: 1, yPercent: 0, duration: 0.5, ease: "power2.out" },
+            { opacity: 1, duration: 0.5 },
             i * 0.9 + 0.2,
           );
         });
 
         timelineRef.current = tl;
+        ScrollTrigger.refresh();
       },
     );
 
@@ -67,7 +73,7 @@ export default function TestimonialsPinned({ testimonials, label }) {
       timelineRef.current?.kill();
       timelineRef.current = null;
     };
-  }, [testimonials.length]);
+  }, [enhanced]);
 
   return (
     <section

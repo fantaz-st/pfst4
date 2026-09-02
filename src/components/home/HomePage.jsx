@@ -44,12 +44,6 @@ const HOME_COPY = {
         name: "Tony",
         role: "Pomorska nautika",
       },
-      {
-        quote:
-          "Jedno od najvažnijih iskustava s fakulteta je bila terenska praksa na brodovima i simulatoru, koja mi je omogućila da teorijska znanja primijenim u stvarnom okruženju.",
-        name: "Tony",
-        role: "Pomorska nautika",
-      },
     ],
     enrollKicker: "Upisi",
     enrollLine1: "Upiši",

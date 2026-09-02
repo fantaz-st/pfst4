@@ -6,6 +6,12 @@ import { getLanguageFromUri, getTranslationsForUri } from "@/lib/language";
 import { buildMetaDescription, buildLanguageAlternates } from "@/lib/seo";
 import ContentView from "@/components/content/ContentView";
 
+export const hrContentRoute = createContentRoute({ language: "hr" });
+export const enContentRoute = createContentRoute({
+  language: "en",
+  prefix: "en",
+});
+
 function extractSlug(uri, prefix) {
   const segments = uri.split("/").filter(Boolean);
   return prefix ? segments.slice(1) : segments;
@@ -21,7 +27,11 @@ export function createContentRoute({ language, prefix = null }) {
   }
 
   async function getNode(slug) {
-    const data = await wpFetch(NODE_BY_URI, { uri: toUri(slug) }, { tags: ["wp"] });
+    const data = await wpFetch(
+      NODE_BY_URI,
+      { uri: toUri(slug) },
+      { tags: ["wp"] },
+    );
     const node = data?.nodeByUri;
     if (!node || (node.__typename !== "Page" && node.__typename !== "Post")) {
       return null;
@@ -68,5 +78,10 @@ export function createContentRoute({ language, prefix = null }) {
     return getTranslationsForUri(toUri(slug));
   }
 
-  return { generateStaticParams, generateMetadata, ContentPage, getTranslationsForSlug };
+  return {
+    generateStaticParams,
+    generateMetadata,
+    ContentPage,
+    getTranslationsForSlug,
+  };
 }

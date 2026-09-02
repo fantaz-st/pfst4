@@ -1,62 +1,67 @@
 .rail,
 .empty {
-  border-left: 2px solid color-mix(in srgb, #201e1d 40%, transparent);
+  border-left: 2px solid var(--color-divider);
   padding-left: 1rem;
 }
 
 .list,
 .children {
   list-style: none;
+  margin: 0;
+  padding: 0;
 }
 
 .list {
   display: grid;
-  gap: 0.25rem;
+  gap: 0.125rem;
 }
 
 .children {
-  margin: 0.5rem 0 0.75rem 0.75rem;
+  margin: 0.5rem 0 0.5rem 0.75rem;
   display: grid;
-  gap: 0.25rem;
+  gap: 0.125rem;
+  padding-left: 0.25rem;
 }
 
 .list > li > a,
 .children a {
   display: block;
-  padding: 0.4rem 0;
-  color: #201e1d;
-  font-weight: 600;
-  line-height: 1.3;
+  padding: 0.45rem 0;
+  color: var(--color-navy);
+  font-size: 0.9375rem;
+  font-weight: 700;
+  line-height: 1.35;
+  text-decoration: none;
 }
 
 .children a {
   font-size: 0.875rem;
-  color: #605d5d;
-  font-weight: 500;
+  color: var(--color-neutral-600);
+  font-weight: 600;
 }
 
 .list a:hover,
 .children a:hover,
 .list a:focus-visible,
 .children a:focus-visible {
-  color: #1b4bd8;
+  color: var(--color-cyan);
 }
 
 .active {
-  color: #1b4bd8;
+  color: var(--color-cyan);
 }
 
 .emptyTitle {
   margin: 0 0 0.5rem;
-  font-size: 0.8125rem;
+  font-size: 0.75rem;
   font-weight: 800;
-  letter-spacing: 0.14em;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: #605d5d;
+  color: var(--color-neutral-600);
 }
 
 .emptyText {
   margin: 0;
-  color: #40474f;
+  color: var(--color-neutral-700);
   line-height: 1.5;
 }

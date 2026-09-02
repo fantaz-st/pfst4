@@ -15,26 +15,18 @@
       page. See the chat response for the full deviations list. */
 
 .page {
-  --home-color-bg: #f3f2f2;
-  --home-color-text: #201e1d;
-  /* The design's *rendered* accent default — support.js's boot() applies
-     the component's accentColor prop (default #1b4bd8) over
-     styles.css's static #ec3013 fallback on mount, so #1b4bd8 is what the
-     page actually shows with no prop override. */
-  --home-color-accent: #1b4bd8;
-  /* Verbatim from styles.css's accent-700 step. That ramp isn't
-     recalculated when accentColor is overridden, so it stays this dark red
-     even though --home-color-accent is blue — kept literal per "take exact
-     values," flagged as a likely design-system inconsistency in the chat
-     response rather than silently "fixed." */
-  --home-color-accent-700: #ae1800;
-  --home-color-divider: color-mix(in srgb, #201e1d 40%, transparent);
-  --home-color-neutral-200: #eae7e7;
-  --home-color-neutral-300: #d7d3d3;
-  --home-color-neutral-600: #7d7979;
-  --home-color-neutral-700: #605d5d;
-  --home-color-neutral-800: #444141;
-  --home-color-neutral-900: #2d2b2b;
+  --home-color-bg: var(--color-bg);
+  --home-color-text: #000000;
+  /* The cyan logo color is the site's primary interactive accent. */
+  --home-color-accent: var(--color-cyan);
+  --home-color-accent-700: var(--color-accent-700);
+  --home-color-divider: var(--color-divider);
+  --home-color-neutral-200: var(--color-neutral-200);
+  --home-color-neutral-300: var(--color-neutral-300);
+  --home-color-neutral-600: var(--color-neutral-600);
+  --home-color-neutral-700: var(--color-neutral-700);
+  --home-color-neutral-800: var(--color-neutral-800);
+  --home-color-neutral-900: var(--color-neutral-900);
 
   --home-gutter: clamp(1.25rem, 4vw, 4.5rem); /* clamp(20px, 4vw, 72px) */
 
@@ -48,7 +40,7 @@
   font-weight: 800;
   letter-spacing: 0.22em;
   text-transform: uppercase;
-  color: var(--home-color-accent-700);
+  color: var(--home-color-text);
 }
 
 /* — Hero — */
@@ -99,7 +91,7 @@
   font-weight: 800;
   letter-spacing: 0.16em;
   text-transform: uppercase;
-  color: var(--home-color-neutral-600);
+  color: var(--home-color-text);
 }
 
 /* — Statement — */
@@ -268,7 +260,7 @@
   font-weight: 800;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: var(--home-color-neutral-600);
+  color: var(--home-color-text);
 }
 
 .novostiTitle {
@@ -312,7 +304,7 @@
   font-size: clamp(4rem, 9vw, 10.5rem); /* clamp(64px,9vw,168px) */
   line-height: 0.84;
   letter-spacing: -0.055em;
-  color: var(--home-color-accent);
+  color: var(--home-color-text);
 }
 
 .statLabel {
@@ -329,12 +321,11 @@
 .enrollment {
   padding: clamp(5rem, 14vh, 10.625rem) var(--home-gutter); /* clamp(80px,14vh,170px) */
   background: var(--home-color-accent);
-  color: var(--home-color-bg);
+  color: var(--home-color-text);
 }
 
 .enrollment .kicker {
-  color: var(--home-color-bg);
-  opacity: 0.8;
+  color: var(--home-color-text);
 }
 
 .enrollTitle {
@@ -414,7 +405,7 @@
 }
 
 .eduTeaser .kicker {
-  color: var(--home-color-accent-700);
+  color: var(--home-color-text);
 }
 
 .eduTeaser h2 {
@@ -457,7 +448,7 @@
   margin: 0;
   font-size: clamp(0.9375rem, 1.3vw, 1.3125rem); /* clamp(15px,1.3vw,21px) */
   line-height: 1.5;
-  color: var(--home-color-neutral-800);
+  color: var(--home-color-text);
 }
 
 .eduCta {

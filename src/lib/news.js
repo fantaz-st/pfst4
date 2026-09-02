@@ -1,18 +1,29 @@
 import { wpFetch } from "./wp";
-import { NEWS_TAXONOMIES, FEATURED_CATEGORY_TRANSLATION } from "./queries";
+import {
+  NEWS_TAXONOMIES,
+  FEATURED_CATEGORY_TRANSLATION,
+  RELATED_POSTS,
+  NEWS_TAGS,
+} from "./queries";
 import { DEFAULT_LANGUAGE, toLanguageCodeEnum } from "./language";
 
 export const FEATURED_CATEGORY_SLUG = "istaknuto";
 
 const LOCALE_BY_LANGUAGE = { hr: "hr-HR", en: "en-GB" };
-const FALLBACK_CATEGORY_LABEL_BY_LANGUAGE = { hr: "Bez kategorije", en: "Uncategorized" };
+const FALLBACK_CATEGORY_LABEL_BY_LANGUAGE = {
+  hr: "Bez kategorije",
+  en: "Uncategorized",
+};
 
 function getLocale(language) {
   return LOCALE_BY_LANGUAGE[language] ?? LOCALE_BY_LANGUAGE[DEFAULT_LANGUAGE];
 }
 
 export function getFallbackCategoryLabel(language = DEFAULT_LANGUAGE) {
-  return FALLBACK_CATEGORY_LABEL_BY_LANGUAGE[language] ?? FALLBACK_CATEGORY_LABEL_BY_LANGUAGE[DEFAULT_LANGUAGE];
+  return (
+    FALLBACK_CATEGORY_LABEL_BY_LANGUAGE[language] ??
+    FALLBACK_CATEGORY_LABEL_BY_LANGUAGE[DEFAULT_LANGUAGE]
+  );
 }
 
 export async function getNewsTaxonomies(language = DEFAULT_LANGUAGE) {
@@ -55,7 +66,68 @@ export function getPrimaryCategory(post) {
   return getPostCategories(post)[0] ?? null;
 }
 
-export function buildNewsWhere({ categorySlug, ciljeviSlugs, language = DEFAULT_LANGUAGE } = {}) {
+export async function getRelatedPosts(post, language = DEFAULT_LANGUAGE) {
+  const [data, tagData] = await Promise.all([
+    wpFetch(
+      RELATED_POSTS,
+      { first: 100, where: { language: toLanguageCodeEnum(language) } },
+      { tags: ["wp"] },
+    ),
+    wpFetch(NEWS_TAGS, {}, { tags: ["wp"] }),
+  ]);
+  const candidates = (data?.posts?.nodes ?? []).filter(
+    (candidate) => candidate.id !== post.id,
+  );
+  const postTags = new Set((post.tags?.nodes ?? []).map((tag) => tag.slug));
+  const postCategories = new Set(
+    getPostCategories(post).map((category) => category.slug),
+  );
+  const tagCounts = new Map(
+    (tagData?.tags?.nodes ?? []).map((tag) => [tag.slug, tag.count]),
+  );
+
+  const tagMatches = candidates
+    .map((candidate) => {
+      const sharedTags = (candidate.tags?.nodes ?? []).filter((tag) =>
+        postTags.has(tag.slug),
+      );
+      const score = sharedTags.reduce(
+        (total, tag) => total + 1 / Math.max(tagCounts.get(tag.slug) ?? 1, 1),
+        0,
+      );
+      return { candidate, score };
+    })
+    .filter(({ score }) => score > 0)
+    .sort(
+      (a, b) =>
+        b.score - a.score ||
+        new Date(b.candidate.date) - new Date(a.candidate.date),
+    )
+    .map(({ candidate }) => candidate);
+
+  const selected = tagMatches.slice(0, 4);
+  if (selected.length < 4) {
+    selected.push(
+      ...candidates
+        .filter((candidate) => {
+          if (selected.some((item) => item.id === candidate.id)) return false;
+          return getPostCategories(candidate).some((category) =>
+            postCategories.has(category.slug),
+          );
+        })
+        .sort((a, b) => new Date(b.date) - new Date(a.date))
+        .slice(0, 4 - selected.length),
+    );
+  }
+
+  return selected;
+}
+
+export function buildNewsWhere({
+  categorySlug,
+  ciljeviSlugs,
+  language = DEFAULT_LANGUAGE,
+} = {}) {
   const where = { language: toLanguageCodeEnum(language) };
 
   if (categorySlug) {

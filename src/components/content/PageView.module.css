@@ -1,8 +1,8 @@
 .pageShell {
-  --inner-color-bg: #f3f2f2;
-  --inner-color-text: #201e1d;
-  --inner-color-accent: #ec3013;
-  --inner-color-divider: color-mix(in srgb, #201e1d 40%, transparent);
+  --inner-color-bg: var(--color-bg);
+  --inner-color-text: var(--color-navy);
+  --inner-color-accent: var(--color-cyan);
+  --inner-color-divider: var(--color-divider);
   --inner-color-surface: transparent;
 
   background: var(--inner-color-bg);
@@ -10,13 +10,9 @@
   padding: clamp(2.25rem, 4vw, 4rem) clamp(1rem, 3vw, 2rem);
 }
 
-.layout,
-.postWrapper {
+.layout {
   max-width: 80rem;
   margin: 0 auto;
-}
-
-.layout {
   display: grid;
   grid-template-columns: 1fr;
   gap: clamp(2rem, 5vw, 4rem);
@@ -104,7 +100,7 @@
 
 .childPagesList li {
   border: 1px solid var(--inner-color-divider);
-  background: rgba(255, 255, 255, 0.34);
+  background: rgba(255, 255, 255, 0.22);
 }
 
 .childPagesList a {
@@ -113,6 +109,10 @@
   color: var(--inner-color-text);
   font-weight: 700;
   line-height: 1.4;
+  text-decoration: none;
+  transition:
+    background-color 0.18s ease,
+    color 0.18s ease;
 }
 
 .childPagesList a:hover,

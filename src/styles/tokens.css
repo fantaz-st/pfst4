@@ -1,40 +1,43 @@
 :root {
-  --color-bg: #f3f2f2;
-  --color-surface: #eae9e9;
-  --color-text: #201e1d;
-  --color-accent: #ec3013;
-  --color-accent-2: #e15b47;
-  --color-divider: color-mix(in srgb, #201e1d 40%, transparent);
+  --color-navy: #0f385c;
+  --color-cyan: #058cc4;
+  --color-white: #ffffff;
+  --color-bg: #f7fbfd;
+  --color-surface: #e8f2f7;
+  --color-text: var(--color-navy);
+  --color-accent: var(--color-cyan);
+  --color-accent-2: var(--color-navy);
+  --color-divider: color-mix(in srgb, var(--color-navy) 32%, transparent);
 
-  --color-neutral-100: #f8f4f4;
-  --color-neutral-200: #eae7e7;
-  --color-neutral-300: #d7d3d3;
-  --color-neutral-400: #bab6b6;
-  --color-neutral-500: #9b9797;
-  --color-neutral-600: #7d7979;
-  --color-neutral-700: #605d5d;
-  --color-neutral-800: #444141;
-  --color-neutral-900: #2d2b2b;
+  --color-neutral-100: #f5fafc;
+  --color-neutral-200: #e4f0f5;
+  --color-neutral-300: #c8dce5;
+  --color-neutral-400: #a1bfce;
+  --color-neutral-500: #769baa;
+  --color-neutral-600: #54798b;
+  --color-neutral-700: #3b5d70;
+  --color-neutral-800: #29495d;
+  --color-neutral-900: #183c54;
 
-  --color-accent-100: #fff2ef;
-  --color-accent-200: #ffe0d9;
-  --color-accent-300: #ffc4b8;
-  --color-accent-400: #ff9783;
-  --color-accent-500: #ff563c;
-  --color-accent-600: #dd2b0f;
-  --color-accent-700: #ae1800;
-  --color-accent-800: #7c1405;
-  --color-accent-900: #4d170e;
+  --color-accent-100: #e8f6fb;
+  --color-accent-200: #ccecf7;
+  --color-accent-300: #9ed9ec;
+  --color-accent-400: #66c0df;
+  --color-accent-500: #2da8d0;
+  --color-accent-600: #047ba9;
+  --color-accent-700: #05678e;
+  --color-accent-800: #07536f;
+  --color-accent-900: #063d55;
 
-  --color-accent-2-100: #fff2ef;
-  --color-accent-2-200: #ffe0da;
-  --color-accent-2-300: #ffc4b9;
-  --color-accent-2-400: #ff9784;
-  --color-accent-2-500: #ef6853;
-  --color-accent-2-600: #c94b39;
-  --color-accent-2-700: #9e3526;
-  --color-accent-2-800: #71261b;
-  --color-accent-2-900: #471d16;
+  --color-accent-2-100: #e8f6fb;
+  --color-accent-2-200: #ccecf7;
+  --color-accent-2-300: #9ed9ec;
+  --color-accent-2-400: #66c0df;
+  --color-accent-2-500: #2da8d0;
+  --color-accent-2-600: #047ba9;
+  --color-accent-2-700: #05678e;
+  --color-accent-2-800: #07536f;
+  --color-accent-2-900: #063d55;
 
   --font-body: var(--font-display, "Archivo", system-ui, sans-serif);
   --font-heading: var(--font-display, "Archivo", system-ui, sans-serif);
@@ -46,14 +49,17 @@
   --color-link-hover: var(--color-accent-700);
   --color-focus-ring: var(--color-accent);
 
-  --color-badge-natjecaji-bg: #fff1d6;
-  --color-badge-natjecaji-text: #7a4e00;
-  --color-badge-najave-bg: #dcf3ee;
-  --color-badge-najave-text: #0f5c50;
+  --color-badge-natjecaji-bg: var(--color-accent-200);
+  --color-badge-natjecaji-text: var(--color-navy);
+  --color-badge-najave-bg: var(--color-accent-100);
+  --color-badge-najave-text: var(--color-accent-800);
   --color-badge-sluzbeno-bg: var(--color-accent-100);
   --color-badge-sluzbeno-text: var(--color-accent-800);
-  --color-badge-erasmus-bg: #efe3fb;
-  --color-badge-erasmus-text: #5b2a86;
+  --color-badge-erasmus-bg: var(--color-accent-300);
+  --color-badge-erasmus-text: var(--color-navy);
+
+  --color-gray-100: var(--color-neutral-100);
+  --color-navy-900: var(--color-navy);
 
   --space-1: 0.25rem;
   --space-2: 0.5rem;
@@ -69,7 +75,8 @@
   --radius-lg: 0px;
   --radius-full: 9999px;
 
-  --shadow-sm: 0 1px 2px color-mix(in srgb, #2d2b2b 14%, transparent);
-  --shadow-md: 0 3px 10px color-mix(in srgb, #2d2b2b 16%, transparent);
-  --shadow-lg: 0 12px 32px color-mix(in srgb, #2d2b2b 22%, transparent);
+  --shadow-sm: 0 1px 2px color-mix(in srgb, var(--color-navy) 14%, transparent);
+  --shadow-md: 0 3px 10px color-mix(in srgb, var(--color-navy) 16%, transparent);
+  --shadow-lg: 0 12px 32px
+    color-mix(in srgb, var(--color-navy) 22%, transparent);
 }

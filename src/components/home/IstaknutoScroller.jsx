@@ -94,7 +94,7 @@ export default function IstaknutoScroller({ posts, label }) {
                     src={post.featuredImage.node.sourceUrl}
                     alt=""
                     fill
-                    sizes="(max-width: 64rem) 80vw, 63.75rem"
+                    sizes="(max-width: 64rem) 76vw, 63.75rem"
                     className={styles.image}
                   />
                 )}

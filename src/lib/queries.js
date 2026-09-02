@@ -105,6 +105,12 @@ const POST_FIELDS = /* GraphQL */ `
         slug
       }
     }
+    tags(first: 20) {
+      nodes {
+        name
+        slug
+      }
+    }
     blocks(attributes: true, dynamicContent: true)
   }
 `;
@@ -267,6 +273,48 @@ export const NEWS_POSTS = /* GraphQL */ `
             slug
           }
         }
+      }
+    }
+  }
+`;
+
+export const RELATED_POSTS = /* GraphQL */ `
+  query RelatedPosts($first: Int!, $where: RootQueryToPostConnectionWhereArgs) {
+    posts(first: $first, where: $where) {
+      nodes {
+        id
+        title
+        uri
+        date
+        featuredImage {
+          node {
+            sourceUrl
+            altText
+          }
+        }
+        categories(first: 10) {
+          nodes {
+            name
+            slug
+          }
+        }
+        tags(first: 20) {
+          nodes {
+            name
+            slug
+          }
+        }
+      }
+    }
+  }
+`;
+
+export const NEWS_TAGS = /* GraphQL */ `
+  query NewsTags {
+    tags(first: 100) {
+      nodes {
+        slug
+        count
       }
     }
   }

@@ -1,11 +1,9 @@
 import { getPostCategories, formatDayLabel } from "@/lib/news";
 import CategoryBadge from "./CategoryBadge";
-import CiljBadge from "./CiljBadge";
 import styles from "./PostMeta.module.css";
 
 export default function PostMeta({ post }) {
   const categories = getPostCategories(post);
-  const ciljevi = post.ciljevi?.nodes ?? [];
   const language = post.language?.slug ?? "hr";
 
   return (
@@ -27,16 +25,6 @@ export default function PostMeta({ post }) {
           </li>
         )}
       </ul>
-
-      {ciljevi.length > 0 && (
-        <ul className={styles.badges}>
-          {ciljevi.map((cilj) => (
-            <li key={cilj.slug}>
-              <CiljBadge cilj={cilj} />
-            </li>
-          ))}
-        </ul>
-      )}
     </div>
   );
 }

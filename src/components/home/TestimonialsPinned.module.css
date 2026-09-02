@@ -18,7 +18,7 @@
   font-weight: 800;
   letter-spacing: 0.2em;
   text-transform: uppercase;
-  color: var(--home-color-neutral-600);
+  color: var(--home-color-text);
 }
 
 .wrap.enhanced .label {
@@ -38,7 +38,8 @@
 .inner.enhanced {
   position: absolute;
   inset: 0;
-  display: flex;
+  display: grid;
+  align-content: center;
   align-items: center;
   /* clamp(90px,14vh,160px) clamp(20px,4vw,72px) */
   padding: clamp(5.625rem, 14vh, 10rem) clamp(1.25rem, 4vw, 4.5rem);
@@ -52,11 +53,14 @@
 }
 
 .inner.enhanced .quote {
-  position: absolute;
-  left: clamp(1.25rem, 4vw, 4.5rem); /* clamp(20px,4vw,72px) */
-  right: clamp(1.25rem, 4vw, 4.5rem);
+  position: static;
+  grid-area: 1 / 1;
   padding: 0;
   border: 0;
+}
+
+.inner.enhanced .quote:not(:first-child) {
+  opacity: 0;
 }
 
 .quote p {
@@ -76,7 +80,7 @@
   line-height: 1;
   letter-spacing: -0.04em;
   text-transform: uppercase;
-  text-wrap: pretty;
+  text-wrap: balance;
 }
 
 .quote footer {
@@ -85,7 +89,7 @@
   font-weight: 700;
   letter-spacing: 0.04em;
   text-transform: uppercase;
-  color: var(--home-color-neutral-600);
+  color: var(--home-color-text);
 }
 
 .inner.enhanced .quote footer {

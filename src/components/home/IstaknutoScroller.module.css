@@ -19,7 +19,7 @@
   font-weight: 800;
   letter-spacing: 0.2em;
   text-transform: uppercase;
-  color: var(--home-color-neutral-600);
+  color: var(--home-color-text);
 }
 
 .track {
@@ -27,7 +27,7 @@
   align-items: center;
   gap: clamp(1.5rem, 4vw, 5rem); /* clamp(24px,4vw,80px) */
   /* clamp(90px,14vh,160px) clamp(20px,4vw,72px) */
-  padding: clamp(5.625rem, 14vh, 10rem) clamp(1.25rem, 4vw, 4.5rem);
+  padding: clamp(5.625rem, 14vh, 10rem) clamp(1.25rem, 4vw, 4.5rem) 1.5rem;
   margin: 0;
   list-style: none;
   /* Base fallback: a plain horizontal scroller. */
@@ -65,8 +65,7 @@
 .imageLink {
   position: relative;
   display: block;
-  flex: 1;
-  min-height: 12rem;
+  flex: 0 0 clamp(55vh, 58vh, 60vh);
   background: var(--home-color-neutral-300); /* visible while no image */
 }
 
@@ -83,10 +82,15 @@
   line-height: 1;
   letter-spacing: -0.035em;
   text-transform: uppercase;
-  text-wrap: pretty;
+  text-wrap: balance;
   color: var(--home-color-text);
 }
 
 .title a {
+  display: -webkit-box;
+  width: 100%;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
   color: inherit;
 }

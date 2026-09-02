@@ -15,10 +15,19 @@
 }
 
 .brand {
-  font-family: var(--font-display);
-  font-weight: 700;
-  font-size: var(--text-lg);
-  color: var(--color-text);
+  display: block;
+  flex: 0 0 auto;
+  line-height: 0;
+}
+
+.fullLogo {
+  display: block;
+  width: auto;
+  height: 70px;
+}
+
+.signLogo {
+  display: none;
 }
 
 .nav {
@@ -79,5 +88,17 @@
 @media (min-width: 64rem) {
   .nav {
     display: block;
+  }
+}
+
+@media (max-width: 63.999rem) {
+  .signLogo {
+    display: block;
+    width: auto;
+    height: 3rem;
+  }
+
+  .fullLogo {
+    display: none;
   }
 }
