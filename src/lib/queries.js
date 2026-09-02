@@ -278,6 +278,42 @@ export const NEWS_POSTS = /* GraphQL */ `
   }
 `;
 
+export const SITE_SEARCH = /* GraphQL */ `
+  query SiteSearch(
+    $pageFirst: Int!
+    $pageAfter: String
+    $postFirst: Int!
+    $postAfter: String
+    $pageWhere: RootQueryToPageConnectionWhereArgs
+    $postWhere: RootQueryToPostConnectionWhereArgs
+  ) {
+    pages(first: $pageFirst, after: $pageAfter, where: $pageWhere) {
+      pageInfo {
+        hasNextPage
+        endCursor
+      }
+      nodes {
+        id
+        title
+        uri
+      }
+    }
+    posts(first: $postFirst, after: $postAfter, where: $postWhere) {
+      pageInfo {
+        hasNextPage
+        endCursor
+      }
+      nodes {
+        id
+        title
+        uri
+        excerpt
+        date
+      }
+    }
+  }
+`;
+
 export const RELATED_POSTS = /* GraphQL */ `
   query RelatedPosts($first: Int!, $where: RootQueryToPostConnectionWhereArgs) {
     posts(first: $first, where: $where) {

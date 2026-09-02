@@ -1,0 +1,50 @@
+.results {
+  max-width: 68rem;
+  margin: 0 auto;
+  padding: var(--space-7) var(--space-5);
+}
+.results h2 {
+  margin-bottom: var(--space-5);
+  font-family: var(--font-heading);
+}
+.results > h1 {
+  margin-bottom: var(--space-7);
+  font-family: var(--font-heading);
+  font-size: clamp(2rem, 5vw, 4rem);
+}
+.results section + section {
+  margin-top: var(--space-8);
+}
+.results ul {
+  display: grid;
+  gap: var(--space-5);
+  list-style: none;
+}
+.results li {
+  padding-bottom: var(--space-4);
+  border-bottom: 1px solid var(--color-border);
+}
+.results li a {
+  color: var(--color-link);
+  font-family: var(--font-heading);
+  font-size: 1.25rem;
+  font-weight: 700;
+}
+.results li div {
+  margin-top: var(--space-2);
+  color: var(--color-text-muted);
+}
+.results section > button {
+  margin-top: var(--space-5);
+  padding: var(--space-3) var(--space-4);
+  color: var(--color-background);
+  background: var(--color-text);
+  border: 0;
+  cursor: pointer;
+  font: inherit;
+  font-weight: 700;
+}
+.results section > button:hover,
+.results section > button:focus-visible {
+  background: var(--color-link-hover);
+}

@@ -1,9 +1,33 @@
+.wrapper {
+  --header-height: 0px;
+}
+
+.spacer {
+  height: var(--header-height);
+}
+
 .sticky {
-  position: sticky;
+  position: fixed;
   top: 0;
+  right: 0;
+  left: 0;
   z-index: 50;
 }
 
 .slide {
   will-change: transform;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sticky {
+    position: relative;
+  }
+
+  .spacer {
+    display: none;
+  }
+
+  .slide {
+    transform: none !important;
+  }
 }

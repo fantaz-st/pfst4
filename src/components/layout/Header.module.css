@@ -1,4 +1,6 @@
 .header {
+  --logo-ink: var(--color-navy);
+  --logo-wave: var(--color-cyan);
   position: relative;
   border-bottom: 1px solid var(--color-border);
   background: var(--color-background);
@@ -9,9 +11,9 @@
   align-items: center;
   justify-content: space-between;
   gap: var(--space-4);
-  max-width: 80rem;
-  margin: 0 auto;
-  padding: var(--space-4) var(--space-5);
+  width: 100%;
+  padding: var(--space-4) clamp(1.25rem, 4vw, 4.5rem);
+  min-height: 6rem;
 }
 
 .brand {
@@ -23,75 +25,24 @@
 .fullLogo {
   display: block;
   width: auto;
-  height: 70px;
+  height: 4.375rem;
 }
 
 .signLogo {
   display: none;
+  width: auto;
+  height: 3.25rem;
+  aspect-ratio: 150.48 / 217.98;
 }
 
-.nav {
-  display: none;
-}
-
-.menu {
-  display: flex;
-  gap: var(--space-5);
-  list-style: none;
-}
-
-.menuItem {
-  position: relative;
-}
-
-.menuItem > a {
+.desktopLanguage {
   display: block;
-  padding: var(--space-2) 0;
-  color: var(--color-text);
-}
-
-.menuItem > a:hover {
-  color: var(--color-link);
-}
-
-.submenu {
-  display: none;
-  position: absolute;
-  top: 100%;
-  left: 0;
-  min-width: 12rem;
-  padding: var(--space-2);
-  list-style: none;
-  background: var(--color-background);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-md);
-  box-shadow: var(--shadow-md);
-}
-
-.menuItem:hover > .submenu,
-.menuItem:focus-within > .submenu {
-  display: block;
-}
-
-.submenu a {
-  display: block;
-  padding: var(--space-2) var(--space-3);
-  color: var(--color-text);
-  border-radius: var(--radius-sm);
-}
-
-.submenu a:hover {
-  background: var(--color-surface);
-  color: var(--color-link);
-}
-
-@media (min-width: 64rem) {
-  .nav {
-    display: block;
-  }
 }
 
 @media (max-width: 63.999rem) {
+  .desktopLanguage {
+    display: none;
+  }
   .signLogo {
     display: block;
     width: auto;
