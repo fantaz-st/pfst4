@@ -1,5 +1,5 @@
 .results {
-  max-width: 68rem;
+  max-width: 64rem;
   margin: 0 auto;
   padding: var(--space-7) var(--space-5);
 }
@@ -10,7 +10,7 @@
 .results > h1 {
   margin-bottom: var(--space-7);
   font-family: var(--font-heading);
-  font-size: clamp(2rem, 5vw, 4rem);
+  font-size: var(--text-2xl);
 }
 .results section + section {
   margin-top: var(--space-8);
@@ -37,7 +37,7 @@
 .results li a {
   color: var(--color-link);
   font-family: var(--font-heading);
-  font-size: 1.25rem;
+  font-size: var(--text-lg);
   font-weight: 700;
 }
 .results li div {

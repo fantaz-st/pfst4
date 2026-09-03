@@ -1,7 +1,7 @@
 .rail,
 .empty {
   border-left: 2px solid var(--color-divider);
-  padding-left: 1rem;
+  padding-left: var(--space-4);
 }
 
 .list,
@@ -13,29 +13,29 @@
 
 .list {
   display: grid;
-  gap: 0.125rem;
+  gap: var(--space-1);
 }
 
 .children {
-  margin: 0.5rem 0 0.5rem 0.75rem;
+  margin: var(--space-2) 0 var(--space-2) var(--space-3);
   display: grid;
-  gap: 0.125rem;
-  padding-left: 0.25rem;
+  gap: var(--space-1);
+  padding-left: var(--space-1);
 }
 
 .list > li > a,
 .children a {
   display: block;
-  padding: 0.45rem 0;
+  padding: var(--space-2) 0;
   color: var(--color-navy);
-  font-size: 0.9375rem;
+  font-size: var(--text-base);
   font-weight: 700;
   line-height: 1.35;
   text-decoration: none;
 }
 
 .children a {
-  font-size: 0.875rem;
+  font-size: var(--text-sm);
   color: var(--color-neutral-600);
   font-weight: 600;
 }
@@ -52,8 +52,8 @@
 }
 
 .emptyTitle {
-  margin: 0 0 0.5rem;
-  font-size: 0.75rem;
+  margin: 0 0 var(--space-2);
+  font-size: var(--text-xs);
   font-weight: 800;
   letter-spacing: 0.12em;
   text-transform: uppercase;

@@ -1,18 +1,25 @@
 /* Values in this file are transcribed from the real design source
    (design/PFST Naslovnica v4.dc.html + design/styles.css), not approximated
-   against tokens.css. Two changes from the literal source, both
-   intentional:
+   against tokens.css. Changes from the literal source, all intentional:
 
    1. Every px value is converted to rem (÷16, exact — e.g. 260px → 16.25rem)
       so headings still scale with the user's root font-size. The source
       hardcodes px throughout, which fails the WCAG 1.4.4 text-resize check
       CLAUDE.md's Accessibility section requires.
-   2. Colors/spacing are scoped custom properties on .page, not merged into
-      the sitewide tokens.css. The design's own naming collides with ours at
-      different values (its --space-6 is 24px, ours is 32px; its --space-8
-      is 32px, ours is 64px; it also defines its own --color-text) — copying
-      those names as-is would silently change spacing/color on every other
-      page. See the chat response for the full deviations list. */
+   2. Colors are scoped custom properties on .page, not merged into the
+      sitewide tokens.css. The design's own naming collides with ours at
+      different values (it also defines its own --color-text) — copying
+      those names as-is would silently change color on every other page.
+   3. The design's dozens of one-off clamp()s for type and spacing have been
+      collapsed onto the sitewide --text, --space and --section scales in
+      tokens.css/typography.css wherever a step lands close enough, snapped
+      to the nearest step. The two clamp() clusters that don't fit any
+      sitewide step — the giant section headings and the hero/stat display
+      numbers — stay local to this file as --text-display-sm/-lg, since
+      they exist only here and a generic type scale shouldn't offer a step
+      other components would reach for by mistake. Visual sizes shift
+      slightly at points that only ever had a one-off value; that's the
+      point of the consolidation. */
 
 .page {
   --home-color-bg: var(--color-bg);
@@ -28,7 +35,9 @@
   --home-color-neutral-800: var(--color-neutral-800);
   --home-color-neutral-900: var(--color-neutral-900);
 
-  --home-gutter: clamp(1.25rem, 4vw, 4.5rem); /* clamp(20px, 4vw, 72px) */
+  /* Homepage-only display type — see comment block above. */
+  --text-display-sm: clamp(1.625rem, 5vw, 6.5rem);
+  --text-display-lg: clamp(3.25rem, 12vw, 16.25rem);
 
   background: var(--home-color-bg);
   color: var(--home-color-text);
@@ -36,7 +45,7 @@
 
 .kicker {
   margin: 0;
-  font-size: clamp(0.6875rem, 1vw, 0.875rem); /* clamp(11px, 1vw, 14px) */
+  font-size: var(--text-sm);
   font-weight: 800;
   letter-spacing: 0.22em;
   text-transform: uppercase;
@@ -50,16 +59,14 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
-  /* clamp(110px,14vh,180px) clamp(20px,4vw,72px) clamp(40px,6vh,80px) */
-  padding: clamp(6.875rem, 14vh, 11.25rem) var(--home-gutter)
-    clamp(2.5rem, 6vh, 5rem);
+  padding: var(--section-lg) var(--section-md) var(--section-md);
 }
 
 .heroTitle {
-  margin: clamp(1.5rem, 4vh, 3.5rem) 0 0; /* clamp(24px,4vh,56px) */
+  margin: var(--section-md) 0 0;
   font-family: var(--font-display);
   font-weight: 800;
-  font-size: clamp(3.5rem, 13.2vw, 16.25rem); /* clamp(56px,13.2vw,260px) */
+  font-size: var(--text-display-lg);
   line-height: 0.82;
   letter-spacing: -0.05em;
   text-transform: uppercase;
@@ -71,14 +78,14 @@
   align-items: flex-end;
   justify-content: space-between;
   flex-wrap: wrap;
-  gap: clamp(1.5rem, 4vw, 5rem); /* clamp(24px,4vw,80px) */
-  margin-top: clamp(2rem, 6vh, 4.5rem); /* clamp(32px,6vh,72px) */
+  gap: var(--section-md);
+  margin-top: var(--section-md);
 }
 
 .heroSubhead {
   margin: 0;
   max-width: 15em;
-  font-size: clamp(1.0625rem, 1.5vw, 1.625rem); /* clamp(17px,1.5vw,26px) */
+  font-size: var(--text-xl);
   font-weight: 600;
   line-height: 1.32;
   letter-spacing: -0.01em;
@@ -87,7 +94,7 @@
 }
 
 .scrollCue {
-  font-size: clamp(0.6875rem, 0.9vw, 0.8125rem); /* clamp(11px,0.9vw,13px) */
+  font-size: var(--text-xs);
   font-weight: 800;
   letter-spacing: 0.16em;
   text-transform: uppercase;
@@ -97,7 +104,7 @@
 /* — Statement — */
 
 .statement {
-  padding: clamp(5rem, 16vh, 12.5rem) var(--home-gutter); /* clamp(80px,16vh,200px) */
+  padding: var(--section-lg) var(--section-md);
 }
 
 .statementText {
@@ -105,7 +112,7 @@
   margin: 0;
   font-family: var(--font-display);
   font-weight: 800;
-  font-size: clamp(1.875rem, 5.4vw, 6.5rem); /* clamp(30px,5.4vw,104px) */
+  font-size: var(--text-display-sm);
   line-height: 1.02;
   letter-spacing: -0.04em;
   text-transform: uppercase;
@@ -125,9 +132,8 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: clamp(1rem, 3vw, 3rem); /* clamp(16px,3vw,48px) */
-  /* clamp(28px,4.4vh,56px) clamp(20px,4vw,72px) */
-  padding: clamp(1.75rem, 4.4vh, 3.5rem) var(--home-gutter);
+  gap: var(--section-sm);
+  padding: var(--section-md) var(--section-md);
   border-bottom: 2px solid var(--home-color-divider);
   font-family: var(--font-display);
 
@@ -139,7 +145,7 @@
 .quickLinkLabel {
   font-family: var(--font-display);
   font-weight: 800;
-  font-size: clamp(1.625rem, 4.6vw, 5.125rem); /* clamp(26px,4.6vw,82px) */
+  font-size: var(--text-display-sm);
   line-height: 0.94;
   letter-spacing: -0.04em;
   text-transform: uppercase;
@@ -158,7 +164,7 @@
 
 .arrow {
   flex: none;
-  font-size: clamp(1.5rem, 3vw, 3.25rem); /* clamp(24px,3vw,52px) */
+  font-size: var(--text-2xl);
   transition: transform 0.2s ease;
 }
 
@@ -176,9 +182,7 @@
 /* — Novosti — */
 
 .novosti {
-  /* clamp(60px,12vh,150px) clamp(20px,4vw,72px) clamp(40px,8vh,100px) */
-  padding: clamp(3.75rem, 12vh, 9.375rem) var(--home-gutter)
-    clamp(2.5rem, 8vh, 6.25rem);
+  padding: var(--section-lg) var(--section-md) var(--section-md);
   border-top: 2px solid var(--home-color-text);
 }
 
@@ -187,14 +191,14 @@
   align-items: baseline;
   justify-content: space-between;
   flex-wrap: wrap;
-  gap: 1.5rem;
+  gap: var(--space-5);
 }
 
 .sectionHead h2 {
   margin: 0;
   font-family: var(--font-display);
   font-weight: 800;
-  font-size: clamp(1.875rem, 5vw, 6rem); /* clamp(30px,5vw,96px) */
+  font-size: var(--text-display-sm);
   line-height: 0.9;
   letter-spacing: -0.045em;
   text-transform: uppercase;
@@ -203,7 +207,7 @@
 
 .sectionHead a {
   flex: none;
-  font-size: clamp(0.6875rem, 0.95vw, 0.875rem); /* clamp(11px,0.95vw,14px) */
+  font-size: var(--text-sm);
   font-weight: 800;
   letter-spacing: 0.14em;
   text-transform: uppercase;
@@ -211,7 +215,7 @@
 }
 
 .novostiList {
-  margin: clamp(2rem, 6vh, 4.5rem) 0 0; /* clamp(32px,6vh,72px) */
+  margin: var(--section-md) 0 0;
   padding: 0;
   list-style: none;
 }
@@ -220,9 +224,9 @@
   display: grid;
   /* clamp(88px,11vw,168px) minmax(0,1fr) 40px */
   grid-template-columns: clamp(5.5rem, 11vw, 10.5rem) minmax(0, 1fr) 2.5rem;
-  gap: clamp(0.75rem, 2vw, 2rem); /* clamp(12px,2vw,32px) */
+  gap: var(--section-sm);
   align-items: baseline;
-  padding: clamp(1.25rem, 3vh, 2.25rem) 0; /* clamp(20px,3vh,36px) */
+  padding: var(--section-sm) 0;
   border-top: 2px solid var(--home-color-divider);
   color: var(--home-color-text);
   transition: color 0.2s ease;
@@ -240,7 +244,7 @@
 @media (max-width: 48rem) {
   .novostiRow {
     grid-template-columns: 1fr;
-    gap: 0.5rem;
+    gap: var(--space-2);
     align-items: start;
   }
 
@@ -256,7 +260,7 @@
 }
 
 .novostiMeta {
-  font-size: clamp(0.6875rem, 0.9vw, 0.8125rem); /* clamp(11px,0.9vw,13px) */
+  font-size: var(--text-xs);
   font-weight: 800;
   letter-spacing: 0.1em;
   text-transform: uppercase;
@@ -264,7 +268,7 @@
 }
 
 .novostiTitle {
-  font-size: clamp(1.25rem, 2.4vw, 2.625rem); /* clamp(20px,2.4vw,42px) */
+  font-size: var(--text-2xl);
   font-weight: 800;
   line-height: 1.06;
   letter-spacing: -0.03em;
@@ -272,7 +276,7 @@
 }
 
 .novostiArrow {
-  font-size: clamp(1.125rem, 1.6vw, 1.75rem); /* clamp(18px,1.6vw,28px) */
+  font-size: var(--text-2xl);
   font-weight: 800;
   opacity: 0.3;
 }
@@ -280,7 +284,7 @@
 /* — Stats (placeholder figures — see the TODO in HomePage.jsx) — */
 
 .stats {
-  padding: clamp(3.75rem, 12vh, 9.375rem) var(--home-gutter); /* clamp(60px,12vh,150px) */
+  padding: var(--section-lg) var(--section-md);
   background: var(--home-color-neutral-900);
   color: var(--home-color-bg);
 }
@@ -291,7 +295,7 @@
     auto-fit,
     minmax(13.75rem, 1fr)
   ); /* minmax(220px,1fr) */
-  gap: clamp(2rem, 5vw, 5.625rem); /* clamp(32px,5vw,90px) */
+  gap: var(--section-md);
   list-style: none;
   margin: 0;
   padding: 0;
@@ -301,7 +305,7 @@
   display: block;
   font-family: var(--font-display);
   font-weight: 800;
-  font-size: clamp(4rem, 9vw, 10.5rem); /* clamp(64px,9vw,168px) */
+  font-size: var(--text-display-sm);
   line-height: 0.84;
   letter-spacing: -0.055em;
   color: var(--home-color-text);
@@ -309,8 +313,8 @@
 
 .statLabel {
   display: block;
-  margin-top: clamp(0.75rem, 2vh, 1.5rem); /* clamp(12px,2vh,24px) */
-  font-size: clamp(0.8125rem, 1.1vw, 1.0625rem); /* clamp(13px,1.1vw,17px) */
+  margin-top: var(--space-5);
+  font-size: var(--text-lg);
   font-weight: 800;
   letter-spacing: 0.1em;
   text-transform: uppercase;
@@ -319,7 +323,7 @@
 /* — Enrolment CTA — */
 
 .enrollment {
-  padding: clamp(5rem, 14vh, 10.625rem) var(--home-gutter); /* clamp(80px,14vh,170px) */
+  padding: var(--section-lg) var(--section-md);
   background: var(--home-color-accent);
   color: var(--home-color-text);
 }
@@ -329,10 +333,10 @@
 }
 
 .enrollTitle {
-  margin: clamp(1.5rem, 4vh, 3.5rem) 0 0; /* clamp(24px,4vh,56px) */
+  margin: var(--section-md) 0 0;
   font-family: var(--font-display);
   font-weight: 800;
-  font-size: clamp(3.25rem, 12.6vw, 15.625rem); /* clamp(52px,12.6vw,250px) */
+  font-size: var(--text-display-lg);
   line-height: 0.82;
   letter-spacing: -0.05em;
   text-transform: uppercase;
@@ -346,14 +350,14 @@
   align-items: flex-end;
   justify-content: space-between;
   flex-wrap: wrap;
-  gap: clamp(1.5rem, 4vw, 5rem); /* clamp(24px,4vw,80px) */
-  margin-top: clamp(2rem, 6vh, 4.5rem); /* clamp(32px,6vh,72px) */
+  gap: var(--section-md);
+  margin-top: var(--section-md);
 }
 
 .programList {
   display: flex;
   flex-wrap: wrap;
-  gap: clamp(0.625rem, 1.4vw, 1.25rem); /* clamp(10px,1.4vw,20px) */
+  gap: var(--space-4);
   max-width: 46em;
   margin: 0;
   padding: 0;
@@ -361,9 +365,9 @@
 }
 
 .programList li {
-  padding: 0.625rem 1rem; /* 10px 16px */
+  padding: var(--space-3) var(--space-4);
   border: 2px solid var(--home-color-bg);
-  font-size: clamp(0.8125rem, 1.15vw, 1.125rem); /* clamp(13px,1.15vw,18px) */
+  font-size: var(--text-lg);
   font-weight: 800;
   letter-spacing: 0.02em;
   text-transform: uppercase;
@@ -373,13 +377,12 @@
   flex: none;
   display: inline-flex;
   align-items: center;
-  gap: 0.75rem;
-  /* clamp(14px,1.6vw,22px) clamp(20px,2.2vw,32px) */
-  padding: clamp(0.875rem, 1.6vw, 1.375rem) clamp(1.25rem, 2.2vw, 2rem);
+  gap: var(--space-3);
+  padding: var(--space-5) var(--space-6);
   background: var(--home-color-bg);
   color: var(--home-color-text);
   font-weight: 800;
-  font-size: clamp(0.8125rem, 1.1vw, 1.0625rem); /* clamp(13px,1.1vw,17px) */
+  font-size: var(--text-lg);
   letter-spacing: 0.05em;
   text-transform: uppercase;
   transition:
@@ -401,7 +404,7 @@
 /* — Edukacija pomoraca teaser (design: "MET centar") — */
 
 .eduTeaser {
-  padding: clamp(3.75rem, 12vh, 9.375rem) var(--home-gutter); /* clamp(60px,12vh,150px) */
+  padding: var(--section-lg) var(--section-md);
 }
 
 .eduTeaser .kicker {
@@ -410,10 +413,10 @@
 
 .eduTeaser h2 {
   max-width: 26em;
-  margin: clamp(1.25rem, 3vh, 2.5rem) 0 0; /* clamp(20px,3vh,40px) */
+  margin: var(--section-sm) 0 0;
   font-family: var(--font-display);
   font-weight: 800;
-  font-size: clamp(1.875rem, 5.4vw, 6.5rem); /* clamp(30px,5.4vw,104px) */
+  font-size: var(--text-display-sm);
   line-height: 0.92;
   letter-spacing: -0.045em;
   text-transform: uppercase;
@@ -424,7 +427,7 @@
    slot that doesn't have an asset yet, not a stand-in that pretends to be a
    real image. */
 .eduImage {
-  margin-top: clamp(2rem, 6vh, 4.5rem); /* clamp(32px,6vh,72px) */
+  margin-top: var(--section-md);
   aspect-ratio: 21 / 9;
   background: repeating-linear-gradient(
     135deg,
@@ -439,14 +442,14 @@
   align-items: flex-end;
   justify-content: space-between;
   flex-wrap: wrap;
-  gap: clamp(1.5rem, 4vw, 4rem); /* clamp(24px,4vw,64px) */
-  margin-top: clamp(1.5rem, 4vh, 3rem); /* clamp(24px,4vh,48px) */
+  gap: var(--section-md);
+  margin-top: var(--section-sm);
 }
 
 .eduBody {
   max-width: 26em;
   margin: 0;
-  font-size: clamp(0.9375rem, 1.3vw, 1.3125rem); /* clamp(15px,1.3vw,21px) */
+  font-size: var(--text-lg);
   line-height: 1.5;
   color: var(--home-color-text);
 }
@@ -455,12 +458,12 @@
   flex: none;
   display: inline-flex;
   align-items: center;
-  gap: 0.5rem;
-  padding: 0.875rem 1.25rem; /* 14px 20px */
+  gap: var(--space-2);
+  padding: var(--space-4) var(--space-5);
   background: var(--home-color-accent);
   color: var(--home-color-bg);
   font-weight: 800;
-  font-size: clamp(0.6875rem, 0.95vw, 0.875rem); /* clamp(11px,0.95vw,14px) */
+  font-size: var(--text-sm);
   transition: background-color 0.2s ease;
 }
 

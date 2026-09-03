@@ -12,7 +12,7 @@
   display: flex;
   align-items: stretch;
   height: 100%;
-  gap: clamp(1rem, 2vw, 2rem);
+  gap: var(--space-6);
 }
 
 .menuItem {
@@ -61,7 +61,7 @@
   top: var(--header-height, 6rem);
   right: 0;
   left: 0;
-  padding: 2.5rem max(var(--space-5), calc((100vw - 80rem) / 2));
+  padding: var(--space-7) max(var(--space-5), calc((100vw - 80rem) / 2));
   background: var(--color-background);
   border-top: 1px solid var(--color-border);
   box-shadow: var(--shadow-lg);
@@ -95,7 +95,7 @@
 .columns {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr));
-  gap: 2rem;
+  gap: var(--space-6);
   max-width: 80rem;
   margin: 0 auto;
 }

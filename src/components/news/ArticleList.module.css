@@ -5,15 +5,15 @@
 }
 
 .homeList {
-  margin-top: clamp(2rem, 6vh, 4.5rem);
+  margin-top: var(--section-md);
 }
 
 .row {
   display: grid;
   grid-template-columns: clamp(5.5rem, 11vw, 10.5rem) minmax(0, 1fr) 2.5rem;
-  gap: clamp(0.75rem, 2vw, 2rem);
+  gap: var(--section-sm);
   align-items: baseline;
-  padding: clamp(1.25rem, 3vh, 2.25rem) 0;
+  padding: var(--section-sm) 0;
   border-top: 2px solid var(--color-border);
   color: var(--color-text);
   transition: color 0.2s ease;
@@ -48,12 +48,12 @@
   text-transform: uppercase;
 }
 .title {
-  font-size: clamp(1.2rem, 2.4vw, 2.625rem);
+  font-size: var(--text-2xl);
   font-weight: 800;
   line-height: 1.06;
 }
 .arrow {
-  font-size: 1.5rem;
+  font-size: var(--text-xl);
   font-weight: 800;
   opacity: 0.3;
 }
@@ -74,7 +74,7 @@
 @media (max-width: 48rem) {
   .row {
     grid-template-columns: 1fr;
-    gap: 0.5rem;
+    gap: var(--space-2);
     align-items: start;
   }
   .arrow {

@@ -84,6 +84,14 @@
   --space-7: 3rem;
   --space-8: 4rem;
 
+  /* Fluid section-rhythm scale — for the padding/margin/gap around whole
+     sections (hero blocks, page shells, content gutters), not for
+     component-internal spacing. Everything component-level uses --space-*
+     above; everything section-level uses these three. */
+  --section-sm: clamp(1.25rem, 3vw, 2.5rem);
+  --section-md: clamp(1.25rem, 4vw, 4.5rem);
+  --section-lg: clamp(3.75rem, 13vh, 10rem);
+
   --radius-sm: 0px;
   --radius-md: 0px;
   --radius-lg: 0px;
