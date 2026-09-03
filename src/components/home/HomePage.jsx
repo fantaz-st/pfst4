@@ -177,7 +177,13 @@ export default function HomePage({
         <div className={styles.heroRow}>
           <p className={styles.heroSubhead}>{copy.subhead}</p>
           <span className={styles.scrollCue} aria-hidden="true">
-            {copy.scrollCue} ↓
+            {copy.scrollCue}
+            <img
+              src="/chevron.svg"
+              className={styles.scrollArrow}
+              alt=""
+              aria-hidden="true"
+            />
           </span>
         </div>
       </section>
@@ -190,16 +196,21 @@ export default function HomePage({
         <nav aria-label={copy.quickLinksLabel} className={styles.quickLinks}>
           {quickLinks.map((item) => (
             <Link key={item.id} href={item.uri} className={styles.quickLinkRow}>
-              <span className={styles.quickLinkLabel}>{item.label}</span>
-              {item.subLabel && (
-                <span className={styles.quickLinkSubLabel}>
-                  {item.subLabel}
-                </span>
-              )}
+              <div className={styles.quickLinkText}>
+                <span className={styles.quickLinkLabel}>{item.label}</span>
+                {item.subLabel && (
+                  <span className={styles.quickLinkSubLabel}>
+                    {item.subLabel}
+                  </span>
+                )}
+              </div>
 
-              <span className={styles.arrow} aria-hidden="true">
-                →
-              </span>
+              <img
+                src="/chevron.svg"
+                className={styles.arrow}
+                alt=""
+                aria-hidden="true"
+              />
             </Link>
           ))}
         </nav>
@@ -215,7 +226,15 @@ export default function HomePage({
       <section aria-labelledby="novosti-heading" className={styles.novosti}>
         <div className={styles.sectionHead}>
           <h2 id="novosti-heading">{copy.newsHeading}</h2>
-          <Link href={copy.newsArchiveHref}>{copy.allNewsLink} →</Link>
+          <Link href={copy.newsArchiveHref}>
+            {copy.allNewsLink}
+            <img
+              src="/chevron.svg"
+              className={styles.inlineArrow}
+              alt=""
+              aria-hidden="true"
+            />
+          </Link>
         </div>
         <ArticleList
           initialPosts={news.nodes}
@@ -255,7 +274,13 @@ export default function HomePage({
             ))}
           </ul>
           <Link href={copy.enrollHref} className={styles.enrollCta}>
-            {copy.enrollCtaLabel} →
+            {copy.enrollCtaLabel}
+            <img
+              src="/chevron.svg"
+              className={styles.inlineArrow}
+              alt=""
+              aria-hidden="true"
+            />
           </Link>
         </div>
       </section>
@@ -267,7 +292,13 @@ export default function HomePage({
         <div className={styles.eduRow}>
           <p className={styles.eduBody}>{copy.eduBody}</p>
           <Link href={copy.eduHref} className={styles.eduCta}>
-            {copy.eduCtaLabel} →
+            {copy.eduCtaLabel}
+            <img
+              src="/chevron.svg"
+              className={styles.inlineArrow}
+              alt=""
+              aria-hidden="true"
+            />
           </Link>
         </div>
       </section>

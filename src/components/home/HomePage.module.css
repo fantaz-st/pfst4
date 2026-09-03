@@ -36,7 +36,7 @@
   --home-color-neutral-900: var(--color-neutral-900);
 
   /* Homepage-only display type — see comment block above. */
-  --text-display-sm: clamp(1.625rem, 5vw, 6.5rem);
+  --text-display-sm: clamp(1.625rem, 4vw, 6.5rem);
   --text-display-lg: clamp(3.25rem, 12vw, 16.25rem);
 
   background: var(--home-color-bg);
@@ -94,6 +94,9 @@
 }
 
 .scrollCue {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
   font-size: var(--text-xs);
   font-weight: 800;
   letter-spacing: 0.16em;
@@ -101,10 +104,17 @@
   color: var(--home-color-text);
 }
 
+.scrollArrow {
+  width: 0.75rem;
+  height: 0.75rem;
+  transform: rotate(90deg);
+}
+
 /* — Statement — */
 
 .statement {
   padding: var(--section-lg) var(--section-md);
+  margin: var(--section-lg) var(--section-md);
 }
 
 .statementText {
@@ -141,6 +151,10 @@
     color 0.2s ease,
     background-color 0.2s ease;
 }
+.quickLinkText {
+  display: flex;
+  flex-direction: column;
+}
 
 .quickLinkLabel {
   font-family: var(--font-display);
@@ -164,12 +178,22 @@
 
 .arrow {
   flex: none;
-  font-size: var(--text-2xl);
+  width: 1.5rem;
+  height: 1.5rem;
+  object-fit: contain;
   transition: transform 0.2s ease;
 }
 
 .quickLinkRow:hover .arrow {
   transform: translateX(0.875rem); /* 14px, matches the design's GSAP hover */
+}
+
+.inlineArrow {
+  display: inline-block;
+  width: 0.75rem;
+  height: 0.75rem;
+  margin-left: var(--space-2);
+  vertical-align: middle;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -276,8 +300,9 @@
 }
 
 .novostiArrow {
-  font-size: var(--text-2xl);
-  font-weight: 800;
+  width: 1.25rem;
+  height: 1.25rem;
+  object-fit: contain;
   opacity: 0.3;
 }
 

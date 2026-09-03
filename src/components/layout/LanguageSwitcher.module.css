@@ -43,17 +43,18 @@
 }
 
 .current::after {
-  width: 0.4rem;
-  height: 0.4rem;
-  border-right: 1px solid currentColor;
-  border-bottom: 1px solid currentColor;
+  display: block;
+  flex: none;
+  width: 0.75rem;
+  height: 0.75rem;
+  background: url("/chevron.svg") center / contain no-repeat;
   content: "";
-  transform: rotate(45deg) translateY(-0.15rem);
+  transform: rotate(90deg);
   transition: transform 180ms ease;
 }
 
 .dropdown[open] .current::after {
-  transform: rotate(225deg) translateY(-0.15rem);
+  transform: rotate(-90deg);
 }
 
 .current:hover,

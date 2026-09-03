@@ -49,7 +49,12 @@ export default function SearchOverlay({ language = "hr" }) {
         aria-expanded={open}
         onClick={() => setOpen(true)}
       >
-        <span className={styles.magnifier} aria-hidden="true" />
+        <img
+          src="/magnifier.svg"
+          className={styles.magnifier}
+          alt=""
+          aria-hidden="true"
+        />
       </button>
       {open &&
         typeof document !== "undefined" &&
@@ -90,7 +95,12 @@ export default function SearchOverlay({ language = "hr" }) {
                   className={styles.submit}
                   aria-label={copy.label}
                 >
-                  <span className={styles.magnifier} aria-hidden="true" />
+                  <img
+                    src="/magnifier.svg"
+                    className={styles.magnifier}
+                    alt=""
+                    aria-hidden="true"
+                  />
                 </button>
               </div>
             </form>

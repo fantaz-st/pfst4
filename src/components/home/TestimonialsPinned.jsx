@@ -3,18 +3,6 @@
 import { useEffect, useRef, useState } from "react";
 import styles from "./TestimonialsPinned.module.css";
 
-// Pinned, full-screen crossfade of testimonial quotes — matches
-// design/PFST Naslovnica v4.dc.html's [data-qwrap]/[data-quote] section
-// (pin + crossfade timeline) exactly.
-//
-// The source hardcodes quotes 2+ as `style="opacity:0"` directly in the raw
-// HTML, so without JS only the first testimonial is visible at all — the
-// same accessibility gap as Istaknuto's pinned track. The unenhanced state
-// here is a plain grid instead: all testimonials visible, normal document
-// flow, no absolute positioning. GSAP only pins and crossfades once it has
-// mounted and prefers-reduced-motion allows it, matching each quote's own
-// initial opacity via its scrub-timeline "from" state rather than a
-// pre-baked inline style.
 export default function TestimonialsPinned({ testimonials, label }) {
   const wrapRef = useRef(null);
   const quoteRefs = useRef([]);

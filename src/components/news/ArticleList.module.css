@@ -48,13 +48,14 @@
   text-transform: uppercase;
 }
 .title {
-  font-size: var(--text-2xl);
+  font-size: var(--text-xl);
   font-weight: 800;
   line-height: 1.06;
 }
 .arrow {
-  font-size: var(--text-xl);
-  font-weight: 800;
+  width: 1.25rem;
+  height: 1.25rem;
+  object-fit: contain;
   opacity: 0.3;
 }
 .loadMore {

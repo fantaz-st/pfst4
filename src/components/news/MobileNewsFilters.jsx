@@ -25,6 +25,12 @@ export default function MobileNewsFilters({ children, language = "hr" }) {
         aria-controls="news-filter-drawer"
         onClick={() => setOpen(true)}
       >
+        <img
+          src="/filter.svg"
+          className={styles.filterIcon}
+          alt=""
+          aria-hidden="true"
+        />
         {label}
       </button>
       {open && (

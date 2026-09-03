@@ -80,9 +80,12 @@ export default function ArticleList({
                   )}
                 </span>
                 <span className={styles.title}>{post.title}</span>
-                <span className={styles.arrow} aria-hidden="true">
-                  →
-                </span>
+                <img
+                  src="/chevron.svg"
+                  className={styles.arrow}
+                  alt=""
+                  aria-hidden="true"
+                />
               </Link>
             </li>
           );

@@ -156,7 +156,12 @@ export default function MobileNav({
                     aria-label={`${copy.openSubmenu}: ${item.label}`}
                     onClick={() => openLevel(item)}
                   >
-                    <span className={styles.arrow} aria-hidden="true" />
+                    <img
+                      src="/chevron.svg"
+                      className={styles.arrow}
+                      alt=""
+                      aria-hidden="true"
+                    />
                   </button>
                 </div>
               ) : (
