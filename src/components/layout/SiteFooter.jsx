@@ -18,11 +18,6 @@ function LinkList({ links }) {
   );
 }
 
-/**
- * Footer shared by every page (STYLEGUIDE §6): modra r32 block inset 12px,
- * logo + "Upiši se", four columns, the giant "PFST" wordmark (chars reveal,
- * §8) and the bottom bar.
- */
 export default function SiteFooter({ language = "hr" }) {
   const copy = getChromeCopy(language);
   const { footer } = getSiteLinks(language);
