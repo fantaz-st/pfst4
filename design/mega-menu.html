@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="hr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PFST — Mega izbornik (desktop)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,300..800;1,300..800&display=swap">
+<link rel="stylesheet" href="menu.css">
+</head>
+<body>
+<div id="page" style="font-family: 'Montserrat', system-ui, sans-serif; color: #00246F; background: #F1F4F8; min-width: 1100px">
+
+<div class="util" style="display: flex; justify-content: space-between; align-items: center; height: 40px; padding: 0 28px; font-size: 12px; font-weight: 500">
+<span style="color: #3F4B63">Sveučilište u Splitu — Pomorski fakultet</span>
+<nav aria-label="Pomoćna navigacija" style="display: flex; gap: 22px; align-items: center"><a href="#">Webmail</a><a href="#">Raspored</a><a href="#">Pristupačnost</a><a href="#" aria-label="Pretraga" style="display: inline-flex"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="11" cy="11" r="7"></circle><path d="M20 20l-4-4"></path></svg></a><span style="display: inline-flex; gap: 6px"><a href="#" aria-current="true" style="color: #00246F">HR</a><span aria-hidden="true" style="color: #9AA6BA">/</span><a href="#">EN</a></span></nav>
+</div>
+
+<section style="padding: 0 12px">
+<div class="ph" style="height: 880px; border-radius: 28px; background: #0B2E78; color: #FFFFFF">
+<div class="ph-inner"></div>
+<div aria-hidden="true" style="position: absolute; inset: 0; background: rgba(0,20,60,0.22)"></div>
+<div style="position: absolute; left: 40px; bottom: 44px; z-index: 1">
+<h1 class="disp" style="margin: 0; font-size: 120px; line-height: 0.9; letter-spacing: -0.04em; max-width: 10.5ch">Znanje koje plovi svijetom.</h1>
+</div>
+
+<button type="button" class="mm-backdrop" data-mm-backdrop tabindex="-1" aria-label="Zatvori izbornik" style="position: absolute; inset: 0; z-index: 4; border: none; padding: 0; background: rgba(0,20,60,0.5); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); cursor: default"></button>
+
+<header style="position: absolute; top: 0; left: 0; right: 0; z-index: 6; display: flex; justify-content: space-between; align-items: center; padding: 22px 24px 0 28px; gap: 20px">
+<a href="home.html" aria-label="Pomorski fakultet u Splitu — početna" style="display: flex; align-items: center; gap: 12px; color: #FFFFFF"><svg width="36" height="40" viewBox="0 0 40 44" aria-hidden="true"><path d="M2 4.5c5-3.4 10-3.4 15 0s10 3.4 15 0l6-2v8l-6 2c-5 3.4-10 3.4-15 0s-10-3.4-15 0z" fill="#30ABF0"></path><rect x="2" y="17" width="36" height="9" fill="#FFFFFF"></rect><circle cx="7" cy="36" r="5" fill="#FFFFFF"></circle></svg><span style="display: flex; flex-direction: column; font-size: 11px; font-weight: 700; letter-spacing: 0.14em; line-height: 1.28"><span>POMORSKI</span><span>FAKULTET</span><span>U SPLITU</span></span></a>
+<nav class="gnav" aria-label="Glavna navigacija" style="display: flex; gap: 2px; padding: 5px; border-radius: 999px; background: rgba(255,255,255,0.12); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px)">
+<button type="button" class="is-on" aria-expanded="true" aria-controls="mm-fakultet" data-mm-trigger>Fakultet<span class="chev"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M6 9l6 6 6-6"></path></svg></span></button><a href="#">Studiji</a><a href="#">Upisi</a><a href="#">Studenti</a><a href="#">Znanost</a><a href="#">Suradnja</a><a href="#">Novosti</a>
+</nav>
+<div style="display: flex; gap: 8px; align-items: center">
+<a class="btn btn-white" href="#" style="height: 48px; padding: 0 5px 0 20px; font-size: 14.5px">Upiši se <span class="btn-ic"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"></path></svg></span></a>
+<button type="button" aria-label="Izbornik" style="display: inline-flex; align-items: center; justify-content: center; width: 48px; height: 48px; border-radius: 999px; border: none; background: rgba(255,255,255,0.14); color: #FFFFFF; cursor: pointer"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M4 9h16M4 15h16"></path></svg></button>
+</div>
+</header>
+
+<div id="mm-fakultet" data-mm tabindex="-1" role="region" aria-label="Fakultet — izbornik" style="position: absolute; z-index: 5; top: 88px; left: 12px; right: 12px; display: flex; flex-direction: column; border-radius: 24px; background: #FFFFFF; color: #00246F; overflow: hidden">
+<div style="display: grid; grid-template-columns: 300px minmax(0, 1fr); gap: 44px; padding: 36px 36px 32px">
+
+<div data-mm-item style="display: flex; flex-direction: column; gap: 22px">
+<div style="display: flex; flex-direction: column; gap: 10px">
+<span style="display: inline-flex; align-items: center; gap: 8px; font-size: 12px; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; color: #4F5B73"><span style="width: 7px; height: 7px; border-radius: 999px; background: #30ABF0"></span>Fakultet</span>
+<span class="disp" style="font-size: 34px; line-height: 1">Sve o Fakultetu</span>
+<span class="mm-desc">Ustroj, službe, kvaliteta i dokumenti — na jednom mjestu.</span>
+</div>
+<a class="feat" href="page.html">
+<span class="ph" style="position: absolute; inset: 0; background: #0B2E78"><span class="ph-inner"></span></span>
+<span class="ph-tag" style="left: 14px; top: 14px">Foto · Zgrada Fakulteta</span>
+<span style="position: absolute; left: 10px; right: 10px; bottom: 10px; display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 14px 10px 14px 16px; border-radius: 14px; background: #FFFFFF">
+<span style="display: flex; flex-direction: column; gap: 2px"><span style="font-size: 15px; font-weight: 600">Opći podaci i kontakt</span><span style="font-size: 13px; color: #4F5B73">Adresa, službe, radno vrijeme</span></span>
+<span class="gi" style="display: inline-flex; align-items: center; justify-content: center; flex: none; width: 36px; height: 36px; border-radius: 999px; background: #00246F; color: #FFFFFF"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"></path></svg></span>
+</span>
+</a>
+<a href="opcenito.html" style="display: inline-flex; align-items: center; gap: 8px; font-size: 14px; font-weight: 600">Pregled cjeline Fakultet <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"></path></svg></a>
+</div>
+
+<div class="mm-cols"><div class="mm-col"><div data-mm-item><a class="mm-gh" href="opcenito.html">Općenito<span class="gi"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"></path></svg></span></a><div style="display: flex; flex-direction: column"><a class="mm-link" href="page.html">Opći podaci i kontakt</a><a class="mm-link" href="#">Misija i vizija</a><a class="mm-link" href="#">Ustroj</a><a class="mm-link" href="#">Dokumenti</a><a class="mm-link" href="#">Pristup informacijama</a><a class="mm-link" href="#">Zaštita osobnih podataka</a><a class="mm-link" href="#">Prijava nepravilnosti</a><a class="mm-link" href="#">Digitalna pristupačnost</a></div></div><div data-mm-item><a class="mm-gh" href="#">Financijsko računovodstvo<span class="gi"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"></path></svg></span></a><div style="display: flex; flex-direction: column"><a class="mm-link" href="#">Financijski planovi</a><a class="mm-link" href="#">Financijski izvještaji</a><a class="mm-link" href="#">Informacije o trošenju sredstava</a></div></div></div><div class="mm-col"><div data-mm-item><a class="mm-gh" href="#">Studentska služba<span class="gi"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"></path></svg></span></a><div style="display: flex; flex-direction: column"><a class="mm-link" href="#">Upisi brucoša</a><a class="mm-link" href="#">Upisi diplomaca</a><a class="mm-link" href="#">Upisi u više godine</a><a class="mm-link" href="#">Obrasci i molbe</a></div></div><div data-mm-item><a class="mm-gh" href="#">Javna nabava<span class="gi"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"></path></svg></span></a><div style="display: flex; flex-direction: column"><a class="mm-link" href="#">Plan nabave</a><a class="mm-link" href="#">Postupci jednostavne nabave</a><a class="mm-link" href="#">Pravilnici i procedure</a></div></div></div><div class="mm-col"><div data-mm-item><a class="mm-gh" href="#">Kvaliteta<span class="gi"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"></path></svg></span></a><div style="display: flex; flex-direction: column"><a class="mm-link" href="#">Osiguravanje kvalitete</a><a class="mm-link" href="#">Unutarnja i vanjska vrednovanja</a><a class="mm-link" href="#">Upravljanje kvalitetom – ISO 9001</a><a class="mm-link" href="#">Tijela sustava kvalitete</a><a class="mm-link" href="#">Dokumenti kvalitete</a><a class="mm-link" href="#">Aktivnosti i izvješća</a></div></div><div data-mm-item><a class="mm-gh" href="#">Knjižnica<span class="gi"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"></path></svg></span></a><div style="display: flex; flex-direction: column"><a class="mm-link" href="#">Katalog</a></div></div></div><div class="mm-col"><div data-mm-item><a class="mm-gh" href="#">Informatičko-računalni odjel<span class="gi"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"></path></svg></span></a><div style="display: flex; flex-direction: column"><a class="mm-link" href="#">AAI@edu.hr identitet</a><a class="mm-link" href="#">Eduroam</a><a class="mm-link" href="#">Office 365</a><a class="mm-link" href="#">Microsoft Azure</a></div></div><div data-mm-item><a class="mm-gh" href="#">Novosti<span class="gi"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"></path></svg></span></a><p class="mm-desc" style="margin: 0">Službene obavijesti, najave i natječaji Fakulteta.</p></div></div></div>
+</div>
+
+<div data-mm-item style="display: flex; justify-content: space-between; align-items: center; gap: 24px; padding: 18px 36px; border-top: 1px solid #E6EBF2; background: #F7F9FB">
+<label class="msearch"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="11" cy="11" r="7"></circle><path d="M20 20l-4-4"></path></svg><input type="search" placeholder="Pretraži stranice Fakulteta" aria-label="Pretraži stranice Fakulteta"></label>
+<div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap">
+<span style="font-size: 12px; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; color: #4F5B73; margin-right: 6px">Često traženo</span>
+<a class="chip" href="#" style="background: #FFFFFF">Raspored nastave</a><a class="chip" href="#" style="background: #FFFFFF">Ispitni rokovi</a><a class="chip" href="#" style="background: #FFFFFF">Upisi brucoša</a><a class="chip" href="#" style="background: #FFFFFF">Obrasci i molbe</a>
+<button type="button" class="closebtn" data-mm-close style="margin-left: 10px">Zatvori <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"></path></svg></button>
+</div>
+</div>
+<div class="flags" aria-hidden="true" style="height: 10px"></div>
+</div>
+</div>
+</section>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.15.1/dist/gsap.min.js"></script>
+<script src="menu.js"></script>
+</body>
+</html>

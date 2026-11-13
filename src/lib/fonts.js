@@ -1,16 +1,13 @@
-import { Source_Sans_3, Archivo } from "next/font/google";
+import { Montserrat } from "next/font/google";
 
-// Shared across both locale root layouts (app/(hr)/layout.jsx and
-// app/en/layout.jsx) so the font faces stay identical between languages.
-export const sourceSans = Source_Sans_3({
-  variable: "--font-sans",
+// Montserrat is a variable font, so leaving `weight` out ships one file per
+// subset covering every weight the design uses (400–800) instead of five
+// static files. next/font downloads it at build time and self-hosts it —
+// no runtime request to Google — preloads it, and generates a size-adjusted
+// fallback so the swap causes no layout shift.
+// latin-ext is required: without it č ć ž š đ fall back to another face.
+export const montserrat = Montserrat({
   subsets: ["latin", "latin-ext"],
-});
-
-// The design's display typeface (CLAUDE.md § Design intent) — used for
-// headings sitewide (typography.css) and the homepage's bold display type.
-// Body copy stays on Source Sans. Replaces the earlier scaffolded serif.
-export const archivo = Archivo({
-  variable: "--font-display",
-  subsets: ["latin", "latin-ext"],
+  display: "swap",
+  variable: "--font-montserrat",
 });

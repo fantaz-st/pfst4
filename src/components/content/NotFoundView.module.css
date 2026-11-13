@@ -1,6 +1,5 @@
-.page {
-  max-width: 40rem;
+.wrap {
+  max-width: var(--container);
   margin: 0 auto;
-  padding: var(--space-8) var(--space-5);
-  text-align: center;
+  padding: var(--space-12) var(--gutter) var(--section-y);
 }

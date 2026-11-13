@@ -1,0 +1,152 @@
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 0 var(--space-6);
+  border: 0;
+  border-radius: var(--r-pill);
+  font-family: var(--font-sans);
+  font-weight: 500;
+  line-height: 1;
+  white-space: nowrap;
+  cursor: pointer;
+  transition:
+    background var(--dur-hover) var(--ease-out),
+    color var(--dur-hover) var(--ease-out),
+    box-shadow var(--dur-hover) var(--ease-out);
+}
+
+.button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* ---- Sizes ---- */
+.l {
+  height: 52px;
+  font-size: var(--fs-body);
+}
+
+.m {
+  height: 48px;
+  font-size: var(--fs-small);
+}
+
+.s {
+  height: 44px;
+  font-size: var(--fs-small);
+}
+
+/* With an arrow the circle sits close to the right edge. */
+.withArrow.l {
+  padding-right: var(--space-2);
+}
+
+.withArrow.m {
+  padding-right: 5px;
+  padding-left: 20px;
+}
+
+.withArrow.s {
+  padding-right: 6px;
+  padding-left: 18px;
+}
+
+/* ---- Arrow circle ---- */
+.arrow {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  border-radius: var(--r-pill);
+  transition: transform var(--dur-hover) var(--ease-out);
+}
+
+.s .arrow {
+  width: 32px;
+  height: 32px;
+}
+
+.button:is(:hover, :focus-visible) .arrow {
+  transform: rotate(-45deg);
+}
+
+/* ---- Variants ---- */
+.primary {
+  background: var(--color-primary);
+  color: var(--color-surface);
+}
+
+.primary .arrow {
+  background: var(--color-surface);
+  color: var(--color-primary);
+}
+
+.primary:hover {
+  background: var(--color-primary-hover);
+}
+
+.white {
+  background: var(--color-surface);
+  color: var(--color-text);
+}
+
+.white .arrow {
+  background: var(--color-primary);
+  color: var(--color-surface);
+}
+
+/* Text on plava is always modra (STYLEGUIDE §2). */
+.accent {
+  background: var(--color-accent);
+  color: var(--color-text);
+}
+
+.accent .arrow {
+  background: var(--color-primary);
+  color: var(--color-surface);
+}
+
+.accent:hover {
+  background: var(--color-accent-hover);
+}
+
+.outline {
+  background: transparent;
+  color: var(--color-text);
+  box-shadow: inset 0 0 0 1px var(--color-line-strong);
+}
+
+.outline:hover {
+  box-shadow: inset 0 0 0 1px var(--color-primary);
+}
+
+.outline .arrow {
+  background: var(--color-bg);
+  color: var(--color-text);
+}
+
+/* Glass sits only over photos or modra, so its focus ring is white. */
+.glass {
+  background: var(--glass);
+  color: var(--color-surface);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+}
+
+.glass:hover {
+  background: color-mix(in srgb, var(--pfst-bijela) 24%, transparent);
+}
+
+.glass .arrow {
+  background: var(--color-surface);
+  color: var(--color-primary);
+}
+
+.glass:focus-visible,
+.white:focus-visible {
+  outline-color: var(--color-surface);
+}

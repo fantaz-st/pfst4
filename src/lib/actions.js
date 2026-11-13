@@ -10,6 +10,26 @@ const EMPTY_PAGE = {
   pageInfo: { hasNextPage: false, endCursor: null },
 };
 
+// Server actions are public POST endpoints: every argument below arrives
+// from the browser and can be anything. Page size is fixed server-side so a
+// caller can't ask WordPress for thousands of posts in one request.
+const NEWS_PAGE_SIZE = 20;
+const SEARCH_PAGE_SIZE = 10;
+const SEARCH_TYPES = new Set(["pages", "posts"]);
+const LANGUAGES = new Set(["hr", "en"]);
+
+function cleanLanguage(language) {
+  return LANGUAGES.has(language) ? language : "hr";
+}
+
+function cleanString(value) {
+  return typeof value === "string" && value ? value : undefined;
+}
+
+function cleanCursor(value) {
+  return cleanString(value) ?? null;
+}
+
 export async function loadMoreNews({
   after,
   categorySlug,
@@ -18,20 +38,21 @@ export async function loadMoreNews({
   dateFrom,
   dateTo,
   language,
-  first = 20,
-}) {
+} = {}) {
   const data = await wpFetch(
     NEWS_POSTS,
     {
-      first,
-      after,
+      first: NEWS_PAGE_SIZE,
+      after: cleanCursor(after),
       where: buildNewsWhere({
-        categorySlug,
-        ciljeviSlugs,
-        search,
-        dateFrom,
-        dateTo,
-        language,
+        categorySlug: cleanString(categorySlug),
+        ciljeviSlugs: Array.isArray(ciljeviSlugs)
+          ? ciljeviSlugs.filter((slug) => typeof slug === "string")
+          : [],
+        search: cleanString(search),
+        dateFrom: cleanString(dateFrom),
+        dateTo: cleanString(dateTo),
+        language: cleanLanguage(language),
       }),
     },
     { tags: ["wp"] },
@@ -39,49 +60,25 @@ export async function loadMoreNews({
   return data?.posts ?? EMPTY_PAGE;
 }
 
-export async function loadMoreFeatured({
-  after,
-  language,
-  featuredCategorySlug,
-  first = 6,
-}) {
-  const data = await wpFetch(
-    NEWS_POSTS,
-    {
-      first,
-      after,
-      where: {
-        categoryName: featuredCategorySlug,
-        language: toLanguageCodeEnum(language),
-      },
-    },
-    { tags: ["wp"] },
-  );
-  return data?.posts ?? EMPTY_PAGE;
-}
+export async function loadMoreSearch({ after, query, type, language } = {}) {
+  const search = cleanString(query);
+  if (!search || !SEARCH_TYPES.has(type)) return EMPTY_PAGE;
 
-export async function loadMoreSearch({
-  after,
-  query,
-  type,
-  language,
-  first = 10,
-}) {
+  const where = {
+    search,
+    language: toLanguageCodeEnum(cleanLanguage(language)),
+  };
+  const isPages = type === "pages";
+
   const data = await wpFetch(
     SITE_SEARCH,
     {
-      pageFirst: type === "pages" ? first : 0,
-      pageAfter: type === "pages" ? after : null,
-      postFirst: type === "posts" ? first : 0,
-      postAfter: type === "posts" ? after : null,
-      pageWhere:
-        type === "pages"
-          ? { search: query, language: toLanguageCodeEnum(language) }
-          : null,
-      postWhere:
-        type === "posts"
-          ? { search: query, language: toLanguageCodeEnum(language) }
-          : null,
+      pageFirst: isPages ? SEARCH_PAGE_SIZE : 0,
+      pageAfter: isPages ? cleanCursor(after) : null,
+      postFirst: isPages ? 0 : SEARCH_PAGE_SIZE,
+      postAfter: isPages ? null : cleanCursor(after),
+      pageWhere: isPages ? where : null,
+      postWhere: isPages ? null : where,
     },
     { tags: ["wp"] },
   );

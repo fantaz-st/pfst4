@@ -1,0 +1,13 @@
+/* The table keeps its native display so it stays a table to assistive tech;
+   only this wrapper scrolls. White r24 panel; rows are styled in .prose. */
+.scroll {
+  max-width: 100%;
+  overflow-x: auto;
+  border-radius: var(--r-card);
+  background: var(--color-surface);
+}
+
+/* WordPress "fixed width table cells" (has-fixed-layout). */
+.fixed {
+  table-layout: fixed;
+}

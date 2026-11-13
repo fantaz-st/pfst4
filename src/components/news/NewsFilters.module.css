@@ -1,209 +1,150 @@
 .filters {
   display: flex;
   flex-direction: column;
-  gap: var(--space-5);
-  margin-bottom: var(--space-6);
-  padding: var(--space-4);
-  border: 1px solid var(--color-border);
-  background: var(--color-surface);
+  gap: 28px;
 }
 
+/* ---- Category tabs (reference .tab) ---- */
+.tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.tab {
+  height: 44px;
+  padding: 0 18px;
+  border: 0;
+  border-radius: var(--r-pill);
+  background: var(--color-surface);
+  color: var(--color-text);
+  font-size: var(--fs-small);
+  font-weight: 500;
+  transition:
+    background var(--dur-hover) var(--ease-out),
+    color var(--dur-hover) var(--ease-out);
+}
+
+.tab:hover {
+  background: var(--color-bg-hover);
+}
+
+.tab[aria-pressed="true"] {
+  background: var(--color-primary);
+  color: var(--color-surface);
+}
+
+/* ---- Search + dates (STYLEGUIDE §6 forms) ---- */
 .form {
-  display: grid;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
   gap: var(--space-2);
   min-width: 0;
 }
-.form label,
-.legend {
-  font-size: var(--text-sm);
-  font-weight: 700;
+
+.label {
+  font-size: var(--fs-label);
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
   color: var(--color-text-muted);
 }
-.searchRow {
-  display: flex;
-  gap: var(--space-2);
-  min-width: 0;
-}
-.searchRow input,
-.dates input {
-  box-sizing: border-box;
-  min-width: 0;
-  padding: var(--space-2);
-  border: 1px solid var(--color-border);
-  background: var(--color-background);
+
+.input {
+  width: 100%;
+  height: 52px;
+  padding: 0 var(--space-4);
+  border: 1px solid var(--color-input-border);
+  border-radius: var(--r-field);
+  background: var(--color-surface);
   color: var(--color-text);
-  font: inherit;
+  font-size: var(--fs-body);
+  transition: border-color var(--dur-hover) var(--ease-out);
 }
-.searchRow input {
-  flex: 1;
-  width: 0;
+
+.input:hover {
+  border-color: var(--color-input-border-hover);
 }
-.searchRow button {
-  flex: none;
-  box-sizing: border-box;
-  padding: var(--space-2) var(--space-3);
-  border: 0;
-  background: var(--color-navy-900);
-  color: var(--color-white);
-  font: inherit;
-  cursor: pointer;
+
+.input:focus-visible {
+  border-color: var(--color-primary);
+  outline: 2px solid var(--color-primary);
+  outline-offset: -1px;
 }
+
 .dates {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: var(--space-3);
 }
-.dates label {
-  display: grid;
-  gap: var(--space-1);
-}
-.dates input {
-  width: 100%;
-}
 
-.categories {
+.actions {
   display: flex;
   flex-wrap: wrap;
   gap: var(--space-2);
 }
 
-.pill {
-  font: inherit;
-  font-size: var(--text-sm);
-  padding: var(--space-2) var(--space-4);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-full);
-  background: var(--color-background);
-  color: var(--color-text);
-  cursor: pointer;
-}
-
-.pill:hover {
-  border-color: var(--color-link);
-}
-
-.pill[data-variant="bez-kategorije"] {
-  background: var(--color-badge-bez-kategorije-bg);
-  color: var(--color-badge-bez-kategorije-text);
-}
-
-.pill[data-variant="natjecaji"] {
-  background: var(--color-badge-natjecaji-bg);
-  color: var(--color-badge-natjecaji-text);
-}
-
-.pill[data-variant="najave"] {
-  background: var(--color-badge-najave-bg);
-  color: var(--color-badge-najave-text);
-}
-
-.pill[data-variant="nastava"] {
-  background: var(--color-badge-nastava-bg);
-  color: var(--color-badge-nastava-text);
-}
-
-.pill[data-variant="projekti"] {
-  background: var(--color-badge-projekti-bg);
-  color: var(--color-badge-projekti-text);
-}
-
-.pill[data-variant="referada"] {
-  background: var(--color-badge-referada-bg);
-  color: var(--color-badge-referada-text);
-}
-
-.pill[data-variant="savjetovanja"] {
-  background: var(--color-badge-savjetovanja-bg);
-  color: var(--color-badge-savjetovanja-text);
-}
-
-.pill[data-variant="sluzbeno"] {
-  background: var(--color-badge-sluzbeno-bg);
-  color: var(--color-badge-sluzbeno-text);
-}
-
-.pill[data-variant="erasmus"] {
-  background: var(--color-badge-erasmus-bg);
-  color: var(--color-badge-erasmus-text);
-}
-
-.pill[data-variant="istaknuto"] {
-  background: var(--color-badge-istaknuto-bg);
-  color: var(--color-badge-istaknuto-text);
-}
-
-.pill[data-variant="stipendije"] {
-  background: var(--color-badge-stipendije-bg);
-  color: var(--color-badge-stipendije-text);
-}
-
-.pill[aria-pressed="true"] {
-  background: var(--color-navy-900);
-  border-color: var(--color-navy-900);
-  color: var(--color-white);
-}
-
-.ciljevi {
-  border: none;
+/* ---- Goals: official SDG icons ---- */
+.goals {
+  margin: 0;
   padding: 0;
+  border: 0;
 }
 
-.legend {
-  padding: 0;
-  font-size: var(--text-sm);
-  font-weight: 600;
-  color: var(--color-text-muted);
+.goals legend {
   margin-bottom: var(--space-3);
 }
 
-.grid {
+.goalGrid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(7rem, 1fr));
-  gap: var(--space-2);
+  grid-template-columns: repeat(auto-fill, minmax(52px, 1fr));
+  gap: 6px;
 }
 
-.tile {
+.goal {
   position: relative;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: var(--space-1);
-  padding: var(--space-3) var(--space-2);
-  border: 2px solid var(--color-border);
-  border-radius: var(--radius-md);
-  text-align: center;
-  font-size: var(--text-xs);
+  display: block;
+  border-radius: var(--r-mini);
   cursor: pointer;
 }
 
-.tile[data-checked="true"] {
-  border-color: var(--tile-color);
-  background: color-mix(
-    in srgb,
-    var(--tile-color) 12%,
-    var(--color-background)
-  );
+.goalIcon {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: var(--r-mini);
+  transition: opacity var(--dur-hover) var(--ease-out);
 }
 
-.tileInput {
-  position: absolute;
-  top: var(--space-2);
-  right: var(--space-2);
-  margin: 0;
-}
-
-.tileNumber {
-  display: inline-flex;
+.goalText {
+  display: flex;
   align-items: center;
-  justify-content: center;
-  width: 1.75rem;
-  height: 1.75rem;
-  border-radius: var(--radius-full);
-  background: var(--tile-color);
-  color: var(--color-white);
-  font-weight: 700;
+  min-height: 52px;
+  padding: var(--space-1);
+  font-size: var(--fs-micro);
 }
 
-.tileLabel {
-  color: var(--color-text);
+/* With goals selected, unselected ones step back; selected get a ring. */
+.goalGrid:has([data-checked="true"]) .goal[data-checked="false"] .goalIcon {
+  opacity: 0.4;
+}
+
+.goal[data-checked="true"] {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
+.goal:has(input:focus-visible) {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
+.goal:hover .goalIcon {
+  opacity: 1;
 }

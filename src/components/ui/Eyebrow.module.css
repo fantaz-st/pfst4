@@ -1,0 +1,31 @@
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  height: 32px;
+  padding: 0 14px;
+  border-radius: var(--r-pill);
+  font-size: var(--fs-label);
+  font-weight: 500;
+  line-height: 1;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.dot {
+  flex: none;
+  width: 7px;
+  height: 7px;
+  border-radius: var(--r-pill);
+  background: var(--color-accent);
+}
+
+.light {
+  background: var(--color-surface);
+  color: var(--color-text);
+}
+
+.dark {
+  background: color-mix(in srgb, var(--pfst-bijela) 10%, transparent);
+  color: var(--color-surface);
+}

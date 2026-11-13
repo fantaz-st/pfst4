@@ -80,5 +80,14 @@ function replaceImage(domNode) {
     return;
   }
 
-  return <Image src={src} alt={alt ?? ""} width={w} height={h} />;
+  // Same column width as the core/image block (see blocks/Image.jsx).
+  return (
+    <Image
+      src={src}
+      alt={alt ?? ""}
+      width={w}
+      height={h}
+      sizes="(min-width: 48rem) 45rem, 100vw"
+    />
+  );
 }

@@ -1,6 +1,7 @@
-import { sourceSans, archivo } from "@/lib/fonts";
-import "@/styles/globals.css";
+import { montserrat } from "@/lib/fonts";
+import SmoothScroll from "@/components/motion/SmoothScroll";
 import "@/styles/tokens.css";
+import "@/styles/globals.css";
 import "@/styles/typography.css";
 
 export const metadata = {
@@ -11,8 +12,11 @@ export const metadata = {
 
 export default function EnRootLayout({ children }) {
   return (
-    <html lang="en" className={`${sourceSans.variable} ${archivo.variable}`}>
-      <body>{children}</body>
+    <html lang="en" className={montserrat.variable}>
+      <body>
+        <SmoothScroll />
+        {children}
+      </body>
     </html>
   );
 }

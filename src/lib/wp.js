@@ -15,9 +15,18 @@ export async function wpFetch(query, variables = {}, { tags, preview = false } =
       method: "POST",
       headers,
       body: JSON.stringify({ query, variables }),
+      // fetch is uncached by default in Next 16, so published content opts
+      // in explicitly; the "wp" tag lets /api/revalidate expire it on save.
       // Draft content must never be served from Next's Data Cache.
-      ...(preview ? { cache: "no-store" } : { next: { tags } }),
+      ...(preview
+        ? { cache: "no-store" }
+        : { cache: "force-cache", next: { tags } }),
     });
+
+    if (!res.ok) {
+      console.error("wpFetch HTTP error", res.status, res.statusText);
+      return null;
+    }
 
     const { data, errors } = await res.json();
 

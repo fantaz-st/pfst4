@@ -1,0 +1,61 @@
+.circle {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--r-pill);
+  transition:
+    transform var(--dur-hover) var(--ease-out),
+    background var(--dur-hover) var(--ease-out),
+    color var(--dur-hover) var(--ease-out);
+}
+
+.circle svg {
+  transition: transform var(--dur-hover) var(--ease-out);
+}
+
+/* Back arrow points left; the hover turn still reads as "go". */
+.circle[data-direction="back"] svg {
+  transform: rotate(180deg);
+}
+
+.m {
+  width: 44px;
+  height: 44px;
+}
+
+.l {
+  width: 52px;
+  height: 52px;
+}
+
+.light {
+  background: var(--color-bg);
+  color: var(--color-text);
+}
+
+.white {
+  background: var(--color-surface);
+  color: var(--color-text);
+}
+
+.primary {
+  background: var(--color-primary);
+  color: var(--color-surface);
+}
+
+/* Text on plava is always modra. */
+.accent {
+  background: var(--color-accent);
+  color: var(--color-text);
+}
+
+/* Reacts to the control it lives in. */
+:is(a, button):is(:hover, :focus-visible) .circle {
+  transform: rotate(-45deg);
+}
+
+:is(a, button):is(:hover, :focus-visible) :is(.light, .white) {
+  background: var(--color-primary);
+  color: var(--color-surface);
+}

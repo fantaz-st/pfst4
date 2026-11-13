@@ -1,0 +1,64 @@
+.hero {
+  padding: 0 var(--frame-inset);
+}
+
+.box {
+  --focus-ring: var(--color-surface);
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--r-feature);
+  background: var(--color-deep);
+  color: var(--color-surface);
+}
+
+.home {
+  height: 880px;
+}
+
+.page {
+  height: 520px;
+}
+
+/* Photo layer: bleeds 8% top and bottom so the scroll parallax
+   (components/motion/PageMotion) never reveals an edge. */
+.media {
+  position: absolute;
+  inset: -8% 0;
+}
+
+/* The only overlay allowed on photos (STYLEGUIDE §7). */
+.scrim {
+  position: absolute;
+  inset: 0;
+  background: var(--scrim-hero);
+}
+
+/* Fills the box below the nav bar laid over its top: first child at the
+   top (breadcrumbs), last child at the bottom (title row). */
+.content {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: var(--space-6);
+  padding: 104px var(--space-10) var(--space-10);
+}
+
+@media (max-width: 720px) {
+  .home {
+    height: 600px;
+  }
+
+  .page {
+    height: auto;
+    min-height: 440px;
+  }
+
+  .content {
+    position: relative;
+    min-height: inherit;
+    padding: 96px var(--gutter) var(--space-8);
+  }
+}

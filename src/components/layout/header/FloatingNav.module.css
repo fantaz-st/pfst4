@@ -1,0 +1,94 @@
+.wrap {
+  position: fixed;
+  top: var(--space-4);
+  right: 0;
+  left: 0;
+  z-index: 80;
+  display: flex;
+  justify-content: center;
+  pointer-events: none;
+  transform: translateY(-200%);
+}
+
+.inner {
+  --focus-ring: var(--color-surface);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  height: 60px;
+  padding: 0 var(--space-2) 0 18px;
+  border-radius: var(--r-pill);
+  background: color-mix(in srgb, var(--pfst-modra) 90%, transparent);
+  color: var(--color-surface);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  pointer-events: auto;
+}
+
+.logo {
+  display: inline-flex;
+  align-items: center;
+  min-width: 44px;
+  min-height: 44px;
+  margin-right: 10px;
+}
+
+.mark {
+  width: auto;
+  height: 26px;
+}
+
+.links {
+  display: flex;
+  gap: 2px;
+}
+
+.link {
+  display: inline-flex;
+  align-items: center;
+  height: 44px;
+  padding: 0 var(--space-4);
+  border-radius: var(--r-pill);
+  font-size: var(--fs-small);
+  font-weight: 500;
+  white-space: nowrap;
+  transition: background var(--dur-hover) var(--ease-out);
+}
+
+.link:hover {
+  background: color-mix(in srgb, var(--pfst-bijela) 16%, transparent);
+}
+
+.link.on {
+  --focus-ring: var(--color-primary);
+  background: var(--color-surface);
+  color: var(--color-text);
+}
+
+.enroll {
+  margin-left: var(--space-2);
+}
+
+/* Only where the inline links don't fit. */
+.menuButton {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  margin-left: 6px;
+  border: 0;
+  border-radius: var(--r-pill);
+  background: var(--glass);
+  color: var(--color-surface);
+}
+
+@media (max-width: 1080px) {
+  .links {
+    display: none;
+  }
+
+  .menuButton {
+    display: inline-flex;
+  }
+}

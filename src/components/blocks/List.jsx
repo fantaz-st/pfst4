@@ -1,7 +1,7 @@
 import { renderWpHtml } from "@/lib/html";
 import BlockRenderer from "./BlockRenderer";
 
-export default function List({ block }) {
+export default function List({ block, language }) {
   const ordered = block.attributes?.ordered === true;
   const items = block.innerBlocks ?? [];
   if (items.length === 0) return null;
@@ -11,19 +11,19 @@ export default function List({ block }) {
   return (
     <Tag>
       {items.map((item, index) => (
-        <ListItem key={index} item={item} />
+        <ListItem key={index} item={item} language={language} />
       ))}
     </Tag>
   );
 }
 
-function ListItem({ item }) {
+function ListItem({ item, language }) {
   const content = item.attributes?.content ?? "";
 
   return (
     <li>
       {renderWpHtml(content)}
-      <BlockRenderer blocks={item.innerBlocks} />
+      <BlockRenderer blocks={item.innerBlocks} language={language} />
     </li>
   );
 }

@@ -7,20 +7,67 @@ pages were hardcoded React. In pfst4 **all** content lives in WordPress.
 The previous attempt (pfst3) stalled because MUI reached 39 of 76 files and
 forced almost everything to be a client component. Do not repeat that.
 
+## Design — the source of truth for every visual decision
+
+`design/` is the only source of truth for the UI. Read it before touching
+any component or stylesheet:
+
+- `design/STYLEGUIDE.md` — the rules (colour + contrast, type scale,
+  spacing, radii, components, imagery, motion). **Wins over everything
+  else**, including the reference pages.
+- `design/tokens.css` — every value. Copied to `src/styles/tokens.css`
+  with its names unchanged.
+- `design/reference/home.html`, `page.html`, `opcenito.html`,
+  `design/mega-menu.html`, `design/mobile-menu.html` — look and behaviour.
+  Open them in a browser and match them, but don't paste their markup or
+  inline styles; rebuild them as components on the tokens.
+- `design/screens/*.png` — screenshots, when present.
+
+The rules:
+
+- **If it is not in the design, it is not on the site.** Don't add
+  components, sections or UI elements the design doesn't show, and remove
+  existing ones it doesn't have.
+- **No raw values in components.** Colours, font sizes, spacing, radii,
+  easing and durations come from `tokens.css` variables. No hex, no inline
+  `style` for visual values (a CSS custom property set from data is fine).
+  Alpha variants are `color-mix()` on a token, not new rgba values. The one
+  exception is a component's own geometry taken from the styleguide /
+  reference — control heights (52/48/44), the 38px button circle, the 7px
+  eyebrow dot, optical paddings — which stays literal px in that
+  component's module. If a value repeats across components, it becomes a
+  token instead.
+- The old visual system (Archivo, `#0f385c` / `#058cc4`, square corners,
+  shadows, per-category colours) is retired. Don't reintroduce any of it,
+  and don't keep aliases for old token names.
+- Montserrat only, via `next/font/google` (self-hosted at build time, no
+  runtime request to Google), one variable font file, subsets `latin` +
+  `latin-ext` — without `latin-ext` č ć ž š đ fall back to another face.
+- Accessibility is part of the design: real `<a>` / `<button>` /
+  `<input>`; visible focus (2px modra ring); 44px minimum touch targets;
+  text on plava is always modra — never white on plava.
+- Placeholder content must look obviously fake — `[IN BRACKETS]`, `000`,
+  `TODO`, `Ime Prezime` — never plausible invented figures, names or
+  quotes, and always marked with a `TODO` comment. Homepage content that
+  has no WordPress source yet (bento links, study programmes, CTAs) is
+  hardcoded with a `TODO`.
+
 ## Stack
 
 - Next.js 16, App Router
-- JavaScript, not TypeScript (`jsconfig.json`, `@/*` -> `src/*`)
+- JavaScript, not TypeScript (`jsconfig.json`, `@/*` -> `src/*`). There is
+  no type-check step; `npm run lint` and `next build` are the checks.
 - Plain CSS Modules (`.module.css`) — **no Sass**, no PostCSS plugins,
-  no Tailwind. Design tokens are CSS custom properties in `tokens.css`.
-  Media queries cannot read CSS variables, so breakpoints are written
-  literally. Use only these four: 40rem, 48rem, 64rem, 80rem.
-  Prefer `clamp()` for type, `repeat(auto-fit, minmax())` for grids and
-  `@container` for component-level responsiveness, so most components need
-  no media query at all.
+  no Tailwind. Global styles are only `styles/tokens.css`,
+  `styles/globals.css` and `styles/typography.css`.
+- Breakpoints are the design's, written literally (media queries can't read
+  CSS variables), max-width only:
+  - **1080px** — main nav → menu button, grids → 2 columns, inner-page
+    sidebar stacks above the content
+  - **900px** — horizontal news track → native horizontal scroll
+  - **720px** — 1 column, gutter 20px
 - Headless WordPress via WPGraphQL + WPGraphQL Content Blocks
-- `next/font/google` — **always** include `latin-ext` or Croatian
-  diacritics (č ć ž š đ) fall back to a different face
+- Motion: GSAP 3.15 (ScrollTrigger, SplitText) + Lenis 1.3
 
 ## Hard rules
 
@@ -28,17 +75,19 @@ forced almost everything to be a client component. Do not repeat that.
   hand-written CSS Modules.
 - **No Apollo, no urql.** Data fetching is plain `fetch` to the GraphQL
   endpoint from Server Components.
-- **`"use client"` is the exception.** Expected client components: mobile
-  nav drawer, lightbox scope, news filters, and the homepage animation
-  components. Nothing else without a reason. Block renderers are Server
-  Components.
-- **GSAP is allowed, but only for animation.** It may be imported only
-  inside `"use client"` components that exist to animate something —
-  scroll-driven homepage sections, the auto-hiding header. It must never
-  appear in `BlockRenderer`, in any block element, or anywhere in the
-  content tree. If adding GSAP to a file would make that file the first
-  client component in its subtree, that is the wrong file.
-  No other animation or UI library.
+- **`"use client"` is the exception.** Expected client components: the
+  header's menus (mega menu, mobile menu, floating nav), search, news
+  filters and "load more", the Lenis provider, and components that exist
+  to animate something. Nothing else without a reason. Block renderers are
+  Server Components.
+- **GSAP and Lenis are for motion only.** They may be imported only inside
+  `"use client"` components that exist to animate or scroll something.
+  Never in `BlockRenderer`, any block element, or anywhere in the content
+  tree. If adding GSAP to a file would make that file the first client
+  component in its subtree, that is the wrong file. All motion runs inside
+  `gsap.matchMedia()` so `prefers-reduced-motion: reduce` disables it (and
+  Lenis), exactly as `design/STYLEGUIDE.md` §8 specifies. No other
+  animation or UI library.
 - Never `throw` on a GraphQL error in a page path — return `null` and let
   the route call `notFound()`. One malformed page must not 500 the site.
 - Content is Croatian. UI strings, slugs and copy stay in Croatian.
@@ -86,18 +135,29 @@ One catch-all handles every page and post:
   university site cannot lose its metadata.
 
 Static routes take precedence over the catch-all, so `app/novosti/page.jsx`
-and `app/[...slug]/page.jsx` coexist safely.
+and `app/[...slug]/page.jsx` coexist safely. Posts live at
+`/novosti/<slug>/`; don't add other routes under `/novosti/` — filters are
+query params (see News).
 
 ## Data layer
 
 `wpFetch(query, variables, { tags })` — one function, POSTs to the GraphQL
-endpoint, passes `next: { tags }` so content can be revalidated on demand.
-A WordPress mu-plugin calls `/api/revalidate` on `save_post`, which runs
-`revalidateTag('wp')`. Editors should not wait on a timer.
+endpoint with `cache: "force-cache"` and `next: { tags }` so content is
+cached until revalidated on demand (Next 16 does not cache `fetch` by
+default). A WordPress mu-plugin calls `/api/revalidate` on `save_post`,
+which runs `revalidateTag("wp", { expire: 0 })`. Editors should not wait on
+a timer.
 
-Typography and block styles are global inside `.prose`, not per-component.
-WordPress emits plain `h2`/`h3`; block components render the correct tag and
-`typography.css` styles it.
+Next only dedupes identical `GET` fetches within a render; `wpFetch` POSTs.
+Anything requested more than once per render (the catch-all's node is read
+by the layout, `generateMetadata` and the page) goes through React
+`cache()` keyed by a primitive (the uri string, not the slug array).
+
+Block content is styled globally inside `.prose` (`styles/typography.css`),
+not per block. WordPress emits plain `h2`/`h3`; block components render the
+correct tag and `.prose` styles it. Blocks that need structure the CSS
+can't express (table scroll wrapper, file download panel) have their own
+CSS Module.
 
 ## Block payload — confirmed from live data
 
@@ -116,8 +176,9 @@ Each block has `name`, `attributes`, `dynamicContent` (rendered HTML) and
 - **`core/table`** — cells contain HTML (mailto links are everywhere in the
   staff tables). Sanitize and inject as HTML, never render as text. The PHP
   filter flattens `th` and `td` into `rows`, so row headers are lost;
-  acceptable for now. Tables are wide (5 columns) — they need horizontal
-  scroll on narrow screens.
+  acceptable for now. Tables are wide (5 columns) — they scroll
+  horizontally inside a focusable wrapper; the `<table>` keeps its native
+  display so assistive tech still announces it as a table.
 - **`core/paragraph`** — editors leave many empty paragraphs as spacing.
   Skip blocks whose `content` is empty or the layout gains random gaps.
 
@@ -125,62 +186,109 @@ Content debt to fix in WordPress eventually: some accordion summaries encode
 hierarchy as text (`"- Katedra za..."` nested under a Zavod). The right fix
 is nested `details`, not a leading dash.
 
+## Inner pages
+
+- One template for WordPress pages = `design/reference/page.html`; pages
+  that are mainly a hub for their children = `design/reference/opcenito.html`
+  (subpage cards).
+- The sidebar is the WordPress page hierarchy of the current section, up
+  to three levels (`SECTION_TREE`, from the top-level ancestor): current
+  section and current page highlighted, groups expand/collapse, stacks
+  above the content below 1080px, not sticky. A row with children is a
+  link to that page plus a separate chevron button, so every page stays
+  reachable. Child order is Page Attributes → Order, then title.
+- "Na ovoj stranici" lists the page's top-level h2 blocks
+  (`lib/headings.js` assigns the ids; shown from two headings up).
+- Hub-card descriptions are the child page's Yoast meta description —
+  WordPress pages have no excerpt.
+
 ## News
 
 `istaknuto` is a **flag, not a topic.** 149 posts carry it, and they also
 carry a real category (Najave, Natječaji, Službeno...). Consequences:
 
 - Strip `istaknuto` before rendering a post's category label, or every
-  featured post shows two tags.
-- Do not list it alongside the others in the filter sidebar.
-- Homepage featured strip: `categoryName: "istaknuto"`, first 3. But 149
-  posts also deserve their own archive, not just three cards.
+  featured post shows two chips (`lib/posts.js` `getPostCategories`).
+- In the category tabs it is the last tab, "Istaknuto" (as in the design's
+  news tabs) — that tab is the featured archive.
+- Homepage news highlights: `categoryName: "istaknuto"`. The 149 posts
+  also deserve their own archive, not just the homepage track.
 
 Real categories and counts: Natječaji 165, Najave 144, Službeno 143,
 Erasmus+ 71, Referada 48, Nastava 42, Projekti 30, Savjetovanja 16,
 Stipendije 11, Bez kategorije 11.
 
-Ten categories is too many to color-code — ten distinct hues that all pass
-4.5:1 look like confetti and nobody learns them. Give a color to the four
-busiest (Natječaji, Najave, Službeno, Erasmus+) and render the rest as
-neutral grey labels, so color carries meaning.
+Categories are **not colour-coded**: every category label is the design's
+one neutral Chip (`--color-bg` background, or white on `--color-bg`).
+"Bez kategorije" has 11 posts — reassign them in WordPress; until then the
+UI shows a fallback label.
 
-"Bez kategorije" has 11 posts. Reassign them in WordPress or the UI needs a
-fallback label.
+**One news archive, no taxonomy routes.** Categories, goals, search and
+dates are all query filters on `/novosti` (`?kategorija=`, `?cilj=`, `?q=`,
+`?od=`, `?do=`) — shareable and bookmarkable, and filtered views
+canonicalize to `/novosti`. No `/novosti/kategorija/…`, `/novosti/ciljevi/…`
+or tag folders. The old site's `/novosti/kategorije/:slug` and
+`/novosti/ciljevi/:slug` are redirects in `next.config.mjs` to the matching
+filter. Categories are the primary filter; goals are secondary.
 
-Two content streams, rendered differently:
+Two content streams, rendered with the design's components:
 
-- **Istaknuto** — always has a featured image, shown as image cards.
-- **Obavijesti** — several per day, mostly no image. A dense list grouped
-  by day with publish time and a category label. No image placeholders, no
-  colored logo tiles.
+- **Istaknuto** — always has a featured image → news cards (4:3 image, date
+  + chip, Title M) / the homepage horizontal track.
+- **Obavijesti** — several per day, mostly no image → news rows (date ·
+  title · chip · arrow circle) inside a white r28 panel. No image
+  placeholders.
 
-WPGraphQL paginates with cursors, not page numbers. Plan for "load more" or
+WPGraphQL paginates with cursors, not page numbers. Use "load more" or
 cursor pagination, not `?page=2`.
+
+## ciljevi = UN Sustainable Development Goals
+
+The 17 terms are the UN SDGs in Croatian. They are secondary to
+categories: a filter on the news archive (`?cilj=`) and icons on a post
+linking to that filter, nothing more — no goal pages.
+
+- No colours and no colour palette — use the official icon images in
+  `public/ciljevi/` (`hr/` for Croatian, `E-WEB-Goal-*` for English).
+- The goal number is not stored in WordPress; `lib/ciljevi.js` maps
+  slug → number + icon.
+- Five terms return `count: null` (zero posts) — hide empty terms from the
+  filter.
+- Fix in WordPress before launch: the term
+  `odgovornja-potrosnja-i-proizvodnja` has a typo in both name and slug.
 
 ## English pages
 
-The old site has an English version: ~50 static pages plus a homepage. No
-English news stream (roughly one post a year), so **no translation plugin** —
-no Polylang, no WPML. English pages are ordinary WordPress pages nested under
-an `en` parent, and `nodeByUri` resolves `/en/faculty/...` exactly like the
-Croatian ones. No query changes needed.
+The old site has an English version: ~50 static pages plus a homepage, and
+almost no English news (roughly one post a year).
 
-Editors mirror the Croatian hierarchy under `en`, so
-`/en/faculty/general/management` corresponds to
-`/fakultet/opcenito/ustroj/uprava`.
+Translations run on **Polylang + WPGraphQL Polylang**. Croatian is the
+default language with no URL prefix; English URIs are prefixed `/en/`, and
+`nodeByUri` resolves them like any other. Consequences for queries:
+
+- Content, menu and category queries take a `language` where-arg. Without
+  it WPGraphQL Polylang returns the default language only —
+  `ALL_CONTENT_URIS` needs `language: ALL` or English drops out of
+  `generateStaticParams` and the sitemap.
+- Each node exposes `language { code slug }` and `translations { uri … }`;
+  the language switcher (HR / EN in the utility row) and `hreflang` read
+  those, no manual linking.
+- Categories are translated per language (`istaknuto` has to be looked up
+  via `Category.translation` for English); `ciljevi` is not translatable and
+  is shared across languages.
+- Each language has its own menu at the same location.
 
 What the frontend needs:
 
-- **Language detection** from the first URI segment: `en` → English,
-  anything else → Croatian.
+- **Language detection**: `getNodeLanguage(node)` (Polylang's field, falling
+  back to the first URI segment: `en` → English, anything else → Croatian).
 - **`<html lang>`** set per page. Without it screen readers pronounce
-  English text with Croatian phonetics.
-- **Language switcher** using a manual link between counterparts — an ACF
-  Post Object field ("Prijevod") filled on the Croatian side, read in
-  reverse from the English side. When empty, fall back to `/` and `/en`
-  respectively.
+  English text with Croatian phonetics. Two root layouts, `(hr)` and `en`.
+- **Language switcher** from `translations`. When empty, fall back to `/`
+  and `/en/` respectively.
 - **`hreflang`** pairs in `generateMetadata` where a counterpart exists.
+- **UI strings** come from `chromeCopy.js` / `newsCopy.js` keyed by
+  language — never hardcode Croatian in a component English pages render.
 - **`/en`** is its own static route, like the Croatian homepage — not part
   of the catch-all.
 
@@ -197,60 +305,33 @@ before launch, not before. Where editors reproduce the old path structure
 (matching slugs and parents), no redirect is needed at all — that is the
 cheapest way to close most of the gap.
 
-## Design intent
-
-The homepage design is authored by the developer in Claude Design
-(`PFST Naslovnica v4.dc.html`). When the design and an existing token or
-default disagree, **the design wins and the token changes** — the rules in
-this file protect the architecture (static rendering, Server Components,
-no component library, plain CSS Modules), not the current visual choices.
-
-Specifically: sharp corners, the display typeface and the header behaviour
-are deliberate design decisions, not deviations to be worked around. Adjust
-`tokens.css` and the shared `Header` to match rather than preserving what
-happened to be scaffolded earlier.
-
-Placeholder content on a public university site must look obviously fake —
-`000`, `TODO`, `Ime Prezime` — never plausible invented figures, names or
-quotes, and always marked with a `TODO` comment in the code.
-
 ## Accessibility
 
 PFST is a public institution, so the EU Web Accessibility Directive applies:
-WCAG 2.1 AA is a requirement, not a nice-to-have. Body text at 4.5:1
-minimum, visible focus states, `prefers-reduced-motion` respected.
+WCAG 2.1 AA is a requirement, not a nice-to-have. The design's contrast
+rules (STYLEGUIDE §2) are hard rules; visible focus states;
+`prefers-reduced-motion` disables all motion.
 
-## ciljevi = UN Sustainable Development Goals
+## Redesign phases
 
-The 17 terms are the UN SDGs in Croatian ("Kvalitetno obrazovanje" = SDG 4,
-"Dostojanstven rad i gospodarski rast" = SDG 8, and so on). They have
-official numbers, colors and icons, so the filter UI should be a numbered
-17-tile grid in the official palette, not a generic tag list. The goal
-number is not stored in WordPress — it needs either an ACF field on the term
-or a slug → number map in the code.
+Data fetching, routing and the block → component mapping stay; the
+presentation is rebuilt from `design/`. Stop after each phase for review.
 
-Counts are very uneven: Kvalitetno obrazovanje 69, Partnerstvom do ciljeva
-43, and five terms return `count: null` (meaning zero). Hide empty terms
-from filter menus but keep their archives routable.
+0. Inventory (done)
+1. Foundation — tokens, Montserrat, globals, typography + `.prose`,
+   Lenis provider + `useGsap` helper
+2. Primitives in `components/ui/` — Button, ArrowCircle, Chip, Eyebrow,
+   PhotoTag, Image wrapper, Icon
+3. Shell — SiteHeader (utility row, hero nav, mega menu, mobile menu,
+   floating nav) and SiteFooter
+4. Inner pages — page template, section overview, sidebar tree, page hero
+   with breadcrumbs; then posts, news archive + filters (drop the goal
+   pages, add the old-URL redirects)
+5. Homepage — hero, most-visited bento, news highlights track, statement,
+   study-programme stacking cards, other news, Upisi + Trening centar CTA
 
-Fix in WordPress before launch: the term
-`odgovornja-potrosnja-i-proizvodnja` has a typo in both name and slug.
-Later it becomes a redirect.
-
-## Phase order
-
-Functionality first, design second — design changes, data shape does not.
-
-0. Move block filters to a mu-plugin; install Yoast + WPGraphQL for
-   Yoast SEO; fix the `odgovornja` typo and the uncategorized posts
-1. Scaffold, `tokens.css`, `typography.css`, fonts, styleguide route
-2. `lib/wp.js` + `queries.js` (with the fixes listed above)
-3. `[...slug]` rendering one three-level page end to end
-4. Menus, breadcrumbs, section rail, footer
-5. News: archive, single post, category and goals filters
-6. Homepage
-7. Revalidation webhook, sitemap, robots, draft preview
-8. Editors enter the remaining pages in WordPress (Croatian + `en`),
-   then run route-diff and add redirects for whatever still moved
-
-Style minimally during phases 2-5. Readable text only.
+A phase is done when: no old-system leftovers in the files it touched
+(`grep` for Archivo, `#0f385c`, `#058cc4`, `neutral-*`, `accent-100…900`,
+`badge-*`, `shadow-*`, zero radii — the whole repo must be clean at the end
+of phase 4), `npm run lint` and `next build` pass, and the added / changed /
+deleted files are listed.

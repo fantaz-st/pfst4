@@ -1,368 +1,304 @@
+import Link from "next/link";
+import ArrowCircle from "@/components/ui/ArrowCircle";
+import Button from "@/components/ui/Button";
+import Chip from "@/components/ui/Chip";
+import Eyebrow from "@/components/ui/Eyebrow";
+import Icon, { ICON_NAMES } from "@/components/ui/Icon";
+import Photo from "@/components/ui/Photo";
+import Hero from "@/components/layout/Hero";
+import BlockRenderer from "@/components/blocks/BlockRenderer";
 import styles from "./styleguide.module.css";
-import Columns from "@/components/blocks/Columns";
-import Gallery from "@/components/blocks/Gallery";
-import Group from "@/components/blocks/Group";
-import Header from "@/components/layout/Header";
-import SectionRail from "@/components/layout/SectionRail";
-import NewsCard from "@/components/news/NewsCard";
-import CategoryBadge from "@/components/news/CategoryBadge";
-import CiljBadge from "@/components/news/CiljBadge";
-import ArticleList from "@/components/news/ArticleList";
-import articleListStyles from "@/components/news/ArticleList.module.css";
 
 export const metadata = {
   title: "Styleguide",
+  robots: { index: false, follow: false },
 };
 
-// TODO: every value below is placeholder content for this styleguide only —
-// obviously fake, never plausible invented data, per CLAUDE.md.
+// A living check of design/STYLEGUIDE.md against the real components.
+// TODO: every text below is placeholder content for this page only —
+// obviously fake, per CLAUDE.md.
 
-const sampleMenu = [
+const COLOURS = [
+  ["--pfst-modra", "PFST modra"],
+  ["--pfst-plava", "PFST plava"],
+  ["--color-bg", "Pozadina"],
+  ["--color-surface", "Površina"],
+  ["--color-text-muted", "Prigušeni tekst"],
+  ["--color-text-on-dark", "Tekst na modroj"],
+  ["--color-line", "Linija"],
+  ["--color-deep", "Duboka (učitavanje)"],
+  ["--tint-plava-1", "Nijansa plava 1"],
+  ["--tint-plava-2", "Nijansa plava 2"],
+  ["--tint-plava-3", "Nijansa plava 3"],
+  ["--tint-modra-1", "Nijansa modra 1"],
+  ["--tint-modra-2", "Nijansa modra 2"],
+  ["--color-error", "Greška"],
+  ["--color-success", "Uspjeh"],
+];
+
+const TYPE = [
+  ["hero", "Hero — Znanje koje plovi"],
+  ["pageTitle", "Naslov stranice"],
+  ["h2", "Naslov sekcije"],
+  ["statement", "Izjava u dva retka teksta"],
+  ["h3", "Velika kartica"],
+  ["titleL", "Title L — naslov"],
+  ["titleM", "Title M — naslov novosti"],
+  ["titleS", "Title S — pločica, redak"],
+  [
+    "bodyL",
+    "Body L — uvodni tekst stranice, najviše oko šezdeset znakova u retku.",
+  ],
+  ["body", "Body — osnovni tekst. Čćžšđ ČĆŽŠĐ."],
+  ["small", "Small — datumi, opisi, sekundarni tekst"],
+  ["label", "Label — oznaka"],
+  ["micro", "Micro — sitna oznaka"],
+];
+
+// Fake WordPress blocks, shaped like the live payload (CLAUDE.md).
+const PROSE_BLOCKS = [
   {
-    databaseId: 1,
-    label: "TODO rubrika",
-    uri: "/todo",
-    children: [
-      {
-        databaseId: 11,
-        label: "TODO podrubrika",
-        uri: "/todo/podrubrika",
-        children: [
-          {
-            databaseId: 111,
-            label: "TODO stavka",
-            uri: "/todo/podrubrika/stavka",
-            children: [],
-          },
-        ],
-      },
+    name: "core/heading",
+    attributes: { level: 2, content: "TODO naslov sekcije" },
+  },
+  {
+    name: "core/paragraph",
+    attributes: {
+      content:
+        'TODO odlomak teksta s <a href="/styleguide">poveznicom unutar sadržaja</a> i <strong>naglašenim dijelom</strong>.',
+    },
+  },
+  {
+    name: "core/list",
+    attributes: { ordered: false },
+    innerBlocks: [
+      { name: "core/list-item", attributes: { content: "TODO prva stavka" } },
+      { name: "core/list-item", attributes: { content: "TODO druga stavka" } },
     ],
   },
-  { databaseId: 2, label: "TODO druga rubrika", uri: "/todo-2", children: [] },
-];
-
-const samplePost = {
-  id: "sg-post-1",
-  uri: "/novosti/todo-primjer-vijesti",
-  title: "TODO naslov primjera vijesti",
-  date: "2026-01-01T00:00:00",
-  featuredImage: { node: { sourceUrl: "/globe.svg" } },
-  categories: { nodes: [{ slug: "najave", name: "Najave" }] },
-};
-
-const samplePostNoImage = {
-  ...samplePost,
-  id: "sg-post-2",
-  uri: "/novosti/todo-primjer-vijesti-2",
-  title: "TODO naslov bez slike",
-  featuredImage: null,
-  categories: { nodes: [{ slug: "natjecaji", name: "Natječaji" }] },
-};
-
-const sampleCategories = [
-  { slug: "natjecaji", name: "Natječaji" },
-  { slug: "najave", name: "Najave" },
-  { slug: "sluzbeno", name: "Službeno" },
-  { slug: "erasmus", name: "Erasmus+" },
-  { slug: "bez-kategorije", name: "Bez kategorije" },
-];
-
-const sampleCilj = {
-  slug: "kvalitetno-obrazovanje",
-  name: "Kvalitetno obrazovanje",
-};
-
-const sampleRailPage = {
-  uri: "/styleguide",
-  title: "TODO trenutna stranica",
-  parent: {
-    node: {
-      children: {
-        nodes: [
-          { id: "sg-r1", uri: "/todo-a", title: "TODO stranica A" },
-          { id: "sg-r2", uri: "/styleguide", title: "TODO trenutna stranica" },
-          { id: "sg-r3", uri: "/todo-b", title: "TODO stranica B" },
+  { name: "core/heading", attributes: { level: 3, content: "TODO podnaslov" } },
+  {
+    name: "core/table",
+    attributes: {
+      headers: ["Ime Prezime", "Zvanje", "E-pošta"],
+      rows: [
+        [
+          "Ime Prezime",
+          "TODO",
+          '<a href="mailto:todo@example.com">todo@example.com</a>',
         ],
-      },
+        [
+          "Ime Prezime",
+          "TODO",
+          '<a href="mailto:todo@example.com">todo@example.com</a>',
+        ],
+      ],
     },
   },
-  children: {
-    nodes: [
-      {
-        id: "sg-c1",
-        uri: "/styleguide/podstranica-1",
-        title: "TODO podstranica 1",
-      },
-      {
-        id: "sg-c2",
-        uri: "/styleguide/podstranica-2",
-        title: "TODO podstranica 2",
-      },
+  {
+    name: "core/details",
+    attributes: { summary: "TODO pitanje harmonike", showContent: false },
+    innerBlocks: [
+      { name: "core/paragraph", attributes: { content: "TODO odgovor." } },
     ],
   },
-};
+  {
+    name: "core/details",
+    attributes: { summary: "TODO otvorena harmonika", showContent: true },
+    innerBlocks: [
+      { name: "core/paragraph", attributes: { content: "TODO sadržaj." } },
+    ],
+  },
+  {
+    name: "core/file",
+    attributes: {
+      href: "/styleguide",
+      fileLabel: "TODO dokument.pdf",
+      extension: "pdf",
+      filesizeHuman: "000 KB",
+    },
+  },
+];
 
-const columnsExample = {
-  innerBlocks: [
-    {
-      name: "core/column",
-      attributes: { width: "25%" },
-      innerBlocks: [
-        {
-          name: "core/heading",
-          attributes: { level: 4, content: "Brzi kontakt" },
-        },
-        { name: "core/paragraph", attributes: { content: "Ured za studente" } },
-      ],
-    },
-    {
-      name: "core/column",
-      innerBlocks: [
-        {
-          name: "core/heading",
-          attributes: { level: 4, content: "Radno vrijeme" },
-        },
-        {
-          name: "core/paragraph",
-          attributes: { content: "Ponedjeljak – petak, 9:00 – 14:00." },
-        },
-      ],
-    },
-    {
-      name: "core/column",
-      innerBlocks: [
-        { name: "core/heading", attributes: { level: 4, content: "Lokacija" } },
-        {
-          name: "core/paragraph",
-          attributes: { content: "Ruđera Boškovića 37, Split" },
-        },
-      ],
-    },
-  ],
-};
-
-const galleryExample = {
-  innerBlocks: [
-    {
-      name: "core/image",
-      attributes: {
-        url: "/globe.svg",
-        width: 400,
-        height: 400,
-        alt: "Shematski prikaz globusa",
-      },
-    },
-    {
-      name: "core/image",
-      attributes: {
-        url: "/window.svg",
-        width: 400,
-        height: 300,
-        alt: "Ilustracija prozora",
-        caption: "Pogled s fakulteta",
-      },
-    },
-    {
-      name: "core/image",
-      attributes: {
-        url: "/file.svg",
-        width: 300,
-        height: 400,
-        alt: "Ilustracija dokumenta",
-      },
-    },
-  ],
-};
-
-const groupExample = {
-  innerBlocks: [
-    {
-      name: "core/paragraph",
-      attributes: {
-        content:
-          "Grupa je čisti omotač bez vlastitog stila — ovaj odlomak samo dokazuje da se sadržaj unutar nje renderira normalno.",
-      },
-    },
-  ],
-};
+function Section({ title, children }) {
+  return (
+    <section className={styles.section} aria-labelledby={`sg-${title}`}>
+      <h2 id={`sg-${title}`} className={styles.sectionTitle}>
+        {title}
+      </h2>
+      {children}
+    </section>
+  );
+}
 
 export default function StyleguidePage() {
   return (
     <>
-      <Header
-        menu={sampleMenu}
-        currentLanguage="hr"
-        translations={[]}
-        currentUri="/styleguide"
-      />
-      <main className={styles.page}>
-        <section className={styles.scale}>
-          <h1>Naslov razine 1</h1>
-          <h2>Naslov razine 2</h2>
-          <h3>Naslov razine 3</h3>
-          <h4>Naslov razine 4</h4>
-          <h5>Naslov razine 5</h5>
-          <h6>Naslov razine 6</h6>
-        </section>
-
-        <section className={styles.component}>
-          <h3 className={styles.section}>Oznake kategorija</h3>
-          <div className={styles.swatchRow}>
-            {sampleCategories.map((category) => (
-              <CategoryBadge key={category.slug} category={category} />
+      <Hero photo={{ tag: "Foto · TODO styleguide" }} labelledBy="sg-title">
+        <div className={styles.header}>
+          <Eyebrow tone="dark">Styleguide</Eyebrow>
+          <h1 id="sg-title">Primitivi</h1>
+        </div>
+      </Hero>
+      <div className={styles.page}>
+        <Section title="Boje">
+          <ul className={styles.swatches} role="list">
+            {COLOURS.map(([token, label]) => (
+              <li key={token} className={styles.swatch}>
+                <span
+                  className={styles.swatchColour}
+                  style={{ "--swatch": `var(${token})` }}
+                />
+                <span className={styles.swatchLabel}>{label}</span>
+                <code className={styles.swatchToken}>{token}</code>
+              </li>
             ))}
-          </div>
-          <h3 className={styles.section}>Oznaka cilja</h3>
-          <div className={styles.swatchRow}>
-            <CiljBadge cilj={sampleCilj} />
-          </div>
-        </section>
+          </ul>
+        </Section>
 
-        <section className={styles.component}>
-          <h3 className={styles.section}>Gumbi</h3>
-          <div className={styles.swatchRow}>
-            <button type="button" className={articleListStyles.loadMore}>
-              Učitaj još članaka
-            </button>
-          </div>
-        </section>
-
-        <section className={styles.component}>
-          <h3 className={styles.section}>Kartice vijesti</h3>
-          <div className={styles.cardGrid}>
-            <NewsCard post={samplePost} />
-            <NewsCard post={samplePostNoImage} />
-          </div>
-        </section>
-
-        <section className={styles.component}>
-          <h3 className={styles.section}>Popis novosti</h3>
-          <ArticleList
-            initialPosts={[samplePost, samplePostNoImage]}
-            initialPageInfo={{ hasNextPage: false, endCursor: null }}
-          />
-        </section>
-
-        <section className={styles.component}>
-          <h3 className={styles.section}>Bočna traka sekcije</h3>
-          <div className={styles.railDemo}>
-            <SectionRail page={sampleRailPage} />
-          </div>
-        </section>
-
-        <article className="prose">
-          <h2>Odlomak</h2>
-          <p>
-            Ovo je primjer odlomka teksta koji prikazuje osnovni tipografski
-            stil za sadržaj stranice, uključujući hrvatske dijakritičke znakove:
-            č, ć, ž, š, đ te njihove verzije velikih slova Č, Ć, Ž, Š, Đ.
-          </p>
-          <p>
-            Više informacija dostupno je na stranici{" "}
-            <a href="https://www.pfst.unist.hr">Pomorskog fakulteta u Splitu</a>
-            , gdje se redovito objavljuju obavijesti i natječaji.
-          </p>
-
-          <h3 className={styles.section}>Popisi</h3>
-          <ul>
-            <li>Prva stavka nesortiranog popisa</li>
-            <li>Druga stavka</li>
-            <li>
-              Treća stavka s nešto dužim tekstom radi provjere prijeloma retka
-              unutar popisa
+        <Section title="Tipografija">
+          <ul className={styles.typeList} role="list">
+            {TYPE.map(([key, sample]) => (
+              <li key={key} className={styles.typeRow}>
+                <code className={styles.typeKey}>{key}</code>
+                <span className={styles[`t_${key}`]}>{sample}</span>
+              </li>
+            ))}
+            <li className={styles.typeRow}>
+              <code className={styles.typeKey}>num</code>
+              <span className="num">12. 11. 2026. · 2026./2027.</span>
             </li>
           </ul>
-          <ol>
-            <li>Prvi korak postupka</li>
-            <li>Drugi korak postupka</li>
-            <li>Treći korak postupka</li>
-          </ol>
+        </Section>
 
-          <h3 className={styles.section}>Tablica sa zaglavljem</h3>
-          <table>
-            <thead>
-              <tr>
-                <th>Naziv</th>
-                <th>Rok</th>
-                <th>Status</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>Natječaj za upis</td>
-                <td>1. rujna 2026.</td>
-                <td>Otvoreno</td>
-              </tr>
-              <tr>
-                <td>Prijave Erasmus+</td>
-                <td>15. rujna 2026.</td>
-                <td>Zatvoreno</td>
-              </tr>
-            </tbody>
-          </table>
+        <Section title="Gumbi">
+          <div className={styles.row}>
+            <Button href="/styleguide">Primarni L</Button>
+            <Button href="/styleguide" size="m">
+              Primarni M
+            </Button>
+            <Button href="/styleguide" size="s">
+              Primarni S
+            </Button>
+            <Button href="/styleguide" variant="accent" magnetic>
+              Upiši se (magnetski)
+            </Button>
+            <Button href="/styleguide" variant="outline">
+              Obrub
+            </Button>
+            <Button variant="outline" arrow>
+              Obrub sa strelicom
+            </Button>
+            <Button disabled>Onemogućen</Button>
+          </div>
+          <div className={`${styles.row} ${styles.dark}`}>
+            <Button href="/styleguide" variant="white">
+              Bijeli
+            </Button>
+            <Button href="/styleguide" variant="white" size="m">
+              Bijeli M
+            </Button>
+            <Button href="/styleguide" variant="glass">
+              Stakleni
+            </Button>
+            <Button href="/styleguide" variant="accent" size="s">
+              Naglašeni S
+            </Button>
+          </div>
+        </Section>
 
-          <h3 className={styles.section}>Tablica bez zaglavlja</h3>
-          <table>
-            <tbody>
-              <tr>
-                <td>Ured za studente</td>
-                <td>ured@pfst.hr</td>
-              </tr>
-              <tr>
-                <td>Referada</td>
-                <td>referada@pfst.hr</td>
-              </tr>
-            </tbody>
-          </table>
+        <Section title="Krug sa strelicom">
+          <div className={styles.row}>
+            {["light", "white", "primary", "accent"].map((tone) => (
+              <Link key={tone} href="/styleguide" className={styles.circleDemo}>
+                <ArrowCircle tone={tone} />
+                <ArrowCircle tone={tone} size="l" />
+                <span>{tone}</span>
+              </Link>
+            ))}
+            <Link href="/styleguide" className={styles.circleDemo}>
+              <ArrowCircle direction="back" />
+              <span>natrag</span>
+            </Link>
+          </div>
+        </Section>
 
-          <h3 className={styles.section}>Slika s natpisom</h3>
-          <figure>
-            <img
-              src="/globe.svg"
-              alt="Shematski prikaz globusa"
-              width={160}
-              height={160}
-            />
-            <figcaption>
-              Ilustrativna slika — zamjenska grafika za stilski vodič.
-            </figcaption>
-          </figure>
+        <Section title="Oznake">
+          <div className={styles.row}>
+            <Chip>Natječaji</Chip>
+            <Chip>Najave</Chip>
+            <Chip href="/styleguide">Poveznica</Chip>
+            <span className={styles.onSurface}>
+              <Chip>Na bijeloj</Chip>
+            </span>
+            <Chip tone="white">Bijela na pozadini</Chip>
+          </div>
+          <div className={styles.row}>
+            <Eyebrow>Novosti</Eyebrow>
+            <span className={styles.dark}>
+              <Eyebrow tone="dark">Studiji</Eyebrow>
+            </span>
+          </div>
+        </Section>
 
-          <h3 className={styles.section}>Galerija</h3>
-          <Gallery block={galleryExample} />
+        <Section title="Fotografije">
+          <div className={styles.photoGrid}>
+            <Link href="/styleguide" className={styles.photoDemo}>
+              <Photo
+                ratio="4/3"
+                radius="card"
+                sizes="(max-width: 720px) 100vw, 33vw"
+                tag="Foto · TODO kampus"
+                zoom
+              />
+              <span>4:3 · r24 · zoom</span>
+            </Link>
+            <div className={styles.photoDemo}>
+              <Photo
+                ratio="5/4"
+                radius="feature"
+                tone="light"
+                sizes="(max-width: 720px) 100vw, 33vw"
+                tag="Foto · TODO brod"
+                tagPosition="top-left"
+              />
+              <span>5:4 · r28 · svijetla</span>
+            </div>
+            <div className={styles.photoDemo}>
+              <Photo
+                ratio="1/1"
+                radius="panel"
+                sizes="(max-width: 720px) 100vw, 33vw"
+                tag="Foto · TODO simulator"
+              />
+              <span>1:1 · r20</span>
+            </div>
+          </div>
+        </Section>
 
-          <h3 className={styles.section}>Stupci</h3>
-          <Columns block={columnsExample} />
+        <Section title="Ikone">
+          <ul className={styles.icons} role="list">
+            {ICON_NAMES.map((name) => (
+              <li key={name} className={styles.iconItem}>
+                <span className={styles.iconBox}>
+                  <Icon name={name} />
+                </span>
+                <code>{name}</code>
+              </li>
+            ))}
+          </ul>
+        </Section>
 
-          <h3 className={styles.section}>Grupa</h3>
-          <Group block={groupExample} />
-
-          <h3 className={styles.section}>Citat</h3>
-          <blockquote>
-            <p>
-              Pomorski fakultet u Splitu obrazuje stručnjake u području
-              pomorstva od 1852. godine.
-            </p>
-          </blockquote>
-
-          <h3 className={styles.section}>Proširivi sadržaj</h3>
-          <details>
-            <summary>Često postavljena pitanja o upisu</summary>
-            <p>
-              Rok za prijavu na natječaj objavljuje se na mrežnim stranicama
-              fakulteta najmanje 30 dana prije početka akademske godine.
-            </p>
-          </details>
-
-          <h3 className={styles.section}>Preuzimanje datoteke</h3>
-          <p>
-            <a className="file-download" href="/files/natjecaj-2026.pdf">
-              Natječaj za upis 2026./2027.
-              <span className="file-meta">PDF, 482 KB</span>
-            </a>
-          </p>
-        </article>
-      </main>
+        <Section title="Sadržaj (.prose)">
+          <div className={`prose ${styles.prose}`}>
+            <BlockRenderer blocks={PROSE_BLOCKS} />
+            <blockquote>
+              TODO citat koji se ističe u sadržaju stranice.
+              <cite>Ime Prezime</cite>
+            </blockquote>
+          </div>
+        </Section>
+      </div>
     </>
   );
 }

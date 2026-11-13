@@ -1,0 +1,174 @@
+.head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: var(--space-6);
+  margin-bottom: 28px;
+}
+
+.title {
+  font-size: var(--fs-title-l);
+  line-height: 1;
+}
+
+.count {
+  font-size: var(--fs-meta);
+  font-weight: 500;
+  color: var(--color-text-muted);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--grid-gap);
+}
+
+/* ---- Tile (STYLEGUIDE §6): white r24, padding 26, icon box + arrow ---- */
+.card {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: var(--space-10);
+  min-height: 228px;
+  padding: 26px;
+  border-radius: var(--r-card);
+  background: var(--color-surface);
+  color: var(--color-text);
+  transition: transform var(--dur-hover) var(--ease-out);
+}
+
+.card:hover {
+  transform: translateY(-6px);
+}
+
+.top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+}
+
+.icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  border-radius: var(--r-icon);
+  background: var(--color-bg);
+}
+
+.text {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.cardTitle {
+  font-size: var(--fs-title-s);
+  font-weight: 600;
+  line-height: 1.25;
+  letter-spacing: -0.02em;
+}
+
+.description {
+  font-size: var(--fs-small);
+  line-height: 1.45;
+  color: var(--color-text-muted);
+}
+
+/* ---- Help card: modra, flags band on the right edge ---- */
+.help {
+  --focus-ring: var(--color-surface);
+  position: relative;
+  grid-column: span 2;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 28px;
+  min-height: 228px;
+  /* Content stays clear of the 140px flag band on the right. */
+  padding: 28px 168px 28px 28px;
+  overflow: hidden;
+  border-radius: var(--r-card);
+  background: var(--color-primary);
+  color: var(--color-surface);
+}
+
+.flags {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 140px;
+  background: url("/design/flags.svg") left center / auto 100% repeat-x;
+}
+
+.helpText,
+.helpActions {
+  position: relative;
+  display: flex;
+  max-width: 520px;
+}
+
+.helpText {
+  flex-direction: column;
+  gap: 10px;
+  max-width: 420px;
+}
+
+.helpEyebrow {
+  font-size: var(--fs-label);
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--color-text-on-dark);
+}
+
+.helpTitle {
+  font-size: var(--fs-title-l);
+  font-weight: 600;
+  line-height: 1.05;
+  letter-spacing: var(--ls-display);
+}
+
+.helpActions {
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 28px;
+}
+
+.contact {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-size: var(--fs-body);
+  color: var(--color-text-on-dark-strong);
+}
+
+@media (max-width: 1080px) {
+  .grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 720px) {
+  .grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .help {
+    grid-column: span 1;
+    padding-right: 92px;
+  }
+
+  .flags {
+    width: 64px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .card:hover {
+    transform: none;
+  }
+}

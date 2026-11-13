@@ -1,0 +1,71 @@
+.photo {
+  position: relative;
+  display: block;
+  overflow: hidden;
+  background: var(--color-deep);
+}
+
+/* No ratio: fill a parent that sets its own size. */
+.fill {
+  position: absolute;
+  inset: 0;
+}
+
+.r4x3 {
+  aspect-ratio: 4 / 3;
+}
+
+.r5x4 {
+  aspect-ratio: 5 / 4;
+}
+
+.r1x1 {
+  aspect-ratio: 1 / 1;
+}
+
+.r16x9 {
+  aspect-ratio: 16 / 9;
+}
+
+.panel {
+  border-radius: var(--r-panel);
+}
+
+.card {
+  border-radius: var(--r-card);
+}
+
+.feature {
+  border-radius: var(--r-feature);
+}
+
+.block {
+  border-radius: var(--r-block);
+}
+
+.media {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform var(--dur-reveal) var(--ease-out);
+}
+
+/* ---- Placeholders (no src yet) ---- */
+.placeholder .media {
+  background: url("/design/contours.svg") center / cover no-repeat;
+}
+
+.placeholderLight {
+  background: var(--tint-plava-1);
+}
+
+.placeholderLight .media {
+  background: url("/design/contours-dark.svg") center / cover no-repeat;
+}
+
+/* ---- Hover zoom, driven by the card/link the photo sits in ---- */
+:is(a, button):hover .zoom .media {
+  transform: scale(1.06);
+}

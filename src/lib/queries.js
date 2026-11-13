@@ -11,12 +11,22 @@ const SEO_FIELDS = /* GraphQL */ `
   }
 `;
 
+// Page children follow Page Attributes → Order in WordPress, then title.
+const CHILD_ORDER = /* GraphQL */ `where: { orderby: [{ field: MENU_ORDER, order: ASC }, { field: TITLE, order: ASC }] }`;
+
 const PAGE_FIELDS = /* GraphQL */ `
   fragment PageFields on Page {
     id
     title
     uri
+    modified
     contentTypeName
+    featuredImage {
+      node {
+        sourceUrl
+        altText
+      }
+    }
     ...SeoFields
     language {
       code
@@ -42,7 +52,7 @@ const PAGE_FIELDS = /* GraphQL */ `
       node {
         ... on Page {
           id
-          children {
+          children(first: 100, ${CHILD_ORDER}) {
             nodes {
               ... on Page {
                 id
@@ -54,16 +64,60 @@ const PAGE_FIELDS = /* GraphQL */ `
         }
       }
     }
-    children {
+    children(first: 100, ${CHILD_ORDER}) {
       nodes {
         ... on Page {
           id
           title
           uri
+          seo {
+            metaDesc
+          }
         }
       }
     }
     blocks(attributes: true, dynamicContent: true)
+  }
+`;
+
+// The sidebar tree (design/reference/page.html): a section's root page and
+// three levels below it.
+export const SECTION_TREE = /* GraphQL */ `
+  query SectionTree($uri: String!) {
+    nodeByUri(uri: $uri) {
+      ... on Page {
+        id
+        title
+        uri
+        children(first: 100, ${CHILD_ORDER}) {
+          nodes {
+            ... on Page {
+              id
+              title
+              uri
+              children(first: 100, ${CHILD_ORDER}) {
+                nodes {
+                  ... on Page {
+                    id
+                    title
+                    uri
+                    children(first: 100, ${CHILD_ORDER}) {
+                      nodes {
+                        ... on Page {
+                          id
+                          title
+                          uri
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
   }
 `;
 
@@ -173,34 +227,6 @@ export const MENU_ITEMS = /* GraphQL */ `
         parentDatabaseId
         label
         path
-      }
-    }
-  }
-`;
-
-// Lightweight lookup for the Header's language switcher, which lives in the
-// root layout and has no access to the current page's full NODE_BY_URI node.
-export const TRANSLATIONS_BY_URI = /* GraphQL */ `
-  query TranslationsByUri($uri: String!) {
-    nodeByUri(uri: $uri) {
-      __typename
-      ... on Page {
-        translations {
-          language {
-            code
-          }
-          uri
-          title
-        }
-      }
-      ... on Post {
-        translations {
-          language {
-            code
-          }
-          uri
-          title
-        }
       }
     }
   }
@@ -320,43 +346,49 @@ export const SITE_SEARCH = /* GraphQL */ `
   }
 `;
 
+// Run twice in parallel by getRelatedPosts: once for posts sharing a tag,
+// once for posts sharing a category. tags carry `count` so shared tags can
+// be weighted by rarity without a separate all-tags query.
 export const RELATED_POSTS = /* GraphQL */ `
-  query RelatedPosts($first: Int!, $where: RootQueryToPostConnectionWhereArgs) {
-    posts(first: $first, where: $where) {
-      nodes {
-        id
-        title
-        uri
-        date
-        featuredImage {
-          node {
-            sourceUrl
-            altText
-          }
-        }
-        categories(first: 10) {
-          nodes {
-            name
-            slug
-          }
-        }
-        tags(first: 20) {
-          nodes {
-            name
-            slug
-          }
-        }
-      }
+  query RelatedPosts(
+    $first: Int!
+    $byTag: RootQueryToPostConnectionWhereArgs
+    $byCategory: RootQueryToPostConnectionWhereArgs
+    $skipTags: Boolean!
+    $skipCategories: Boolean!
+  ) {
+    byTag: posts(first: $first, where: $byTag) @skip(if: $skipTags) {
+      ...RelatedPostNodes
+    }
+    byCategory: posts(first: $first, where: $byCategory)
+      @skip(if: $skipCategories) {
+      ...RelatedPostNodes
     }
   }
-`;
 
-export const NEWS_TAGS = /* GraphQL */ `
-  query NewsTags {
-    tags(first: 100) {
-      nodes {
-        slug
-        count
+  fragment RelatedPostNodes on RootQueryToPostConnection {
+    nodes {
+      id
+      title
+      uri
+      date
+      featuredImage {
+        node {
+          sourceUrl
+          altText
+        }
+      }
+      categories(first: 10) {
+        nodes {
+          name
+          slug
+        }
+      }
+      tags(first: 20) {
+        nodes {
+          slug
+          count
+        }
       }
     }
   }

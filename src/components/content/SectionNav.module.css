@@ -1,0 +1,173 @@
+/* White r24 panel (STYLEGUIDE §6 — inner page sidebar). */
+.side {
+  padding: 14px;
+  border-radius: var(--r-card);
+  background: var(--color-surface);
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  padding: var(--space-3) 14px 14px;
+}
+
+.rootLink {
+  display: inline-flex;
+  align-items: center;
+  min-height: 32px;
+  font-size: var(--fs-label);
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+  transition: color var(--dur-hover) var(--ease-out);
+}
+
+.rootLink:hover {
+  color: var(--color-text);
+}
+
+.count {
+  font-size: var(--fs-micro);
+  letter-spacing: 0.06em;
+  color: var(--color-text-muted);
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.kids1 {
+  padding: var(--space-1) 0 var(--space-2);
+}
+
+.kids2 {
+  padding: 2px 0 var(--space-1);
+}
+
+/* ---- Rows ---- */
+.row {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  transition:
+    background var(--dur-hover) var(--ease-out),
+    color var(--dur-hover) var(--ease-out);
+}
+
+.link {
+  display: flex;
+  flex: 1;
+  align-items: center;
+  align-self: stretch;
+  min-width: 0;
+  font-weight: inherit;
+}
+
+.toggle {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border: 0;
+  border-radius: var(--r-pill);
+  background: transparent;
+  color: inherit;
+  transition: transform var(--dur-hover) var(--ease-out);
+}
+
+.toggle[aria-expanded="true"] {
+  transform: rotate(180deg);
+}
+
+/* Level 1 — 44px, r14 */
+.l1 {
+  min-height: 44px;
+  padding: 0 6px 0 14px;
+  border-radius: var(--r-icon);
+  font-size: var(--fs-small);
+  font-weight: 500;
+}
+
+.l1:hover,
+.l1.open {
+  background: var(--color-bg);
+}
+
+.l1.open {
+  font-weight: 600;
+}
+
+/* Current section: modra fill. */
+.l1.section {
+  --focus-ring: var(--color-surface);
+  background: var(--color-primary);
+  color: var(--color-surface);
+}
+
+/* Level 2 — 40px */
+.l2 {
+  min-height: 40px;
+  padding: 0 6px 0 28px;
+  border-radius: 12px;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--color-text-muted-2);
+}
+
+.l2 .toggle {
+  width: 28px;
+  height: 28px;
+}
+
+.l2:hover {
+  background: var(--color-bg);
+  color: var(--color-text);
+}
+
+/* Level 3 — 36px */
+.l3 {
+  min-height: 36px;
+  padding: 0 10px 0 44px;
+  border-radius: var(--r-mini);
+  font-size: var(--fs-meta);
+  color: var(--color-text-muted);
+}
+
+.l3:hover {
+  background: var(--color-bg);
+  color: var(--color-text);
+}
+
+/* Current page: plava tint + plava dot. */
+.current {
+  background: var(--tint-plava-3);
+  color: var(--color-text);
+  font-weight: 600;
+}
+
+.current::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 14px;
+  width: 6px;
+  height: 6px;
+  margin-top: -3px;
+  border-radius: var(--r-pill);
+  background: var(--color-accent);
+}
+
+.l3.current::before {
+  left: 30px;
+}

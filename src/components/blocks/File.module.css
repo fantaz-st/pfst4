@@ -1,0 +1,54 @@
+.file {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+  min-height: 72px;
+  padding: var(--space-3) var(--space-3) var(--space-3) var(--space-6);
+  border-radius: var(--r-field);
+  background: var(--color-surface);
+  color: var(--color-text);
+}
+
+.file + .file {
+  margin-top: var(--space-2);
+}
+
+.text {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  min-width: 0;
+}
+
+.label {
+  font-size: var(--fs-body);
+  font-weight: 600;
+  line-height: 1.3;
+}
+
+.meta {
+  font-size: var(--fs-small);
+  color: var(--color-text-muted);
+}
+
+/* Same behaviour as the arrow circle: fills modra on hover. */
+.icon {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border-radius: var(--r-pill);
+  background: var(--color-bg);
+  color: var(--color-text);
+  transition:
+    background var(--dur-hover) var(--ease-out),
+    color var(--dur-hover) var(--ease-out);
+}
+
+.file:hover .icon {
+  background: var(--color-primary);
+  color: var(--color-surface);
+}

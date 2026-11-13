@@ -1,0 +1,264 @@
+/* Sits inside the hero frame, 88px from its top and 12px from its sides. */
+.panel {
+  --focus-ring: var(--color-primary);
+  position: absolute;
+  top: 88px;
+  right: var(--space-3);
+  left: var(--space-3);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border-radius: var(--r-card);
+  background: var(--color-surface);
+  color: var(--color-text);
+}
+
+.panel:focus {
+  outline: none;
+}
+
+.body {
+  display: grid;
+  grid-template-columns: 300px minmax(0, 1fr);
+  gap: 44px;
+  padding: 36px 36px 32px;
+}
+
+/* ---- Intro ---- */
+.intro {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-4);
+}
+
+.label {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: var(--fs-label);
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+}
+
+.dot {
+  width: 7px;
+  height: 7px;
+  border-radius: var(--r-pill);
+  background: var(--color-accent);
+}
+
+.title {
+  font-size: var(--fs-title-l);
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: var(--ls-display);
+}
+
+.overview {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-height: 44px;
+  font-size: var(--fs-small);
+  font-weight: 600;
+}
+
+.overview svg {
+  transition: transform var(--dur-hover) var(--ease-out);
+}
+
+.overview:hover svg {
+  transform: translateX(4px);
+}
+
+/* ---- Columns ---- */
+.columns {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.column {
+  display: flex;
+  flex-direction: column;
+  gap: 36px;
+  padding: 0 28px;
+  border-left: 1px solid var(--color-line);
+}
+
+.column:first-child {
+  padding-left: 0;
+  border-left: 0;
+}
+
+.groupHeading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  min-height: 40px;
+  padding-bottom: var(--space-3);
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+.groupArrow {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: var(--r-pill);
+  background: var(--color-bg);
+  transition:
+    transform var(--dur-hover) var(--ease-out),
+    background var(--dur-hover) var(--ease-out),
+    color var(--dur-hover) var(--ease-out);
+}
+
+.groupHeading:is(:hover, :focus-visible) .groupArrow {
+  transform: rotate(-45deg);
+  background: var(--color-primary);
+  color: var(--color-surface);
+}
+
+.links {
+  display: flex;
+  flex-direction: column;
+  padding: 0;
+  list-style: none;
+}
+
+/* Plava dash grows in on hover. */
+.link {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-height: 34px;
+  font-size: var(--fs-small);
+  line-height: 1.35;
+  color: var(--color-text-muted-2);
+  transition: color var(--dur-hover) var(--ease-out);
+}
+
+.link::before {
+  content: "";
+  flex: none;
+  width: 0;
+  height: 2px;
+  border-radius: 2px;
+  background: var(--color-accent);
+  transition: width var(--dur-hover) var(--ease-out);
+}
+
+.link:is(:hover, :focus-visible) {
+  color: var(--color-text);
+}
+
+.link:is(:hover, :focus-visible)::before {
+  width: 12px;
+}
+
+/* ---- Footer: search, frequent links, close ---- */
+.footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-6);
+  padding: 18px 36px;
+  border-top: 1px solid var(--color-line);
+  background: color-mix(in srgb, var(--color-bg) 50%, var(--color-surface));
+}
+
+.search {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  min-width: 380px;
+  height: 52px;
+  padding: 0 var(--space-2) 0 20px;
+  border-radius: var(--r-pill);
+  background: var(--color-bg);
+  color: var(--color-text-muted);
+}
+
+.search:focus-within {
+  box-shadow: inset 0 0 0 2px var(--color-primary);
+}
+
+.search input {
+  flex: 1;
+  min-width: 0;
+  height: 100%;
+  border: 0;
+  background: transparent;
+  color: var(--color-text);
+  font-size: var(--fs-body);
+  outline: none;
+}
+
+.search input::placeholder {
+  color: var(--color-text-muted);
+}
+
+.quick {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.quickLabel {
+  margin-right: 6px;
+  font-size: var(--fs-label);
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+}
+
+/* Menu chip: the larger link variant from design/menu.css. */
+.chip {
+  display: inline-flex;
+  align-items: center;
+  height: 36px;
+  padding: 0 14px;
+  border-radius: var(--r-pill);
+  background: var(--color-surface);
+  font-size: var(--fs-meta);
+  font-weight: 500;
+  transition: background var(--dur-hover) var(--ease-out);
+}
+
+.chip:hover {
+  background: var(--color-bg-hover);
+}
+
+.close {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  height: 44px;
+  margin-left: 10px;
+  padding: 0 14px 0 var(--space-4);
+  border: 0;
+  border-radius: var(--r-pill);
+  background: var(--color-bg);
+  font-size: var(--fs-meta);
+  font-weight: 500;
+  transition: background var(--dur-hover) var(--ease-out);
+}
+
+.close:hover {
+  background: var(--color-bg-hover);
+}
+
+/* Signal flags along the panel's bottom edge (STYLEGUIDE §6). */
+.flags {
+  height: 10px;
+  background: url("/design/flags.svg") left center / auto 100% repeat-x;
+}

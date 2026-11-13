@@ -1,0 +1,30 @@
+.wrap {
+  max-width: var(--container);
+  margin: 0 auto;
+  padding: var(--space-12) var(--gutter) var(--section-y);
+}
+
+/* Reference .on-grid: 4fr filters / 8fr list. */
+.grid {
+  display: grid;
+  grid-template-columns: minmax(0, 4fr) minmax(0, 8fr);
+  gap: 56px;
+  align-items: start;
+}
+
+/* Sticky below the floating nav (16 + 60 + gap). */
+.aside {
+  position: sticky;
+  top: 112px;
+}
+
+@media (max-width: 1080px) {
+  .grid {
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--space-10);
+  }
+
+  .aside {
+    position: static;
+  }
+}

@@ -1,8 +1,9 @@
+import { cache } from "react";
 import { notFound } from "next/navigation";
 import { wpFetch } from "@/lib/wp";
 import { NODE_BY_URI } from "@/lib/queries";
 import { getAllContentNodes } from "@/lib/content";
-import { getLanguageFromUri, getTranslationsForUri } from "@/lib/language";
+import { getLanguageFromUri } from "@/lib/language";
 import { buildMetaDescription, buildLanguageAlternates } from "@/lib/seo";
 import ContentView from "@/components/content/ContentView";
 
@@ -10,6 +11,19 @@ export const hrContentRoute = createContentRoute({ language: "hr" });
 export const enContentRoute = createContentRoute({
   language: "en",
   prefix: "en",
+});
+
+// Keyed by the uri string, not the slug array: layout, generateMetadata and
+// the page each receive their own params object, so an array key would
+// never hit. Next only dedupes GET fetches, and wpFetch POSTs, so without
+// this the same node would be requested three times per render.
+const getNodeByUri = cache(async (uri) => {
+  const data = await wpFetch(NODE_BY_URI, { uri }, { tags: ["wp"] });
+  const node = data?.nodeByUri;
+  if (!node || (node.__typename !== "Page" && node.__typename !== "Post")) {
+    return null;
+  }
+  return node;
 });
 
 function extractSlug(uri, prefix) {
@@ -26,17 +40,8 @@ export function createContentRoute({ language, prefix = null }) {
     return prefix ? `/${prefix}/${slug.join("/")}/` : `/${slug.join("/")}/`;
   }
 
-  async function getNode(slug) {
-    const data = await wpFetch(
-      NODE_BY_URI,
-      { uri: toUri(slug) },
-      { tags: ["wp"] },
-    );
-    const node = data?.nodeByUri;
-    if (!node || (node.__typename !== "Page" && node.__typename !== "Post")) {
-      return null;
-    }
-    return node;
+  function getNode(slug) {
+    return getNodeByUri(toUri(slug));
   }
 
   async function generateStaticParams() {
@@ -73,9 +78,11 @@ export function createContentRoute({ language, prefix = null }) {
 
   // Used by the route's own layout.jsx to build the Header's language
   // switcher — params are available there without opting into dynamic
-  // rendering, unlike the pathname-via-headers() approach.
+  // rendering, unlike the pathname-via-headers() approach. Reads the same
+  // memoized node the page renders, so it costs no extra request.
   async function getTranslationsForSlug(slug) {
-    return getTranslationsForUri(toUri(slug));
+    const node = await getNode(slug);
+    return node?.translations ?? null;
   }
 
   return {

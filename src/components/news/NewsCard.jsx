@@ -1,31 +1,36 @@
-import Image from "next/image";
 import Link from "next/link";
-import { getPrimaryCategory } from "@/lib/news";
-import CategoryBadge from "./CategoryBadge";
+import Chip from "@/components/ui/Chip";
+import Photo from "@/components/ui/Photo";
+import { formatDate } from "@/lib/format";
+import { getPostCategories } from "@/lib/posts";
 import styles from "./NewsCard.module.css";
 
-export default function NewsCard({ post, language = "hr" }) {
+/**
+ * News card (STYLEGUIDE §6): 4:3 image r24, date + chip row, Title M.
+ * Posts without an image get the light contour placeholder, no tag.
+ */
+export default function NewsCard({ post, language = "hr", sizes, chipTone = "white" }) {
   const image = post.featuredImage?.node;
+  const category = getPostCategories(post)[0];
 
   return (
-    <article className={styles.card}>
-      {image && (
-        <Link href={post.uri} className={styles.imageLink} tabIndex={-1} aria-hidden="true">
-          <Image
-            src={image.sourceUrl}
-            alt=""
-            width={480}
-            height={320}
-            className={styles.image}
-          />
-        </Link>
-      )}
-      <div className={styles.body}>
-        <CategoryBadge category={getPrimaryCategory(post)} language={language} />
-        <h3 className={styles.title}>
-          <Link href={post.uri}>{post.title}</Link>
-        </h3>
-      </div>
-    </article>
+    <Link href={post.uri} className={styles.card}>
+      <Photo
+        src={image?.sourceUrl}
+        alt={image?.altText ?? ""}
+        ratio="4/3"
+        radius="card"
+        tone="light"
+        sizes={sizes ?? "(max-width: 720px) 100vw, 420px"}
+        zoom
+      />
+      <span className={styles.meta}>
+        <time dateTime={post.date} className={`${styles.date} num`}>
+          {formatDate(post.date, language)}
+        </time>
+        {category && <Chip tone={chipTone}>{category.name}</Chip>}
+      </span>
+      <span className={styles.title}>{post.title}</span>
+    </Link>
   );
 }

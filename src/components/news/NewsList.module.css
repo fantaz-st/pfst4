@@ -1,0 +1,27 @@
+/* White r28 panel (STYLEGUIDE §6 — news row). */
+.panel {
+  margin: 0;
+  padding: 10px 28px;
+  border-radius: var(--r-feature);
+  background: var(--color-surface);
+  list-style: none;
+}
+
+.more {
+  display: flex;
+  justify-content: center;
+  margin-top: 28px;
+}
+
+.empty {
+  padding: var(--space-8) 28px;
+  border-radius: var(--r-feature);
+  background: var(--color-surface);
+  color: var(--color-text-muted);
+}
+
+@media (max-width: 720px) {
+  .panel {
+    padding: var(--space-2) 20px;
+  }
+}

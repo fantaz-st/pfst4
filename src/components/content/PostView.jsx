@@ -1,128 +1,119 @@
 import Image from "next/image";
 import Link from "next/link";
 import BlockRenderer from "@/components/blocks/BlockRenderer";
-import { getCiljMeta, sortByGoalNumber } from "@/lib/ciljevi";
+import Chip from "@/components/ui/Chip";
+import NewsCard from "@/components/news/NewsCard";
+import { NEWS_ARCHIVE_URI, getPostCategories } from "@/lib/posts";
+import { getGoalIcon, sortByGoalNumber } from "@/lib/ciljevi";
+import { formatDate } from "@/lib/format";
+import { getNodeLanguage } from "@/lib/language";
 import { getRelatedPosts } from "@/lib/news";
-import PostMeta from "@/components/news/PostMeta";
+import { getNewsCopy } from "@/lib/newsCopy";
+import PageHero from "./PageHero";
+import PageTools from "./PageTools";
 import styles from "./PostView.module.css";
 
+/**
+ * A news post. The design has no post template, so it is built from the
+ * inner-page parts: page hero (category eyebrow, breadcrumbs back to the
+ * archive), the article in .prose, and an aside with the post's SDG goals
+ * (linking to the archive filter) and related news as news cards.
+ */
 export default async function PostView({ node }) {
-  const language = node.language?.slug ?? "hr";
+  const language = getNodeLanguage(node);
+  const copy = getNewsCopy(language);
+  const archiveUri = NEWS_ARCHIVE_URI[language] ?? NEWS_ARCHIVE_URI.hr;
+  const categories = getPostCategories(node);
+  const goals = sortByGoalNumber(node.ciljevi?.nodes ?? []);
   const relatedPosts = await getRelatedPosts(node, language);
-  const ciljevi = sortByGoalNumber(node.ciljevi?.nodes ?? []);
-  const image = node.featuredImage?.node;
 
   return (
-    <div className={styles.pageShell}>
-      <article className={styles.article}>
-        <div
-          className={`${styles.hero} ${!image ? styles.heroWithoutImage : ""}`}
-        >
-          {image && (
-            <div className={styles.imageFrame}>
-              <Image
-                src={image.sourceUrl}
-                alt={image.altText || ""}
-                width={1200}
-                height={800}
-                sizes="(min-width: 64rem) 50vw, calc(100vw - 2rem)"
-                className={styles.featuredImage}
-              />
+    <>
+      <PageHero
+        language={language}
+        title={node.title}
+        eyebrow={categories[0]?.name}
+        crumbs={[{ label: copy.archiveTitle, uri: archiveUri }]}
+        image={node.featuredImage?.node}
+        titleSize="post"
+      />
+
+      <div className={styles.wrap}>
+        <div className={styles.layout}>
+          <article className={styles.article}>
+            <header className={styles.meta} data-fade>
+              <span className={styles.metaLeft}>
+                <span className={styles.published}>
+                  {copy.published}{" "}
+                  <time dateTime={node.date} className="num">
+                    {formatDate(node.date, language)}
+                  </time>
+                </span>
+                {categories.map((category) => (
+                  <Chip
+                    key={category.slug}
+                    tone="white"
+                    href={`${archiveUri}?kategorija=${encodeURIComponent(category.slug)}`}
+                  >
+                    {category.name}
+                  </Chip>
+                ))}
+              </span>
+              <PageTools title={node.title} language={language} />
+            </header>
+            <div className="prose">
+              <BlockRenderer blocks={node.blocks} language={language} />
             </div>
-          )}
-          <header className={styles.pageHeader}>
-            {/* <p className={styles.kicker}>Novosti</p> */}
-            <h1 className={styles.title}>{node.title}</h1>
-            <PostMeta post={node} />
-          </header>
-        </div>
+          </article>
 
-        <div className={styles.contentLayout}>
-          <div className="prose">
-            <BlockRenderer blocks={node.blocks} />
-          </div>
-          <aside className={styles.sidebar}>
-            {ciljevi.length > 0 && (
-              <section
-                aria-labelledby="goals-heading"
-                className={styles.sidebarSection}
-              >
-                <h2 id="goals-heading">Ciljevi održivog razvoja</h2>
-                <div className={styles.goalGrid}>
-                  {ciljevi.map((cilj) => {
-                    const meta = getCiljMeta(cilj.slug);
-                    return meta?.icon ? (
-                      <Link
-                        key={cilj.slug}
-                        href={`/novosti/ciljevi/${cilj.slug}`}
-                        className={styles.goalLink}
-                        aria-label={cilj.name}
-                      >
-                        <Image
-                          src={meta.icon}
-                          alt=""
-                          className={styles.goalIcon}
+          {(goals.length > 0 || relatedPosts.length > 0) && (
+            <aside className={styles.aside}>
+              {goals.length > 0 && (
+                <section className={styles.panel} aria-labelledby="goals-heading" data-fade>
+                  <h2 id="goals-heading" className={styles.panelTitle}>
+                    {copy.goalsHeading}
+                  </h2>
+                  <ul className={styles.goals} role="list">
+                    {goals.map((goal) => {
+                      const icon = getGoalIcon(goal.slug, language);
+                      if (!icon) return null;
+                      return (
+                        <li key={goal.slug}>
+                          <Link
+                            href={`${archiveUri}?cilj=${encodeURIComponent(goal.slug)}`}
+                            className={styles.goal}
+                          >
+                            <Image src={icon} alt={copy.goalLink(goal.name)} sizes="72px" />
+                          </Link>
+                        </li>
+                      );
+                    })}
+                  </ul>
+                </section>
+              )}
+
+              {relatedPosts.length > 0 && (
+                <section aria-labelledby="related-heading">
+                  <h2 id="related-heading" className={styles.relatedTitle}>
+                    {copy.relatedHeading}
+                  </h2>
+                  <ul className={styles.related} role="list" data-stagger>
+                    {relatedPosts.map((post) => (
+                      <li key={post.id}>
+                        <NewsCard
+                          post={post}
+                          language={language}
+                          sizes="(max-width: 1080px) 50vw, 320px"
                         />
-                      </Link>
-                    ) : null;
-                  })}
-                </div>
-              </section>
-            )}
-
-            {relatedPosts.length > 0 && (
-              <section
-                aria-labelledby="related-heading"
-                className={styles.sidebarSection}
-              >
-                <h2 id="related-heading">Vezane vijesti</h2>
-                <ul className={styles.relatedList}>
-                  {relatedPosts.map((related) => {
-                    const relatedImage = related.featuredImage?.node;
-                    return (
-                      <li key={related.id} className={styles.relatedItem}>
-                        <Link
-                          href={related.uri}
-                          className={`${styles.relatedLink} ${!relatedImage ? styles.relatedLinkWithoutImage : ""}`}
-                        >
-                          {relatedImage && (
-                            <Image
-                              src={relatedImage.sourceUrl}
-                              alt=""
-                              width={160}
-                              height={100}
-                              sizes="(min-width: 64rem) 6rem, 8rem"
-                              className={styles.relatedImage}
-                            />
-                          )}
-                          <span className={styles.relatedBody}>
-                            <span className={styles.relatedTitle}>
-                              {related.title}
-                            </span>
-                            <time
-                              dateTime={related.date}
-                              className={styles.relatedDate}
-                            >
-                              {new Intl.DateTimeFormat(
-                                language === "en" ? "en-GB" : "hr-HR",
-                                {
-                                  day: "numeric",
-                                  month: "short",
-                                  year: "numeric",
-                                },
-                              ).format(new Date(related.date))}
-                            </time>
-                          </span>
-                        </Link>
                       </li>
-                    );
-                  })}
-                </ul>
-              </section>
-            )}
-          </aside>
+                    ))}
+                  </ul>
+                </section>
+              )}
+            </aside>
+          )}
         </div>
-      </article>
-    </div>
+      </div>
+    </>
   );
 }

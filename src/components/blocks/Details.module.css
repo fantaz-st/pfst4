@@ -1,0 +1,23 @@
+/* Chevron in a 44px circle; rotates 180° when the details is open
+   (STYLEGUIDE §6, inner page sidebar). */
+.chevron {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border-radius: var(--r-pill);
+  background: var(--color-bg);
+  transition:
+    transform var(--dur-hover) var(--ease-out),
+    background var(--dur-hover) var(--ease-out);
+}
+
+summary:hover > .chevron {
+  background: var(--color-surface);
+}
+
+details[open] > summary > .chevron {
+  transform: rotate(180deg);
+}

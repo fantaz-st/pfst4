@@ -1,7 +1,7 @@
 import styles from "./Columns.module.css";
 import BlockRenderer from "./BlockRenderer";
 
-export default function Columns({ block }) {
+export default function Columns({ block, language }) {
   const columns = block.innerBlocks ?? [];
   if (columns.length === 0) return null;
 
@@ -9,7 +9,7 @@ export default function Columns({ block }) {
 
   return (
     <div className={styles.columns} style={{ "--columns-template": template }}>
-      <BlockRenderer blocks={columns} />
+      <BlockRenderer blocks={columns} language={language} />
     </div>
   );
 }

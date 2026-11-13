@@ -1,41 +1,42 @@
 import { getMainMenu } from "@/lib/menu";
 import { getChromeCopy } from "@/lib/chromeCopy";
-import HeaderScroll from "@/components/home/HeaderScroll";
-import Header from "./Header";
-import Footer from "./Footer";
+import { getSiteLinks } from "@/lib/siteLinks";
+import { getLanguageLinks } from "@/lib/languageLinks";
+import UtilityRow from "./UtilityRow";
+import SiteHeader from "./header/SiteHeader";
+import SiteFooter from "./SiteFooter";
+import PageMotion from "@/components/motion/PageMotion";
 import styles from "./SiteChrome.module.css";
 
-// Wraps a route's content with the shared Header/Footer chrome. Rendered
-// per-route (not from a shared root layout) so that routes with access to
-// their own params — the [...slug] catch-alls — can pass real per-page
-// translations, while everything else falls back to translations=null
-// (the Header then links the switcher to / or /en/ instead of hiding it).
-export default async function SiteChrome({
-  language,
-  translations = null,
-  currentUri,
-  children,
-}) {
+// The shell around every route: skip link, utility row, header (nav over
+// the page's Hero, floating nav, menu sheet), <main>, footer. Rendered
+// per-route so routes that know their WordPress node — the [...slug]
+// catch-alls — can pass real Polylang translations for the HR / EN switch;
+// everything else gets the other language's homepage.
+export default async function SiteChrome({ language, translations = null, children }) {
   const menu = await getMainMenu(language);
   const copy = getChromeCopy(language);
+  const links = getSiteLinks(language);
+  const languages = getLanguageLinks(language, translations);
 
   return (
-    <>
+    <div className={styles.shell}>
       <a href="#main-content" className="skip-link">
         {copy.skipToContent}
       </a>
-      <HeaderScroll>
-        <Header
-          menu={menu}
-          currentLanguage={language}
-          translations={translations}
-          currentUri={currentUri}
-        />
-      </HeaderScroll>
+      <UtilityRow language={language} translations={translations} />
+      <SiteHeader
+        menu={menu}
+        language={language}
+        frequent={links.frequent}
+        languages={languages}
+        utility={links.utility}
+      />
       <main id="main-content" className={styles.main}>
         {children}
       </main>
-      <Footer menu={menu} language={language} />
-    </>
+      <SiteFooter language={language} />
+      <PageMotion />
+    </div>
   );
 }

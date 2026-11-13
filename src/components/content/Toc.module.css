@@ -1,0 +1,48 @@
+.toc {
+  margin-top: var(--space-3);
+  padding: 14px;
+  border-radius: var(--r-card);
+  background: var(--color-surface);
+}
+
+.header {
+  padding: var(--space-3) 14px 14px;
+  font-size: var(--fs-label);
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.link {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 40px;
+  padding: 0 14px;
+  border-radius: 12px;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--color-text-muted-2);
+  transition:
+    background var(--dur-hover) var(--ease-out),
+    color var(--dur-hover) var(--ease-out);
+}
+
+.link svg {
+  flex: none;
+  color: var(--color-accent);
+}
+
+.link:hover {
+  background: var(--color-bg);
+  color: var(--color-text);
+}

@@ -1,8 +1,8 @@
+/* core/gallery — card-grid gap; figures are r24 via .prose. */
 .gallery {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr));
-  gap: var(--space-4);
-  margin: 0 0 var(--space-5);
+  gap: var(--grid-gap);
 }
 
 .gallery :global(figure) {

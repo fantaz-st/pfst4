@@ -1,0 +1,55 @@
+.brand {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  gap: var(--space-3);
+  min-height: 44px;
+  color: inherit;
+}
+
+.mark {
+  flex: none;
+  width: auto;
+}
+
+.wave {
+  fill: var(--color-accent);
+}
+
+/* Logo wordmark: 700, .14em, three lines (STYLEGUIDE §3). */
+.text {
+  display: flex;
+  flex-direction: column;
+  font-weight: 700;
+  line-height: 1.28;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.s .mark {
+  height: 34px;
+}
+
+.s .text {
+  font-size: 9.5px;
+}
+
+.m .mark {
+  height: 40px;
+}
+
+.m .text {
+  font-size: var(--fs-micro);
+}
+
+.l {
+  gap: 14px;
+}
+
+.l .mark {
+  height: 48px;
+}
+
+.l .text {
+  font-size: var(--fs-meta);
+}

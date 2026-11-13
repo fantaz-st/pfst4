@@ -1,12 +1,13 @@
+/* core/columns — editor-set widths from 720px up, one column below.
+   Gap is the design's card-grid gap. */
 .columns {
   display: grid;
-  grid-template-columns: 1fr;
-  gap: var(--space-5);
-  margin: 0 0 var(--space-5);
+  grid-template-columns: var(--columns-template, 1fr);
+  gap: var(--grid-gap);
 }
 
-@media (min-width: 48rem) {
+@media (max-width: 720px) {
   .columns {
-    grid-template-columns: var(--columns-template, 1fr);
+    grid-template-columns: minmax(0, 1fr);
   }
 }

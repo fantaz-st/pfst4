@@ -1,152 +1,159 @@
 "use client";
 
+import Image from "next/image";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { sortByGoalNumber, getCiljMeta } from "@/lib/ciljevi";
-import { getCategoryColorVariant } from "@/lib/categoryColors";
+import Button from "@/components/ui/Button";
+import { getGoalIcon, sortByGoalNumber } from "@/lib/ciljevi";
 import { getNewsCopy } from "@/lib/newsCopy";
 import styles from "./NewsFilters.module.css";
 
-export default function NewsFilters({
-  categories,
-  ciljevi,
-  selectedCategory,
-  selectedCiljevi,
-  language = "hr",
-}) {
+/**
+ * News archive filters. Everything lives in the URL (?kategorija=, ?cilj=,
+ * ?q=, ?od=, ?do=) so a filtered view can be shared and bookmarked:
+ * - category tabs (design/reference/home.html "Ostale novosti"), plus
+ *   "Istaknuto" for the featured flag
+ * - search + date range (STYLEGUIDE §6 forms)
+ * - SDG goals as their official icons, secondary to categories
+ */
+export default function NewsFilters({ categories, ciljevi, featuredSlug, language = "hr" }) {
   const copy = getNewsCopy(language);
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
 
+  const selectedCategory = searchParams.get("kategorija") ?? "";
+  const selectedGoals = searchParams.getAll("cilj");
+  const hasFilters = ["kategorija", "cilj", "q", "od", "do"].some((key) => searchParams.has(key));
+
   function push(mutate) {
     const params = new URLSearchParams(searchParams.toString());
     mutate(params);
-    router.push(`${pathname}?${params.toString()}`, { scroll: false });
+    const query = params.toString();
+    router.push(query ? `${pathname}?${query}` : pathname, { scroll: false });
   }
 
   function selectCategory(slug) {
     push((params) => {
-      if (slug) {
-        params.set("kategorija", slug);
-      } else {
-        params.delete("kategorija");
-      }
+      if (slug) params.set("kategorija", slug);
+      else params.delete("kategorija");
     });
   }
 
-  function toggleCilj(slug) {
+  function toggleGoal(slug) {
     push((params) => {
-      const current = params.getAll("cilj");
+      const next = selectedGoals.includes(slug)
+        ? selectedGoals.filter((value) => value !== slug)
+        : [...selectedGoals, slug];
       params.delete("cilj");
-      const next = current.includes(slug)
-        ? current.filter((value) => value !== slug)
-        : [...current, slug];
       next.forEach((value) => params.append("cilj", value));
     });
   }
 
-  const orderedCiljevi = sortByGoalNumber(ciljevi);
-  const selectedSearch = searchParams.get("q") ?? "";
-  const selectedFrom = searchParams.get("od") ?? "";
-  const selectedTo = searchParams.get("do") ?? "";
-
   function submit(event) {
     event.preventDefault();
-    const formData = new FormData(event.currentTarget);
+    const form = new FormData(event.currentTarget);
     push((params) => {
-      ["q", "od", "do"].forEach((key) => params.delete(key));
-      ["q", "od", "do"].forEach((key) => {
-        const value = formData.get(key);
+      for (const key of ["q", "od", "do"]) {
+        const value = String(form.get(key) ?? "").trim();
         if (value) params.set(key, value);
-      });
+        else params.delete(key);
+      }
     });
   }
 
+  const tabs = [
+    { slug: "", label: copy.allFilter },
+    ...categories.map((category) => ({ slug: category.slug, label: category.name })),
+    ...(featuredSlug ? [{ slug: featuredSlug, label: copy.featuredFilter }] : []),
+  ];
+
   return (
-    <aside className={styles.filters}>
-      <form className={styles.form} onSubmit={submit}>
-        <label htmlFor="news-search">
-          {language === "en" ? "Search" : "Pretraži"}
-        </label>
-        <div className={styles.searchRow}>
+    <div className={styles.filters}>
+      <div className={styles.tabs} role="group" aria-label={copy.filterByCategoryLabel}>
+        {tabs.map((tab) => (
+          <button
+            key={tab.slug || "all"}
+            type="button"
+            className={styles.tab}
+            aria-pressed={selectedCategory === tab.slug}
+            onClick={() => selectCategory(tab.slug)}
+          >
+            {tab.label}
+          </button>
+        ))}
+      </div>
+
+      <form className={styles.form} onSubmit={submit} role="search">
+        <label className={styles.field}>
+          <span className={styles.label}>{copy.searchLabel}</span>
           <input
-            id="news-search"
+            className={styles.input}
             name="q"
             type="search"
-            defaultValue={selectedSearch}
+            defaultValue={searchParams.get("q") ?? ""}
+            key={`q-${searchParams.get("q") ?? ""}`}
           />
-          <button type="submit">
-            {language === "en" ? "Apply" : "Primijeni"}
-          </button>
-        </div>
+        </label>
         <div className={styles.dates}>
-          <label>
-            Od
-            <input name="od" type="date" defaultValue={selectedFrom} />
+          <label className={styles.field}>
+            <span className={styles.label}>{copy.dateFrom}</span>
+            <input
+              className={styles.input}
+              name="od"
+              type="date"
+              defaultValue={searchParams.get("od") ?? ""}
+              key={`od-${searchParams.get("od") ?? ""}`}
+            />
           </label>
-          <label>
-            Do
-            <input name="do" type="date" defaultValue={selectedTo} />
+          <label className={styles.field}>
+            <span className={styles.label}>{copy.dateTo}</span>
+            <input
+              className={styles.input}
+              name="do"
+              type="date"
+              defaultValue={searchParams.get("do") ?? ""}
+              key={`do-${searchParams.get("do") ?? ""}`}
+            />
           </label>
+        </div>
+        <div className={styles.actions}>
+          <Button type="submit" size="m">
+            {copy.applyFilters}
+          </Button>
+          {hasFilters && (
+            <Button variant="outline" size="m" onClick={() => router.push(pathname, { scroll: false })}>
+              {copy.clearFilters}
+            </Button>
+          )}
         </div>
       </form>
-      {categories.length > 0 && (
-        <div
-          className={styles.categories}
-          role="group"
-          aria-label={copy.filterByCategoryLabel}
-        >
-          <button
-            type="button"
-            className={styles.pill}
-            aria-pressed={!selectedCategory}
-            onClick={() => selectCategory(null)}
-          >
-            {copy.allFilter}
-          </button>
-          {categories.map((category) => (
-            <button
-              key={category.slug}
-              type="button"
-              className={styles.pill}
-              data-variant={getCategoryColorVariant(category)}
-              aria-pressed={selectedCategory === category.slug}
-              onClick={() => selectCategory(category.slug)}
-            >
-              {category.name}
-            </button>
-          ))}
-        </div>
-      )}
 
-      <fieldset className={styles.ciljevi}>
-        <legend className={styles.legend}>{copy.filterByCiljeviLegend}</legend>
-        <div className={styles.grid}>
-          {orderedCiljevi.map((term) => {
-            const meta = getCiljMeta(term.slug);
-            const checked = selectedCiljevi.includes(term.slug);
-            return (
-              <label
-                key={term.slug}
-                className={styles.tile}
-                data-checked={checked}
-                style={{
-                  "--tile-color": meta?.color ?? "var(--color-gray-500)",
-                }}
-              >
-                <input
-                  type="checkbox"
-                  className={styles.tileInput}
-                  checked={checked}
-                  onChange={() => toggleCilj(term.slug)}
-                />
-                <span className={styles.tileNumber}>{meta?.number}</span>
-                <span className={styles.tileLabel}>{term.name}</span>
-              </label>
-            );
-          })}
-        </div>
-      </fieldset>
-    </aside>
+      {ciljevi.length > 0 && (
+        <fieldset className={styles.goals}>
+          <legend className={styles.label}>{copy.filterByGoalsLegend}</legend>
+          <div className={styles.goalGrid}>
+            {sortByGoalNumber(ciljevi).map((term) => {
+              const icon = getGoalIcon(term.slug, language);
+              const checked = selectedGoals.includes(term.slug);
+              return (
+                <label key={term.slug} className={styles.goal} data-checked={checked}>
+                  <input
+                    type="checkbox"
+                    className="visually-hidden"
+                    checked={checked}
+                    onChange={() => toggleGoal(term.slug)}
+                  />
+                  {icon ? (
+                    <Image src={icon} alt={term.name} sizes="56px" className={styles.goalIcon} />
+                  ) : (
+                    <span className={styles.goalText}>{term.name}</span>
+                  )}
+                </label>
+              );
+            })}
+          </div>
+        </fieldset>
+      )}
+    </div>
   );
 }

@@ -1,4 +1,4 @@
-import { revalidatePath, revalidateTag } from "next/cache";
+import { revalidateTag } from "next/cache";
 import { NextResponse } from "next/server";
 
 export async function POST(request) {
@@ -10,14 +10,18 @@ export async function POST(request) {
   }
 
   const expectedSecret = process.env.WP_REVALIDATE_SECRET;
-  const { secret, uri } = body ?? {};
+  const { secret } = body ?? {};
 
   if (!expectedSecret || secret !== expectedSecret) {
     return NextResponse.json({ revalidated: false, message: "Invalid secret" }, { status: 401 });
   }
 
-  revalidateTag("wp");
-  if (uri) revalidatePath(uri);
+  // Every WordPress fetch carries the "wp" tag, so this also covers the page
+  // at `uri`. expire: 0 makes the next request wait for fresh content
+  // instead of being served the stale copy — an editor who just hit
+  // "Update" should see their change on first reload. (The single-argument
+  // form behaved the same way but is deprecated in Next 16.)
+  revalidateTag("wp", { expire: 0 });
 
   return NextResponse.json({ revalidated: true, now: Date.now() });
 }

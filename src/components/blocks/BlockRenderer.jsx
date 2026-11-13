@@ -24,12 +24,14 @@ const ELEMENTS = {
   "core/gallery": Gallery,
 };
 
-export default function BlockRenderer({ blocks }) {
+// `language` is threaded through every container block so leaf blocks can
+// localize their own UI text (e.g. the table's accessible name).
+export default function BlockRenderer({ blocks, language = "hr" }) {
   if (!blocks) return null;
 
   return blocks.map((block, index) => {
     const Element = ELEMENTS[block.name];
     if (!Element) return null;
-    return <Element key={index} block={block} />;
+    return <Element key={index} block={block} language={language} />;
   });
 }

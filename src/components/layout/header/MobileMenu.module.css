@@ -1,0 +1,239 @@
+.layer {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+}
+
+.backdrop {
+  position: absolute;
+  inset: 0;
+  padding: 0;
+  border: 0;
+  background: color-mix(in srgb, var(--color-deep) 50%, transparent);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  cursor: default;
+}
+
+.sheet {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  flex-direction: column;
+  width: min(430px, 100%);
+  height: 100dvh;
+  overflow: hidden;
+  background: var(--color-surface);
+  color: var(--color-text);
+}
+
+.top {
+  display: flex;
+  flex: none;
+  align-items: center;
+  justify-content: space-between;
+  height: 72px;
+  padding: 0 var(--space-3) 0 18px;
+}
+
+.close {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  border: 0;
+  border-radius: var(--r-pill);
+  background: var(--color-primary);
+  color: var(--color-surface);
+}
+
+.search {
+  display: flex;
+  flex: none;
+  align-items: center;
+  gap: 10px;
+  height: 48px;
+  margin: var(--space-1) 18px 10px;
+  padding: 0 var(--space-4);
+  border-radius: var(--r-pill);
+  background: var(--color-bg);
+  color: var(--color-text-muted);
+}
+
+.search:focus-within {
+  box-shadow: inset 0 0 0 2px var(--color-primary);
+}
+
+.search input {
+  flex: 1;
+  min-width: 0;
+  height: 100%;
+  border: 0;
+  background: transparent;
+  color: var(--color-text);
+  font-size: var(--fs-body);
+  outline: none;
+}
+
+.search input::placeholder {
+  color: var(--color-text-muted);
+}
+
+/* ---- Accordion ---- */
+.nav {
+  flex: 1;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: 0 18px 20px;
+}
+
+.m1 {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  min-height: 60px;
+  padding: 0 var(--space-1) 0 0;
+  border: 0;
+  border-bottom: 1px solid var(--color-line);
+  background: transparent;
+  font-size: var(--fs-title-s);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  text-align: left;
+}
+
+.chevron {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: var(--r-pill);
+  background: var(--color-bg);
+  transition:
+    transform var(--dur-hover) var(--ease-out),
+    background var(--dur-hover) var(--ease-out),
+    color var(--dur-hover) var(--ease-out);
+}
+
+[aria-expanded="true"] > .chevron {
+  transform: rotate(180deg);
+  background: var(--color-primary);
+  color: var(--color-surface);
+}
+
+.level2 {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 10px 0 14px;
+  border-bottom: 1px solid var(--color-line);
+}
+
+.m2 {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  min-height: 50px;
+  padding: 0 var(--space-1) 0 14px;
+  border: 0;
+  border-radius: var(--r-icon);
+  background: transparent;
+  font-size: var(--fs-body);
+  font-weight: 600;
+  text-align: left;
+}
+
+.m2[aria-expanded="true"] {
+  background: var(--color-bg);
+}
+
+.m2 .chevron {
+  width: 30px;
+  height: 30px;
+  background: transparent;
+}
+
+.level3 {
+  display: flex;
+  flex-direction: column;
+  padding: var(--space-1) 0 var(--space-2);
+}
+
+.m3 {
+  display: flex;
+  align-items: center;
+  min-height: 44px;
+  padding: 0 14px 0 28px;
+  border-radius: var(--r-mini);
+  font-size: var(--fs-small);
+  color: var(--color-text-muted-2);
+  transition:
+    background var(--dur-hover) var(--ease-out),
+    color var(--dur-hover) var(--ease-out);
+}
+
+.m3:hover {
+  background: var(--color-bg);
+  color: var(--color-text);
+}
+
+.overview,
+.m3[aria-current="page"],
+.m2[aria-current="page"],
+.m1[aria-current="page"] {
+  font-weight: 600;
+  color: var(--color-text);
+}
+
+/* ---- Bottom ---- */
+.bottom {
+  display: flex;
+  flex: none;
+  flex-direction: column;
+  gap: 14px;
+  padding: 14px 18px 18px;
+  border-top: 1px solid var(--color-line);
+}
+
+.enroll {
+  justify-content: space-between;
+  width: 100%;
+}
+
+.utility {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: var(--fs-meta);
+  font-weight: 500;
+  color: var(--color-text-muted-2);
+}
+
+.utilityLinks {
+  display: flex;
+  gap: var(--space-4);
+}
+
+.utility a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+}
+
+.utility a:hover,
+.currentLanguage {
+  color: var(--color-text);
+}
+
+.flags {
+  flex: none;
+  height: 8px;
+  background: url("/design/flags.svg") left center / auto 100% repeat-x;
+}

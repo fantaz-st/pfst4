@@ -1,60 +1,63 @@
-.results {
-  max-width: 64rem;
+.wrap {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-12);
+  max-width: 1080px;
   margin: 0 auto;
-  padding: var(--space-7) var(--space-5);
+  padding: var(--space-12) var(--gutter) var(--section-y);
 }
-.results h2 {
-  margin-bottom: var(--space-5);
-  font-family: var(--font-heading);
+
+/* Search field: 52px pill on white (mega-menu search pattern). */
+.form {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
 }
-.results > h1 {
-  margin-bottom: var(--space-7);
-  font-family: var(--font-heading);
-  font-size: var(--text-2xl);
-}
-.results section + section {
-  margin-top: var(--space-8);
-}
-.results ul {
-  display: grid;
-  gap: var(--space-5);
-  list-style: none;
-}
-.results .articleList {
-  display: block;
-}
-.results .articleList li {
-  padding: 0;
-  border-bottom: 0;
-}
-.results .articleRow {
-  color: var(--home-color-text, var(--color-text));
-}
-.results li {
-  padding-bottom: var(--space-4);
-  border-bottom: 1px solid var(--color-border);
-}
-.results li a {
-  color: var(--color-link);
-  font-family: var(--font-heading);
-  font-size: var(--text-lg);
-  font-weight: 700;
-}
-.results li div {
-  margin-top: var(--space-2);
+
+.field {
+  display: flex;
+  flex: 1 1 320px;
+  align-items: center;
+  gap: var(--space-3);
+  height: 52px;
+  padding: 0 20px;
+  border-radius: var(--r-pill);
+  background: var(--color-surface);
   color: var(--color-text-muted);
 }
-.results section > button {
-  margin-top: var(--space-5);
-  padding: var(--space-3) var(--space-4);
-  color: var(--color-background);
-  background: var(--color-text);
-  border: 0;
-  cursor: pointer;
-  font: inherit;
-  font-weight: 700;
+
+.field:focus-within {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 0;
 }
-.results section > button:hover,
-.results section > button:focus-visible {
-  background: var(--color-link-hover);
+
+.input {
+  flex: 1;
+  min-width: 0;
+  height: 100%;
+  border: 0;
+  background: transparent;
+  color: var(--color-text);
+  font-size: var(--fs-body);
+  outline: none;
+}
+
+.input::placeholder {
+  color: var(--color-text-muted);
+}
+
+.prompt {
+  color: var(--color-text-muted);
+}
+
+.groups {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-16);
+}
+
+.groupTitle {
+  margin-bottom: var(--space-6);
+  font-size: var(--fs-title-l);
+  line-height: 1;
 }

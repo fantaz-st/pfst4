@@ -1,0 +1,423 @@
+<!doctype html>
+<html lang="hr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Pomorski fakultet u Splitu</title>
+<meta name="description" content="Pomorski fakultet u Splitu — studiji, upisi, novosti i obavijesti.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,300..800;1,300..800&display=swap">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<!-- Icon sprite -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <!-- PFST znak (ručno prepisan — zamijeniti službenim SVG-om). Val je plav, traka i točka prate currentColor. -->
+  <symbol id="i-logo" viewBox="0 0 40 44"><path d="M2 4.5c5-3.4 10-3.4 15 0s10 3.4 15 0l6-2v8l-6 2c-5 3.4-10 3.4-15 0s-10-3.4-15 0z" fill="#30ABF0"/><rect x="2" y="17" width="36" height="9" fill="currentColor"/><circle cx="7" cy="36" r="5" fill="currentColor"/></symbol>
+  <symbol id="i-search" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></g></symbol>
+  <symbol id="i-menu" viewBox="0 0 24 24"><path d="M4 9h16M4 15h16" fill="none" stroke="currentColor" stroke-width="1.8"/></symbol>
+  <symbol id="i-cap" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 9l10-5 10 5-10 5z"/><path d="M6 11v5c3 2.5 9 2.5 12 0v-5"/></g></symbol>
+  <symbol id="i-exam" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.5"><rect x="5" y="4" width="14" height="17" rx="2"/><path d="M9 3h6v3H9zM9 12h6M9 16h4"/></g></symbol>
+  <symbol id="i-chat" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 5h16v11H9l-5 4z"/><path d="M8 9.5h8M8 12.5h5"/></g></symbol>
+  <symbol id="i-users" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c.8-3.6 3.4-5.5 6.5-5.5s5.7 1.9 6.5 5.5"/><path d="M16 4.8a3.3 3.3 0 0 1 0 6.4M18 14.8c1.9.7 3.1 2.4 3.5 5.2"/></g></symbol>
+  <symbol id="i-doc" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 3h9l4 4v14H6z"/><path d="M14 3v5h5M9 13h7M9 17h5"/></g></symbol>
+</svg>
+
+<!-- Floating nav (appears after the hero) -->
+<div class="fnav" data-float-nav>
+  <nav class="fnav__inner" aria-label="Glavna navigacija">
+    <a class="fnav__logo" href="#" aria-label="Početna"><svg width="24" height="26"><use href="#i-logo"/></svg></a>
+    <span class="gnav">
+      <a href="#">Fakultet</a><a href="#studiji">Studiji</a><a href="#">Upisi</a><a href="#">Studenti</a><a href="#">Znanost</a><a href="#novosti">Novosti</a>
+    </span>
+    <a class="btn btn--accent" href="#">Upiši se <span class="btn-ic"><svg width="14" height="14"><use href="#i-arrow"/></svg></span></a>
+  </nav>
+</div>
+
+<!-- Utility row -->
+<div class="util">
+  <span class="util__left">Sveučilište u Splitu — Pomorski fakultet</span>
+  <nav aria-label="Pomoćna navigacija">
+    <a href="#">Webmail</a>
+    <a href="#">Raspored</a>
+    <a href="#">Pristupačnost</a>
+    <a href="#" aria-label="Pretraga"><svg width="15" height="15"><use href="#i-search"/></svg></a>
+    <span class="util__lang"><a href="#" aria-current="true">HR</a><span aria-hidden="true">/</span><a href="#">EN</a></span>
+  </nav>
+</div>
+
+<main>
+
+<!-- ============ HERO ============ -->
+<section class="hero" data-hero aria-labelledby="hero-title">
+  <div class="hero__box ph" data-hero-box>
+    <!-- Replace with <video class="ph-inner hero__media" data-hero-media autoplay muted loop playsinline src="..."> or <img> -->
+    <div class="ph-inner hero__media" data-hero-media></div>
+    <div class="hero__scrim" aria-hidden="true"></div>
+    <span class="ph-tag hero__tag">Video · Školski brod / kampus iz zraka</span>
+
+    <header class="hero__nav" data-hero-nav>
+      <a class="brand" href="#" aria-label="Pomorski fakultet u Splitu — početna">
+        <svg class="brand__mark" width="36" height="40" aria-hidden="true"><use href="#i-logo"/></svg>
+        <span class="brand__text"><span>Pomorski</span><span>fakultet</span><span>u Splitu</span></span>
+      </a>
+      <nav class="gnav" aria-label="Glavna navigacija">
+        <a href="#">Fakultet</a><a href="#studiji">Studiji</a><a href="#">Upisi</a><a href="#">Studenti</a><a href="#">Znanost</a><a href="#">Suradnja</a><a href="#novosti">Novosti</a>
+      </nav>
+      <div class="hero__actions">
+        <a class="btn btn--white btn--sm" href="#">Upiši se <span class="btn-ic"><svg width="14" height="14"><use href="#i-arrow"/></svg></span></a>
+        <button type="button" class="icon-btn" aria-label="Izbornik"><svg width="18" height="18"><use href="#i-menu"/></svg></button>
+      </div>
+    </header>
+
+    <a class="hero__news" href="#" data-hero-fade>
+      <span class="ph hero__news-thumb"><span class="ph-inner"></span></span>
+      <span class="hero__news-text">
+        <span class="hero__news-meta">Novo · 10. 11. 2026.</span>
+        <span class="hero__news-title">Svečana promocija prvostupnika i magistara inženjera</span>
+      </span>
+    </a>
+
+    <div class="hero__content" data-hero-content>
+      <div class="hero__chips" data-hero-fade>
+        <span class="glass-chip"><span class="glass-chip__dot"></span>65+ godina tradicije</span>
+        <span class="glass-chip">Split, Hrvatska</span>
+      </div>
+      <div class="hero__bottom">
+        <h1 id="hero-title" class="disp hero__title" data-split="chars">Znanje koje plovi svijetom.</h1>
+        <div class="hero__side">
+          <p class="hero__lead" data-hero-fade>Obrazujemo časnike, inženjere i menadžere koji pokreću pomorstvo — na moru, u luci i u laboratoriju.</p>
+          <div class="hero__ctas" data-hero-fade>
+            <a class="btn btn--white" href="#studiji" data-magnetic>Istraži studije <span class="btn-ic"><svg width="15" height="15"><use href="#i-arrow"/></svg></span></a>
+            <a class="btn btn--glass" href="#">Upisi</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ MOST VISITED ============ -->
+<section class="quick" aria-labelledby="ql-title">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="sec-head__l">
+        <span class="eyebrow" data-fade><span class="eyebrow__dot"></span>Brzi pristup</span>
+        <h2 id="ql-title" class="disp h2" data-split="lines">Najposjećenije<br>stranice</h2>
+      </div>
+      <p class="sec-lead" data-fade>Sve što studentima i djelatnicima treba svaki dan — na jednom mjestu.</p>
+    </div>
+
+    <div class="bento" data-stagger>
+      <a class="tile tile--dark b-2x2" href="#">
+        <span class="tile-go"><svg width="18" height="18"><use href="#i-arrow"/></svg></span>
+        <div class="tt-mock" aria-hidden="true">
+          <span class="tt-mock__d">PON</span><span class="tt-mock__d">UTO</span><span class="tt-mock__d">SRI</span><span class="tt-mock__d">ČET</span><span class="tt-mock__d">PET</span>
+          <span class="tt-mock__b tt-mock__b--on"></span><span class="tt-mock__b"></span><span class="tt-mock__b tt-mock__b--mid"></span><span class="tt-mock__b"></span><span class="tt-mock__b tt-mock__b--on"></span>
+          <span class="tt-mock__b tt-mock__b--h2 tt-mock__b--mid"></span><span class="tt-mock__b tt-mock__b--h2 tt-mock__b--on"></span><span class="tt-mock__b tt-mock__b--h2"></span><span class="tt-mock__b tt-mock__b--h2 tt-mock__b--mid"></span><span class="tt-mock__b tt-mock__b--h2"></span>
+          <span class="tt-mock__b tt-mock__b--h3"></span><span class="tt-mock__b tt-mock__b--h3 tt-mock__b--mid"></span><span class="tt-mock__b tt-mock__b--h3"></span><span class="tt-mock__b tt-mock__b--h3 tt-mock__b--on"></span><span class="tt-mock__b tt-mock__b--h3 tt-mock__b--mid"></span>
+        </div>
+        <span class="tile-body">
+          <span class="disp tile-title">Raspored nastave</span>
+          <span class="tile-desc">Tjedni raspored po studiju i godini, uvijek ažuran.</span>
+        </span>
+      </a>
+
+      <a class="tile tile--accent b-2x1" href="#">
+        <span class="tile-go"><svg width="18" height="18"><use href="#i-arrow"/></svg></span>
+        <span class="tile-ic"><svg width="24" height="24"><use href="#i-cap"/></svg></span>
+        <span class="tile-body">
+          <span class="disp tile-title">Upisi</span>
+          <span class="tile-desc">Prijave, rokovi, rang-liste i rezultati</span>
+        </span>
+      </a>
+
+      <a class="tile" href="#">
+        <span class="tile-go"><svg width="18" height="18"><use href="#i-arrow"/></svg></span>
+        <span class="tile-ic"><svg width="24" height="24"><use href="#i-exam"/></svg></span>
+        <span class="tile-body"><span class="tile-title">Ispitni rokovi</span><span class="tile-desc">Termini za akademsku godinu</span></span>
+      </a>
+
+      <a class="tile" href="#">
+        <span class="tile-go"><svg width="18" height="18"><use href="#i-arrow"/></svg></span>
+        <span class="tile-ic"><svg width="24" height="24"><use href="#i-chat"/></svg></span>
+        <span class="tile-body"><span class="tile-title">Konzultacije</span><span class="tile-desc">Termini nastavnika i suradnika</span></span>
+      </a>
+
+      <a class="tile tile--img b-2x1" href="#">
+        <span class="ph"><span class="ph-inner"></span></span>
+        <span class="ph-tag">Foto · Simulator</span>
+        <span class="tile-go"><svg width="18" height="18"><use href="#i-arrow"/></svg></span>
+        <span class="tile__panel"><span class="tile-title">Trening centar</span><span class="tile-desc">Tečajevi i raspored obuke</span></span>
+      </a>
+
+      <a class="tile" href="#">
+        <span class="tile-go"><svg width="18" height="18"><use href="#i-arrow"/></svg></span>
+        <span class="tile-ic"><svg width="24" height="24"><use href="#i-users"/></svg></span>
+        <span class="tile-body"><span class="tile-title">Nastavnici i suradnici</span><span class="tile-desc">Imenik djelatnika i kontakti</span></span>
+      </a>
+
+      <a class="tile" href="#">
+        <span class="tile-go"><svg width="18" height="18"><use href="#i-arrow"/></svg></span>
+        <span class="tile-ic"><svg width="24" height="24"><use href="#i-doc"/></svg></span>
+        <span class="tile-body"><span class="tile-title">Natječaji</span><span class="tile-desc">Stipendije, demonstrature, Erasmus+</span></span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ============ NEWS HIGHLIGHTS (horizontal) ============ -->
+<section id="novosti" class="hs" data-hs aria-labelledby="hl-title">
+  <div class="hs__sticky" data-hs-sticky>
+    <div class="wrap sec-head" style="margin-bottom:44px">
+      <div class="sec-head__l">
+        <span class="eyebrow" data-fade><span class="eyebrow__dot"></span>Istaknuto</span>
+        <h2 id="hl-title" class="disp h2" data-split="lines">Novosti s fakulteta</h2>
+      </div>
+      <div class="hs__bar" data-fade>
+        <span class="hs-progress" aria-hidden="true"><span class="hs-progress__fill" data-hs-progress></span></span>
+        <a class="btn btn--ink" href="#">Sve novosti <span class="btn-ic"><svg width="15" height="15"><use href="#i-arrow"/></svg></span></a>
+      </div>
+    </div>
+
+    <div class="hs-track" data-hs-track>
+      <a class="nfeat" href="#">
+        <span class="ph" data-img><span class="ph-inner"></span></span>
+        <span class="ph-tag">Foto · Promocija u auli</span>
+        <span class="nfeat__panel">
+          <span class="meta"><span class="meta__date">10. 11. 2026.</span><span class="chip">Službeno</span><span class="chip">Studenti</span></span>
+          <span class="disp nfeat__title">Svečana promocija sveučilišnih prvostupnika i magistara inženjera</span>
+        </span>
+      </a>
+      <a class="ncard" href="#">
+        <span class="ph ph--light" data-img style="background:#D6DEE5"><span class="ph-inner"></span><span class="ph-tag">Foto · Vukovar</span></span>
+        <span class="meta"><span class="meta__date">12. 11. 2026.</span><span class="chip chip--white">Najave</span></span>
+        <span class="ncard__title">Posjet Vukovaru — 18. studenoga</span>
+      </a>
+      <a class="ncard" href="#">
+        <span class="ph" data-img style="background:#0F3440"><span class="ph-inner"></span><span class="ph-tag">Foto · Alumni</span></span>
+        <span class="meta"><span class="meta__date">12. 11. 2026.</span><span class="chip chip--white">Alumni</span><span class="chip chip--white">NAVAL</span></span>
+        <span class="ncard__title">Alumni okupljanje u sklopu projekta NAVAL: „Moj prvi ukrcaj”</span>
+      </a>
+      <a class="ncard" href="#">
+        <span class="ph ph--light" data-img style="background:#E2DDD4"><span class="ph-inner"></span><span class="ph-tag">Foto · Darivanje krvi</span></span>
+        <span class="meta"><span class="meta__date">12. 11. 2026.</span><span class="chip chip--white">Najave</span></span>
+        <span class="ncard__title">Darivanje krvi na Pomorskom</span>
+      </a>
+      <a class="ncard" href="#">
+        <span class="ph" data-img style="background:#173A55"><span class="ph-inner"></span><span class="ph-tag">Foto · Kampus</span></span>
+        <span class="meta"><span class="meta__date">13. 10. 2026.</span><span class="chip chip--white">Znanost</span></span>
+        <span class="ncard__title">Dan otvorene znanosti: Kampus budućnosti</span>
+      </a>
+      <a class="ncard" href="#">
+        <span class="ph ph--light" data-img style="background:#CFDCD6"><span class="ph-inner"></span><span class="ph-tag">Foto · Radionica</span></span>
+        <span class="meta"><span class="meta__date">03. 11. 2026.</span><span class="chip chip--white">Studenti</span></span>
+        <span class="ncard__title">Od učionice do zajednice: kada teorija postane praksa</span>
+      </a>
+      <a class="ncard-end" href="#">
+        <span class="ncard-end__label">Arhiva</span>
+        <span class="ncard-end__body">
+          <span class="disp ncard-end__title">Sve novosti i obavijesti</span>
+          <span class="go"><svg width="22" height="22"><use href="#i-arrow"/></svg></span>
+        </span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ============ STATEMENT ============ -->
+<section class="statement" aria-label="O fakultetu">
+  <div class="wrap">
+    <p class="disp statement__text" data-split="words-scrub">Više od 65 godina <span class="inline-pill" data-pill><span class="ph-inner"></span></span> učimo zanat mora — od simulatora <span class="inline-pill inline-pill--accent" data-pill></span> do mosta, strojarnice i luke <span class="inline-pill inline-pill--light" data-pill><span class="ph-inner"></span></span> onako kako se danas radi.</p>
+    <div class="statement__ctas" data-fade>
+      <a class="btn btn--ink" href="#">O fakultetu <span class="btn-ic"><svg width="15" height="15"><use href="#i-arrow"/></svg></span></a>
+      <a class="btn btn--line" href="#">Pogledaj film</a>
+    </div>
+  </div>
+</section>
+
+<!-- ============ STUDY PROGRAMMES (stacking cards) ============ -->
+<section id="studiji" class="studiji" aria-labelledby="st-title">
+  <div class="studiji__box">
+    <div class="wrap">
+      <div class="sec-head">
+        <div class="sec-head__l">
+          <span class="eyebrow eyebrow--dark" data-fade><span class="eyebrow__dot"></span>Studiji</span>
+          <h2 id="st-title" class="disp h2" data-split="lines">Studiraj ono što<br>pokreće more.</h2>
+        </div>
+        <p class="sec-lead" data-fade>Teorija, simulatori i praksa na brodu — studiji koji vode ravno u struku.</p>
+      </div>
+
+      <div class="stack" data-stack>
+        <a class="stack-card" href="#" data-stack-card>
+          <span class="stack-card__text">
+            <span class="stack-card__top"><span class="stack-card__num">01 / 04</span><span class="go"><svg width="20" height="20"><use href="#i-arrow"/></svg></span></span>
+            <span class="stack-card__body">
+              <span class="disp stack-card__title">Pomorska nautika</span>
+              <span class="stack-card__desc">Navigacija, upravljanje brodom i sigurnost plovidbe.</span>
+            </span>
+          </span>
+          <span class="ph" style="background:#123A57"><span class="ph-inner"></span><span class="ph-tag">Foto · Brodski most</span></span>
+          <span class="stack-card__dim" data-dim aria-hidden="true"></span>
+        </a>
+        <a class="stack-card" href="#" data-stack-card>
+          <span class="stack-card__text">
+            <span class="stack-card__top"><span class="stack-card__num">02 / 04</span><span class="go"><svg width="20" height="20"><use href="#i-arrow"/></svg></span></span>
+            <span class="stack-card__body">
+              <span class="disp stack-card__title">Brodostrojarstvo</span>
+              <span class="stack-card__desc">Brodski strojni sustavi, pogon i održavanje.</span>
+            </span>
+          </span>
+          <span class="ph" style="background:#0F3440"><span class="ph-inner"></span><span class="ph-tag">Foto · Strojarnica</span></span>
+          <span class="stack-card__dim" data-dim aria-hidden="true"></span>
+        </a>
+        <a class="stack-card" href="#" data-stack-card>
+          <span class="stack-card__text">
+            <span class="stack-card__top"><span class="stack-card__num">03 / 04</span><span class="go"><svg width="20" height="20"><use href="#i-arrow"/></svg></span></span>
+            <span class="stack-card__body">
+              <span class="disp stack-card__title stack-card__title--long">Pomorske elektrotehničke i informatičke tehnologije</span>
+              <span class="stack-card__desc">Elektrotehnika, automatika i informatika na brodu i u luci.</span>
+            </span>
+          </span>
+          <span class="ph" style="background:#2A3440"><span class="ph-inner"></span><span class="ph-tag">Foto · Laboratorij</span></span>
+          <span class="stack-card__dim" data-dim aria-hidden="true"></span>
+        </a>
+        <a class="stack-card" href="#" data-stack-card>
+          <span class="stack-card__text">
+            <span class="stack-card__top"><span class="stack-card__num">04 / 04</span><span class="go go--light"><svg width="20" height="20"><use href="#i-arrow"/></svg></span></span>
+            <span class="stack-card__body">
+              <span class="disp stack-card__title">Pomorski menadžment</span>
+              <span class="stack-card__desc">Luke, logistika i poslovanje u pomorstvu.</span>
+            </span>
+          </span>
+          <span class="ph" style="background:#163049"><span class="ph-inner"></span><span class="ph-tag">Foto · Kontejnerski terminal</span></span>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ OTHER NEWS ============ -->
+<section class="other" aria-labelledby="on-title">
+  <div class="wrap on-grid">
+    <div class="on-aside">
+      <span class="eyebrow" data-fade><span class="eyebrow__dot"></span>Obavijesti</span>
+      <h2 id="on-title" class="disp h2" data-split="lines">Ostale novosti</h2>
+      <p class="sec-lead" data-fade>Službene obavijesti, natječaji i najave događanja.</p>
+      <div class="tabs" role="group" aria-label="Filtriraj novosti" data-fade data-news-tabs>
+        <button type="button" class="tab is-on" aria-pressed="true" data-filter="Sve">Sve</button>
+        <button type="button" class="tab" aria-pressed="false" data-filter="Službeno">Službeno</button>
+        <button type="button" class="tab" aria-pressed="false" data-filter="Najave">Najave</button>
+        <button type="button" class="tab" aria-pressed="false" data-filter="Natječaji">Natječaji</button>
+        <button type="button" class="tab" aria-pressed="false" data-filter="Istaknuto">Istaknuto</button>
+      </div>
+    </div>
+
+    <div>
+      <div class="news-panel" data-fade data-news-list>
+        <a class="nrow" href="#" data-cat="Najave"><span class="nrow__date">11. 11. 2026.</span><span class="nrow__title">Bradati kviz na Kampusu!</span><span class="nrow__cat"><span class="chip">Najave</span></span><span class="nrow__go"><svg width="18" height="18"><use href="#i-arrow"/></svg></span></a>
+        <a class="nrow" href="#" data-cat="Najave"><span class="nrow__date">10. 11. 2026.</span><span class="nrow__title">Raspored tečajeva u Trening centru PFST-a</span><span class="nrow__cat"><span class="chip">Najave</span></span><span class="nrow__go"><svg width="18" height="18"><use href="#i-arrow"/></svg></span></a>
+        <a class="nrow" href="#" data-cat="Službeno"><span class="nrow__date">09. 11. 2026.</span><span class="nrow__title">Javna obrana teme doktorskog rada — Vladimir Vetma</span><span class="nrow__cat"><span class="chip">Službeno</span></span><span class="nrow__go"><svg width="18" height="18"><use href="#i-arrow"/></svg></span></a>
+        <a class="nrow" href="#" data-cat="Natječaji"><span class="nrow__date">09. 11. 2026.</span><span class="nrow__title">Natječaj za Dekanovu nagradu</span><span class="nrow__cat"><span class="chip">Natječaji</span></span><span class="nrow__go"><svg width="18" height="18"><use href="#i-arrow"/></svg></span></a>
+        <a class="nrow" href="#" data-cat="Službeno"><span class="nrow__date">06. 11. 2026.</span><span class="nrow__title">Javna obrana teme doktorskog rada — Ivan Karin</span><span class="nrow__cat"><span class="chip">Službeno</span></span><span class="nrow__go"><svg width="18" height="18"><use href="#i-arrow"/></svg></span></a>
+        <a class="nrow" href="#" data-cat="Natječaji"><span class="nrow__date">06. 11. 2026.</span><span class="nrow__title">Rezultati ponovljenog natječaja za studente demonstratore, zimski semestar 2026./2027.</span><span class="nrow__cat"><span class="chip">Natječaji</span></span><span class="nrow__go"><svg width="18" height="18"><use href="#i-arrow"/></svg></span></a>
+        <a class="nrow" href="#" data-cat="Službeno"><span class="nrow__date">05. 11. 2026.</span><span class="nrow__title">Rezultati upisa na diplomske studije — treći upisni rok</span><span class="nrow__cat"><span class="chip">Službeno</span></span><span class="nrow__go"><svg width="18" height="18"><use href="#i-arrow"/></svg></span></a>
+        <a class="nrow" href="#" data-cat="Najave"><span class="nrow__date">05. 11. 2026.</span><span class="nrow__title">Unisport ST: sveučilišno natjecanje u stolnom tenisu i badmintonu</span><span class="nrow__cat"><span class="chip">Najave</span></span><span class="nrow__go"><svg width="18" height="18"><use href="#i-arrow"/></svg></span></a>
+        <a class="nrow" href="#" data-cat="Službeno"><span class="nrow__date">02. 11. 2026.</span><span class="nrow__title">Popis tema završnih i diplomskih radova za 2026./2027.</span><span class="nrow__cat"><span class="chip">Službeno</span></span><span class="nrow__go"><svg width="18" height="18"><use href="#i-arrow"/></svg></span></a>
+        <a class="nrow" href="#" data-cat="Istaknuto"><span class="nrow__date">02. 11. 2026.</span><span class="nrow__title">ESD konferencija održana na Pomorskom fakultetu</span><span class="nrow__cat"><span class="chip">Istaknuto</span></span><span class="nrow__go"><svg width="18" height="18"><use href="#i-arrow"/></svg></span></a>
+        <a class="nrow" href="#" data-cat="Natječaji"><span class="nrow__date">29. 10. 2026.</span><span class="nrow__title">Privremena rang-lista za državne stipendije 2026./2027.</span><span class="nrow__cat"><span class="chip">Natječaji</span></span><span class="nrow__go"><svg width="18" height="18"><use href="#i-arrow"/></svg></span></a>
+        <a class="nrow" href="#" data-cat="Natječaji"><span class="nrow__date">23. 10. 2026.</span><span class="nrow__title">Erasmus+ rang-liste za nastavno i nenastavno osoblje</span><span class="nrow__cat"><span class="chip">Natječaji</span></span><span class="nrow__go"><svg width="18" height="18"><use href="#i-arrow"/></svg></span></a>
+      </div>
+      <div class="more-wrap" data-news-more-wrap>
+        <button type="button" class="btn btn--line" data-news-more>Prikaži još obavijesti</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ CTA SPLIT ============ -->
+<section class="cta" aria-label="Upisi i Trening centar">
+  <div class="cta-grid">
+    <a class="cta-card cta-card--navy" href="#" data-clip>
+      <span class="cta-card__label">Upisi</span>
+      <span class="cta-card__body">
+        <span class="disp cta-card__title">Postani dio posade.</span>
+        <span class="cta-card__lead">Prijave, rokovi i rang-liste za prijediplomske i diplomske studije.</span>
+        <span class="btn btn--white">Sve o upisima <span class="btn-ic"><svg width="15" height="15"><use href="#i-arrow"/></svg></span></span>
+      </span>
+      <span class="cta-card__flags" aria-hidden="true"><span class="flags" data-parallax></span></span>
+    </a>
+    <a class="cta-card cta-card--img" href="#" data-clip>
+      <span class="ph"><span class="ph-inner" data-parallax></span></span>
+      <span class="ph-tag">Foto · Simulator brodskog mosta</span>
+      <span class="cta-panel">
+        <span class="cta-panel__text">
+          <span class="cta-panel__label">Trening centar PFST-a</span>
+          <span class="disp cta-panel__title">Obuka koja vrijedi i na moru.</span>
+          <span class="cta-panel__lead">Tečajevi i osposobljavanja za studente i pomorce.</span>
+        </span>
+        <span class="go"><svg width="20" height="20"><use href="#i-arrow"/></svg></span>
+      </span>
+    </a>
+  </div>
+</section>
+
+</main>
+
+<!-- ============ FOOTER ============ -->
+<footer class="footer">
+  <div class="footer__box">
+    <div class="wrap">
+      <div class="footer__top">
+        <a class="brand" href="#">
+          <svg class="brand__mark" width="40" height="44" aria-hidden="true"><use href="#i-logo"/></svg>
+          <span class="brand__text"><span>Pomorski</span><span>fakultet</span><span>u Splitu</span></span>
+        </a>
+        <a class="btn btn--white" href="#">Upiši se <span class="btn-ic"><svg width="15" height="15"><use href="#i-arrow"/></svg></span></a>
+      </div>
+      <div class="foot-grid">
+        <div class="foot-col">
+          <span class="foot-label">Adresa</span>
+          <span>Ruđera Boškovića 37</span>
+          <span>21000 Split, Hrvatska</span>
+        </div>
+        <div class="foot-col">
+          <span class="foot-label">Kontakt</span>
+          <a href="#">[TELEFON]</a>
+          <a href="#">[E-MAIL REFERADE]</a>
+          <a href="#">Facebook</a>
+        </div>
+        <div class="foot-col">
+          <span class="foot-label">Fakultet</span>
+          <a href="#">O fakultetu</a>
+          <a href="#studiji">Studiji</a>
+          <a href="#">Upisi</a>
+          <a href="#">Natječaji</a>
+        </div>
+        <div class="foot-col">
+          <span class="foot-label">Studenti</span>
+          <a href="#">Raspored nastave</a>
+          <a href="#">Ispitni rokovi</a>
+          <a href="#">Konzultacije</a>
+          <a href="#">Webmail</a>
+        </div>
+      </div>
+    </div>
+    <div class="disp wordmark" data-split="chars" aria-hidden="true">PFST</div>
+    <div class="footer__bottom">
+      <span>© 2026 Pomorski fakultet u Splitu</span>
+      <span>Sveučilište u Splitu</span>
+    </div>
+  </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.15.1/dist/gsap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.15.1/dist/ScrollTrigger.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.15.1/dist/SplitText.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/lenis@1.3.27/dist/lenis.min.js"></script>
+<script src="main.js"></script>
+</body>
+</html>

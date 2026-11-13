@@ -1,23 +1,48 @@
 import Link from "next/link";
+import Icon from "@/components/ui/Icon";
+import { getChromeCopy } from "@/lib/chromeCopy";
+import { localizedHomeUri } from "@/lib/language";
 import styles from "./Breadcrumbs.module.css";
 
-export default function Breadcrumbs({ page }) {
-  // WPGraphQL orders ancestors nearest-first (parent, grandparent, ...);
-  // breadcrumbs need root-first.
-  const ancestors = [...(page.ancestors?.nodes ?? [])].reverse();
+/**
+ * Breadcrumbs in the page hero (design/reference/page.html): a glass pill,
+ * home icon, ancestors, current page.
+ *
+ * @param {{ items: { label: string, uri: string }[], current: string, language?: string }} props
+ */
+export default function Breadcrumbs({ items = [], current, language = "hr" }) {
+  const copy = getChromeCopy(language);
 
   return (
-    <nav className={styles.breadcrumbs} aria-label="Navigacijski put">
-      <ol className={styles.list}>
+    <nav className={styles.crumbs} aria-label={copy.breadcrumbsLabel} data-hero-fade>
+      <ol className={styles.list} role="list">
         <li>
-          <Link href="/">Početna</Link>
+          <Link
+            href={localizedHomeUri(language)}
+            className={styles.link}
+            aria-label={copy.breadcrumbsHome}
+          >
+            <Icon name="home" size={15} />
+          </Link>
         </li>
-        {ancestors.map((ancestor) => (
-          <li key={ancestor.id}>
-            <Link href={ancestor.uri}>{ancestor.title}</Link>
+        {items.map((item) => (
+          <li key={item.uri}>
+            <span className={styles.slash} aria-hidden="true">
+              /
+            </span>
+            <Link href={item.uri} className={styles.link}>
+              {item.label}
+            </Link>
           </li>
         ))}
-        <li aria-current="page">{page.title}</li>
+        <li>
+          <span className={styles.slash} aria-hidden="true">
+            /
+          </span>
+          <span className={styles.current} aria-current="page">
+            {current}
+          </span>
+        </li>
       </ol>
     </nav>
   );

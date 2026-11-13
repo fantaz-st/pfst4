@@ -3,28 +3,13 @@ import {
   NEWS_TAXONOMIES,
   FEATURED_CATEGORY_TRANSLATION,
   RELATED_POSTS,
-  NEWS_TAGS,
 } from "./queries";
 import { DEFAULT_LANGUAGE, toLanguageCodeEnum } from "./language";
 
-export const FEATURED_CATEGORY_SLUG = "istaknuto";
+import { FEATURED_CATEGORY_SLUG, getPostCategories } from "./posts";
 
-const LOCALE_BY_LANGUAGE = { hr: "hr-HR", en: "en-GB" };
-const FALLBACK_CATEGORY_LABEL_BY_LANGUAGE = {
-  hr: "Bez kategorije",
-  en: "Uncategorized",
-};
-
-function getLocale(language) {
-  return LOCALE_BY_LANGUAGE[language] ?? LOCALE_BY_LANGUAGE[DEFAULT_LANGUAGE];
-}
-
-export function getFallbackCategoryLabel(language = DEFAULT_LANGUAGE) {
-  return (
-    FALLBACK_CATEGORY_LABEL_BY_LANGUAGE[language] ??
-    FALLBACK_CATEGORY_LABEL_BY_LANGUAGE[DEFAULT_LANGUAGE]
-  );
-}
+// Re-exported for server code that already imports them from here.
+export { FEATURED_CATEGORY_SLUG, getPostCategories, getFallbackCategoryLabel } from "./posts";
 
 export async function getNewsTaxonomies(language = DEFAULT_LANGUAGE) {
   const data = await wpFetch(
@@ -56,63 +41,48 @@ export async function getFeaturedCategorySlug(language = DEFAULT_LANGUAGE) {
   return data?.category?.translation?.slug ?? null;
 }
 
-export function getPostCategories(post) {
-  return (post.categories?.nodes ?? []).filter(
-    (category) => category.slug !== FEATURED_CATEGORY_SLUG,
-  );
-}
+const RELATED_LIMIT = 4;
+// Tag matches are re-ranked by rarity, so fetch a wider pool than we show.
+const RELATED_TAG_POOL = 20;
 
-export function getFeaturedCategory(post) {
-  return (post.categories?.nodes ?? []).find(
-    (category) => category.slug === FEATURED_CATEGORY_SLUG,
-  ) ?? null;
-}
-
-export function getDisplayCategories(post) {
-  const categories = getPostCategories(post);
-  const featuredCategory = getFeaturedCategory(post);
-  return featuredCategory ? [...categories, featuredCategory] : categories;
-}
-
-export function getPrimaryCategory(post) {
-  return (
-    getPostCategories(post)[0] ??
-    getFeaturedCategory(post) ??
-    null
-  );
-}
-
+// Asks WordPress for posts sharing a tag or a (non-featured) category instead
+// of downloading recent posts and filtering here — so matches are found
+// across the whole archive, not just the latest page.
 export async function getRelatedPosts(post, language = DEFAULT_LANGUAGE) {
-  const [data, tagData] = await Promise.all([
-    wpFetch(
-      RELATED_POSTS,
-      { first: 100, where: { language: toLanguageCodeEnum(language) } },
-      { tags: ["wp"] },
-    ),
-    wpFetch(NEWS_TAGS, {}, { tags: ["wp"] }),
-  ]);
-  const candidates = (data?.posts?.nodes ?? []).filter(
-    (candidate) => candidate.id !== post.id,
-  );
-  const postTags = new Set((post.tags?.nodes ?? []).map((tag) => tag.slug));
-  const postCategories = new Set(
-    getPostCategories(post).map((category) => category.slug),
-  );
-  const tagCounts = new Map(
-    (tagData?.tags?.nodes ?? []).map((tag) => [tag.slug, tag.count]),
+  const tagSlugs = (post.tags?.nodes ?? []).map((tag) => tag.slug);
+  const categorySlugs = getPostCategories(post).map((category) => category.slug);
+  if (tagSlugs.length === 0 && categorySlugs.length === 0) return [];
+
+  const languageCode = toLanguageCodeEnum(language);
+  const taxWhere = (taxonomy, terms) => ({
+    language: languageCode,
+    taxQuery: { taxArray: [{ taxonomy, terms, field: "SLUG" }] },
+  });
+
+  const data = await wpFetch(
+    RELATED_POSTS,
+    {
+      first: RELATED_TAG_POOL,
+      byTag: taxWhere("TAG", tagSlugs),
+      byCategory: taxWhere("CATEGORY", categorySlugs),
+      skipTags: tagSlugs.length === 0,
+      skipCategories: categorySlugs.length === 0,
+    },
+    { tags: ["wp"] },
   );
 
-  const tagMatches = candidates
-    .map((candidate) => {
-      const sharedTags = (candidate.tags?.nodes ?? []).filter((tag) =>
-        postTags.has(tag.slug),
-      );
-      const score = sharedTags.reduce(
-        (total, tag) => total + 1 / Math.max(tagCounts.get(tag.slug) ?? 1, 1),
-        0,
-      );
-      return { candidate, score };
-    })
+  const notSelf = (candidate) => candidate.id !== post.id;
+  const postTags = new Set(tagSlugs);
+
+  // A shared tag used on few posts says more than one used on many.
+  const tagMatches = (data?.byTag?.nodes ?? [])
+    .filter(notSelf)
+    .map((candidate) => ({
+      candidate,
+      score: (candidate.tags?.nodes ?? [])
+        .filter((tag) => postTags.has(tag.slug))
+        .reduce((total, tag) => total + 1 / Math.max(tag.count ?? 1, 1), 0),
+    }))
     .filter(({ score }) => score > 0)
     .sort(
       (a, b) =>
@@ -121,19 +91,15 @@ export async function getRelatedPosts(post, language = DEFAULT_LANGUAGE) {
     )
     .map(({ candidate }) => candidate);
 
-  const selected = tagMatches.slice(0, 4);
-  if (selected.length < 4) {
-    selected.push(
-      ...candidates
-        .filter((candidate) => {
-          if (selected.some((item) => item.id === candidate.id)) return false;
-          return getPostCategories(candidate).some((category) =>
-            postCategories.has(category.slug),
-          );
-        })
-        .sort((a, b) => new Date(b.date) - new Date(a.date))
-        .slice(0, 4 - selected.length),
-    );
+  const selected = tagMatches.slice(0, RELATED_LIMIT);
+  const selectedIds = new Set(selected.map((item) => item.id));
+
+  // WordPress already returns these newest first.
+  for (const candidate of data?.byCategory?.nodes ?? []) {
+    if (selected.length >= RELATED_LIMIT) break;
+    if (!notSelf(candidate) || selectedIds.has(candidate.id)) continue;
+    selected.push(candidate);
+    selectedIds.add(candidate.id);
   }
 
   return selected;
@@ -168,38 +134,4 @@ export function buildNewsWhere({
   }
 
   return where;
-}
-
-export function groupPostsByDay(posts) {
-  const groups = [];
-  const byKey = new Map();
-
-  for (const post of posts) {
-    const date = new Date(post.date);
-    const key = date.toISOString().slice(0, 10);
-    let group = byKey.get(key);
-    if (!group) {
-      group = { key, date, posts: [] };
-      byKey.set(key, group);
-      groups.push(group);
-    }
-    group.posts.push(post);
-  }
-
-  return groups;
-}
-
-export function formatDayLabel(date, language = DEFAULT_LANGUAGE) {
-  return new Intl.DateTimeFormat(getLocale(language), {
-    day: "numeric",
-    month: "long",
-    year: "numeric",
-  }).format(date);
-}
-
-export function formatTimeLabel(date, language = DEFAULT_LANGUAGE) {
-  return new Intl.DateTimeFormat(getLocale(language), {
-    hour: "2-digit",
-    minute: "2-digit",
-  }).format(date);
 }

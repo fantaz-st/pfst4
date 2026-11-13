@@ -1,0 +1,132 @@
+/* The nav bar sits over the top of the page's Hero (components/layout/Hero),
+   which starts right under the 40px utility row and is inset 12px. */
+.frame {
+  --focus-ring: var(--color-surface);
+  position: absolute;
+  top: 40px;
+  right: var(--frame-inset);
+  left: var(--frame-inset);
+  z-index: 40;
+  color: var(--color-surface);
+}
+
+.bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 22px 24px 0 28px;
+}
+
+/* ---- Glass pill nav ---- */
+.gnav {
+  display: flex;
+  gap: 2px;
+  padding: 5px;
+  border-radius: var(--r-pill);
+  background: color-mix(in srgb, var(--pfst-bijela) 12%, transparent);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+}
+
+.navItem {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 38px;
+  padding: 0 var(--space-4);
+  border: 0;
+  border-radius: var(--r-pill);
+  background: transparent;
+  color: var(--color-surface);
+  font-size: var(--fs-small);
+  font-weight: 500;
+  white-space: nowrap;
+  transition:
+    background var(--dur-hover) var(--ease-out),
+    color var(--dur-hover) var(--ease-out);
+}
+
+/* 38px pill inside a 48px bar: the hit area takes the bar's full height. */
+.navItem::before {
+  content: "";
+  position: absolute;
+  inset: -5px 0;
+}
+
+.navItem:hover {
+  background: color-mix(in srgb, var(--pfst-bijela) 16%, transparent);
+}
+
+/* Current section / open panel: white pill. */
+.navItem.on {
+  background: var(--color-surface);
+  color: var(--color-text);
+  --focus-ring: var(--color-primary);
+}
+
+.chevron {
+  display: inline-flex;
+  transition: transform var(--dur-hover) var(--ease-out);
+}
+
+.navItem[aria-expanded="true"] .chevron {
+  transform: rotate(180deg);
+}
+
+/* ---- Actions ---- */
+.actions {
+  display: flex;
+  flex: none;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.menuButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  border: 0;
+  border-radius: var(--r-pill);
+  background: var(--glass);
+  color: var(--color-surface);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  transition: background var(--dur-hover) var(--ease-out);
+}
+
+.menuButton:hover {
+  background: color-mix(in srgb, var(--pfst-bijela) 24%, transparent);
+}
+
+/* ---- Mega backdrop (STYLEGUIDE: scrim over photos only) ---- */
+.backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 30;
+  padding: 0;
+  border: 0;
+  background: color-mix(in srgb, var(--color-deep) 50%, transparent);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  cursor: default;
+}
+
+@media (max-width: 1080px) {
+  .gnav {
+    display: none;
+  }
+}
+
+@media (max-width: 720px) {
+  .bar {
+    padding: var(--space-4) var(--space-3) 0 var(--space-4);
+  }
+
+  .actions :global(a) {
+    display: none;
+  }
+}

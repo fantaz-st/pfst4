@@ -1,64 +1,83 @@
 import BlockRenderer from "@/components/blocks/BlockRenderer";
-import Breadcrumbs from "@/components/layout/Breadcrumbs";
-import SectionRail from "@/components/layout/SectionRail";
+import { getChromeCopy } from "@/lib/chromeCopy";
+import { getNodeLanguage } from "@/lib/language";
+import { formatDate } from "@/lib/format";
+import { withHeadingAnchors } from "@/lib/headings";
+import { getSectionRootUri, getSectionTree } from "@/lib/section";
+import PageHero from "./PageHero";
+import SectionNav from "./SectionNav";
+import Toc from "./Toc";
+import PageTools from "./PageTools";
+import HubGrid from "./HubGrid";
+import PrevNext from "./PrevNext";
 import styles from "./PageView.module.css";
 
-export default function PageView({ node }) {
+/**
+ * The one WordPress page template (design/reference/page.html). A page with
+ * children is also a section overview (opcenito.html): its content, if
+ * any, then a card per child page.
+ */
+export default async function PageView({ node }) {
+  const language = getNodeLanguage(node);
+  const copy = getChromeCopy(language);
+  const tree = await getSectionTree(getSectionRootUri(node));
   const children = node.children?.nodes ?? [];
-  const hasContent = Array.isArray(node.blocks) && node.blocks.length > 0;
+  const { blocks, toc } = withHeadingAnchors(node.blocks ?? []);
+  const hasContent = blocks.length > 0;
 
-  const pageHeader = (
-    <header className={styles.pageHeader}>
-      <Breadcrumbs page={node} />
-      <h1 className={styles.title}>{node.title}</h1>
-    </header>
-  );
-
-  const childPagesList =
-    children.length > 0 ? (
-      <section
-        className={styles.childPages}
-        aria-labelledby="child-pages-heading"
-      >
-        <div className={styles.childPagesHeader}>
-          <p className={styles.kicker}>Sadržaj</p>
-          <h2 id="child-pages-heading">Povezane stranice</h2>
-        </div>
-        <ul className={styles.childPagesList}>
-          {children.map((child) => (
-            <li key={child.id}>
-              <a href={child.uri}>{child.title}</a>
-            </li>
-          ))}
-        </ul>
-      </section>
-    ) : null;
+  // Root-first ancestors; the nearest one is the hero eyebrow.
+  const ancestors = [...(node.ancestors?.nodes ?? [])].reverse();
+  const parent = ancestors[ancestors.length - 1];
+  const showSidebar = tree && tree.children.length > 0;
 
   return (
-    <div className={styles.pageShell}>
-      <div className={styles.layout}>
-        <div className={styles.content}>
-          {pageHeader}
-          <article className={`${styles.article} prose`}>
-            {hasContent ? <BlockRenderer blocks={node.blocks} /> : null}
-            {!hasContent && children.length > 0 ? (
-              <div className={styles.emptyContentState}>
-                <p>
-                  Odabrana sekcija sadrži sljedeće stranice i dokumente povezane
-                  s ovom temom.
-                </p>
-              </div>
-            ) : null}
-          </article>
-          {children.length > 0 && !hasContent ? (
-            <div className={styles.childrenListWrap}>{childPagesList}</div>
-          ) : null}
-          {children.length > 0 && hasContent ? childPagesList : null}
+    <>
+      <PageHero
+        language={language}
+        title={node.title}
+        eyebrow={parent?.title}
+        lead={node.seo?.metaDesc || undefined}
+        crumbs={ancestors.map((item) => ({ label: item.title, uri: item.uri }))}
+        image={node.featuredImage?.node}
+      />
+
+      <div className={styles.wrap}>
+        <div className={styles.layout}>
+          {showSidebar && (
+            <aside className={styles.side} aria-label={copy.sectionNavLabel}>
+              <SectionNav tree={tree} currentUri={node.uri} language={language} />
+              <Toc items={toc} language={language} />
+            </aside>
+          )}
+
+          <div className={styles.main}>
+            {hasContent && (
+              <article className={styles.article}>
+                <header className={styles.meta} data-fade>
+                  {node.modified && (
+                    <span className={styles.modified}>
+                      {copy.lastModified}{" "}
+                      <time dateTime={node.modified} className="num">
+                        {formatDate(node.modified, language)}
+                      </time>
+                    </span>
+                  )}
+                  <PageTools title={node.title} language={language} />
+                </header>
+                <div className="prose">
+                  <BlockRenderer blocks={blocks} language={language} />
+                </div>
+              </article>
+            )}
+
+            {children.length > 0 ? (
+              <HubGrid pages={children} language={language} />
+            ) : (
+              <PrevNext page={node} language={language} />
+            )}
+          </div>
         </div>
-        <aside className={styles.sidebar}>
-          <SectionRail page={node} />
-        </aside>
       </div>
-    </div>
+    </>
   );
 }
