@@ -9,9 +9,15 @@ import styles from "./NewsCard.module.css";
  * News card (STYLEGUIDE §6): 4:3 image r24, date + chip row, Title M.
  * Posts without an image get the light contour placeholder, no tag.
  */
-export default function NewsCard({ post, language = "hr", sizes, chipTone = "white" }) {
+export default function NewsCard({
+  post,
+  language = "hr",
+  sizes,
+  chipTone = "white",
+  featuredSlug,
+}) {
   const image = post.featuredImage?.node;
-  const category = getPostCategories(post)[0];
+  const category = getPostCategories(post, featuredSlug)[0];
 
   return (
     <Link href={post.uri} className={styles.card}>

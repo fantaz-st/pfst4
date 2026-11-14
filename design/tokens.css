@@ -58,6 +58,10 @@
   --fs-title-l: 34px;                         /* lh 1 · ls -.035em · 600 */
   --fs-title-m: 23px;                         /* lh 1.25 · ls -.025em · 500 */
   --fs-title-s: 20px;                         /* lh 1.3 · ls -.02em · 500–600 */
+  --fs-post-title: clamp(40px, 5.4vw, 80px); /* article hero title */
+  --fs-post-lead: 21px;                       /* article lead paragraph */
+  --fs-post-heading: 30px;                    /* article section heading */
+  --fs-related-title: clamp(36px, 4.4vw, 64px);
   --fs-body-l: 17px;                          /* lh 1.55 · 400 */
   --fs-body: 15px;                            /* lh 1.5 · 400 */
   --fs-small: 14.5px;                         /* lh 1.45 · 400 */

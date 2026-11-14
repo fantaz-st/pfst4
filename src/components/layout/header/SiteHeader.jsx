@@ -29,25 +29,44 @@ import styles from "./SiteHeader.module.css";
 export default function SiteHeader({ menu, language, frequent, languages, utility }) {
   const copy = getChromeCopy(language);
   const pathname = usePathname();
-  const [openId, setOpenId] = useState(null);
+  const [openMenu, setOpenMenu] = useState(null);
   const [sheetOpen, setSheetOpen] = useState(false);
   const triggerRefs = useRef(new Map());
   const lastPathname = useRef(pathname);
 
-  const openItem = menu.find((item) => item.databaseId === openId) ?? null;
+  const openItem = menu.find((item) => item.databaseId === openMenu?.id) ?? null;
+
+  function setTriggerRef(source, id, element) {
+    const key = `${source}:${id}`;
+    if (element) triggerRefs.current.set(key, element);
+    else triggerRefs.current.delete(key);
+  }
 
   function closeMega({ restoreFocus = true } = {}) {
-    if (restoreFocus && openId != null) {
-      triggerRefs.current.get(openId)?.focus({ preventScroll: true });
+    if (restoreFocus && openMenu) {
+      triggerRefs.current
+        .get(`${openMenu.source}:${openMenu.id}`)
+        ?.focus({ preventScroll: true });
     }
-    setOpenId(null);
+    setOpenMenu(null);
+  }
+
+  function toggleMega(id, source) {
+    setOpenMenu((current) =>
+      current?.id === id && current.source === source ? null : { id, source },
+    );
+  }
+
+  function openMobileMenu() {
+    closeMega({ restoreFocus: false });
+    setSheetOpen(true);
   }
 
   // Navigating closes every menu.
   useEffect(() => {
     if (lastPathname.current === pathname) return;
     lastPathname.current = pathname;
-    setOpenId(null);
+    setOpenMenu(null);
     setSheetOpen(false);
   }, [pathname]);
 
@@ -61,7 +80,8 @@ export default function SiteHeader({ menu, language, frequent, languages, utilit
             {menu.map((item) => {
               const current = isCurrentSection(item, pathname);
               const hasPanel = item.children.length > 0;
-              const open = openId === item.databaseId;
+              const open =
+                openMenu?.source === "header" && openMenu.id === item.databaseId;
               const className = [
                 styles.navItem,
                 current || open ? styles.on : null,
@@ -73,8 +93,7 @@ export default function SiteHeader({ menu, language, frequent, languages, utilit
                 <button
                   key={item.databaseId}
                   ref={(el) => {
-                    if (el) triggerRefs.current.set(item.databaseId, el);
-                    else triggerRefs.current.delete(item.databaseId);
+                    setTriggerRef("header", item.databaseId, el);
                   }}
                   type="button"
                   className={className}
@@ -82,7 +101,7 @@ export default function SiteHeader({ menu, language, frequent, languages, utilit
                   aria-controls={`mega-${item.databaseId}`}
                   aria-current={current ? "true" : undefined}
                   onClick={() =>
-                    open ? closeMega() : setOpenId(item.databaseId)
+                    open ? closeMega() : toggleMega(item.databaseId, "header")
                   }
                 >
                   {item.label}
@@ -113,14 +132,14 @@ export default function SiteHeader({ menu, language, frequent, languages, utilit
               aria-label={copy.menu}
               aria-expanded={sheetOpen}
               aria-controls="site-menu"
-              onClick={() => setSheetOpen(true)}
+              onClick={openMobileMenu}
             >
               <Icon name="menu" size={18} />
             </button>
           </div>
         </header>
 
-        {openItem && (
+        {openItem && openMenu.source === "header" && (
           <MegaPanel
             key={openItem.databaseId}
             item={openItem}
@@ -144,7 +163,22 @@ export default function SiteHeader({ menu, language, frequent, languages, utilit
       <FloatingNav
         menu={menu}
         language={language}
-        onOpenMenu={() => setSheetOpen(true)}
+        frequent={frequent}
+        openItem={openMenu?.source === "floating" ? openItem : null}
+        onToggleMega={(id) => toggleMega(id, "floating")}
+        onCloseMega={closeMega}
+        onTriggerRef={(id, element) => setTriggerRef("floating", id, element)}
+        onBeforeShow={() => {
+          if (openMenu?.source === "header") {
+            closeMega({ restoreFocus: false });
+          }
+        }}
+        onBeforeHide={() => {
+          if (openMenu?.source === "floating") {
+            closeMega({ restoreFocus: false });
+          }
+        }}
+        onOpenMenu={openMobileMenu}
         menuOpen={sheetOpen}
       />
 

@@ -4,27 +4,32 @@
   padding: var(--space-12) var(--gutter) var(--section-y);
 }
 
-/* Reference .on-grid: 4fr filters / 8fr list. */
 .grid {
   display: grid;
-  grid-template-columns: minmax(0, 4fr) minmax(0, 8fr);
-  gap: 56px;
+  grid-template-columns: minmax(280px, 300px) minmax(0, 1fr);
+  gap: var(--space-10);
   align-items: start;
 }
 
-/* Sticky below the floating nav (16 + 60 + gap). */
 .aside {
   position: sticky;
-  top: 112px;
+  top: var(--space-10);
 }
 
 @media (max-width: 1080px) {
   .grid {
     grid-template-columns: minmax(0, 1fr);
-    gap: var(--space-10);
+    gap: var(--space-8);
   }
 
   .aside {
     position: static;
+  }
+}
+
+@media (max-width: 720px) {
+  .wrap {
+    padding-right: 20px;
+    padding-left: 20px;
   }
 }

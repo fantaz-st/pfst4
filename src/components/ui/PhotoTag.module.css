@@ -27,3 +27,9 @@
   top: 50%;
   right: 28px;
 }
+
+@media (max-width: 720px) {
+  .hideOnMobile {
+    display: none;
+  }
+}

@@ -13,6 +13,11 @@
   color: var(--color-text);
 }
 
+.floating {
+  top: 72px;
+  pointer-events: auto;
+}
+
 .panel:focus {
   outline: none;
 }

@@ -10,8 +10,8 @@ import styles from "./NewsRow.module.css";
  * Rows sit inside NewsList's white r28 panel, divided by --color-line.
  * The chip is the post's real category — never "istaknuto", which is a flag.
  */
-export default function NewsRow({ post, language = "hr" }) {
-  const category = getPostCategories(post)[0];
+export default function NewsRow({ post, language = "hr", featuredSlug }) {
+  const category = getPostCategories(post, featuredSlug)[0];
 
   return (
     <Link href={post.uri} className={styles.row}>

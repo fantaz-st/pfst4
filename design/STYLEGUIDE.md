@@ -74,11 +74,30 @@ Nested rule: inner radius = outer radius − padding (32 card, 14 padding → ~1
 - **News card** — 4:3 image r24, date + chip row, Title M. Featured: 680×540 photo with a white panel inset 14px.
 - **News row** — date (120px) · title · chip · arrow circle; rows divided by `--color-line`; inside a white r28 panel.
 - **Study card** — r32, padding 14, text half + image half; sticky stacking on scroll.
-- **Header (all pages)** — utility row (40px) above; main nav sits inside the hero (logo, glass pill nav, white "Upiši se", menu button). Floating dark pill nav slides in after the hero. Inner pages highlight the current top-level item as a white pill.
+- **Header (all pages)** — utility row (40px) above; main nav sits inside the hero (logo, glass pill nav, white "Upiši se", menu button). Floating dark pill nav slides in after the hero. Inner pages highlight the current top-level item as a white pill. Top-level items open the mega menu (§6a).
 - **Footer (all pages)** — modra block r32 inset 12: logo + CTA, 4 columns (Adresa, Kontakt, Fakultet, Studenti), giant "PFST" wordmark, bottom bar.
 - **Inner page sidebar** — white r24 panel; level 1 rows 44px r14 (open = bg tint, current section = modra fill); level 2 rows 40px (current page = `#EAF4FC` + plava dot); level 3 rows 36px. Chevron rotates 180° when open. Tree comes from the WordPress page hierarchy.
 - **Forms** (subpages) — inputs 52px, r16, white, 1px `#D3DBE6` border → hover `#93A6CC` → focus 2px modra; error 2px `#C42B1C` + message below; checkbox 24px r8, checked = modra.
 - **Signal flags** — graphic element from the visual standard (modra/plava/white square modules). Use as a band along the edge of a surface (Upisi card), never behind text.
+
+## 6a. Navigation (reference: `reference/mega-menu.html`, `reference/mobile-menu.html`)
+Content comes from WordPress (WPGraphQL menu, location `primary`): top-level items → groups → links. Never hardcode labels.
+
+**Desktop mega menu (≥1080px)**
+- Trigger: the top-level item in the glass nav is a `<button>` (not a link) with `aria-expanded` + `aria-controls`. Open = white pill, modra text, chevron rotated 180°. One panel open at a time.
+- Panel: white, r24, positioned 88px from the top of the hero, inset 12px left/right, overflow hidden. Padding 36. Thin signal-flag strip (10px) along the bottom edge.
+- Layout: intro column 300px (label with plava dot, Title L "Sve o …", one-line description, featured photo card 220px r20 with white panel + arrow circle, "Pregled cjeline" link) + 4 columns of groups, gap 44, columns separated by 1px `--color-line`, 28px inner padding, two groups stacked per column (36px apart).
+- Group heading: 16/600, links to the group page, 28px arrow circle on the right (hover: rotate −45°, fills modra). Links: 14.5px, min-height 34px, muted-2 → modra on hover with a 12px plava line sliding in before the text. A group without children shows a one-line description instead.
+- Footer bar: `#F7F9FB`, top border `--color-line`; search pill (52px, bg `--color-bg`, focus ring 2px modra) on the left; "Često traženo" chips (white) + "Zatvori" button on the right.
+- Backdrop: modra-deep at 50% + blur 6px over the hero.
+- Closes on: second click on the trigger, backdrop click, "Zatvori", Esc, route change. Focus moves into the panel on open and back to the trigger on close.
+- Motion: panel clip-path `inset(0 0 100% 0 round 24px)` → 0, 0.8s expo.out; then `[data-mm-item]` y 18 → 0 + fade, 0.7s, stagger 0.035s, delay 0.12s. None under reduced motion.
+
+**Mobile menu (<1080px)**
+- Full-screen sheet (`role="dialog"`, `aria-modal="true"`), white. Top: logo + 48px modra close button; search pill 48px.
+- Two-level accordion: level 1 rows 60px, 20/600, bottom border `--color-line`, 36px chevron circle (open = modra fill, rotated). Level 2 rows 50px r14, 15/600 (open = bg `--color-bg`). Level 3 links 44px, 14.5px, indented 28px; first link is "Pregled: {group}". One open item per level.
+- Pinned bottom: full-width accent "Upiši se" (54px), then Webmail · Raspored · Pristupačnost and HR / EN. Signal-flag strip 8px at the very bottom.
+- Tab is trapped inside the sheet; body scroll locked while open (Lenis `stop()` / `start()`); close returns focus to the menu button.
 
 ## 7. Imagery
 - Real people, ships, simulators, campus; natural light; no stock backdrops.

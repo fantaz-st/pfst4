@@ -11,20 +11,27 @@ import { FEATURED_CATEGORY_SLUG, getPostCategories } from "./posts";
 // Re-exported for server code that already imports them from here.
 export { FEATURED_CATEGORY_SLUG, getPostCategories, getFallbackCategoryLabel } from "./posts";
 
-export async function getNewsTaxonomies(language = DEFAULT_LANGUAGE) {
+export async function getNewsTaxonomies(
+  language = DEFAULT_LANGUAGE,
+  featuredSlug = FEATURED_CATEGORY_SLUG,
+) {
   const data = await wpFetch(
     NEWS_TAXONOMIES,
     { language: toLanguageCodeEnum(language) },
     { tags: ["wp"] },
   );
 
-  const categories = (data?.categories?.nodes ?? []).filter(
-    (category) => category.slug !== FEATURED_CATEGORY_SLUG,
+  const allCategories = data?.categories?.nodes ?? [];
+  const featuredCount =
+    allCategories.find((category) => category.slug === featuredSlug)?.count ?? null;
+  const categories = allCategories.filter(
+    (category) =>
+      category.slug !== FEATURED_CATEGORY_SLUG && category.slug !== featuredSlug,
   );
   // Terms WPGraphQL reports as count: null carry zero posts.
   const ciljevi = (data?.ciljevi?.nodes ?? []).filter((term) => term.count);
 
-  return { categories, ciljevi };
+  return { categories, ciljevi, featuredCount };
 }
 
 // Returns the slug of the "featured" category for a language, or null when
@@ -39,6 +46,25 @@ export async function getFeaturedCategorySlug(language = DEFAULT_LANGUAGE) {
     { tags: ["wp"] },
   );
   return data?.category?.translation?.slug ?? null;
+}
+
+export function toDateInput(value) {
+  if (typeof value !== "string") return null;
+  const match = /^(\d{4})-(\d{2})-(\d{2})$/.exec(value);
+  if (!match) return null;
+
+  const year = Number(match[1]);
+  const month = Number(match[2]);
+  const day = Number(match[3]);
+  const date = new Date(Date.UTC(year, month - 1, day));
+  if (
+    date.getUTCFullYear() !== year ||
+    date.getUTCMonth() + 1 !== month ||
+    date.getUTCDate() !== day
+  ) {
+    return null;
+  }
+  return { year, month, day };
 }
 
 const RELATED_LIMIT = 4;
@@ -111,9 +137,14 @@ export function buildNewsWhere({
   search,
   dateFrom,
   dateTo,
+  sort,
   language = DEFAULT_LANGUAGE,
 } = {}) {
   const where = { language: toLanguageCodeEnum(language) };
+
+  if (sort === "old") {
+    where.orderby = [{ field: "DATE", order: "ASC" }];
+  }
 
   if (categorySlug) {
     where.categoryName = categorySlug;
@@ -126,10 +157,12 @@ export function buildNewsWhere({
   }
 
   if (search) where.search = search;
-  if (dateFrom || dateTo) {
+  const after = toDateInput(dateFrom);
+  const before = toDateInput(dateTo);
+  if (after || before) {
     where.dateQuery = {
-      ...(dateFrom ? { after: dateFrom, inclusive: true } : {}),
-      ...(dateTo ? { before: dateTo, inclusive: true } : {}),
+      ...(after ? { after, inclusive: true } : {}),
+      ...(before ? { before, inclusive: true } : {}),
     };
   }
 

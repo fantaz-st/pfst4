@@ -11,6 +11,7 @@ import { getChromeCopy } from "@/lib/chromeCopy";
 import { localizedHomeUri } from "@/lib/language";
 import { ENROLL_URL } from "@/lib/siteLinks";
 import { isCurrentSection } from "./navUtils";
+import MegaPanel from "./MegaPanel";
 import styles from "./FloatingNav.module.css";
 
 /**
@@ -20,11 +21,31 @@ import styles from "./FloatingNav.module.css";
  * decoration, so it also works under reduced motion — just without the
  * slide. While hidden it is `inert`, so it's never tabbable off-screen.
  */
-export default function FloatingNav({ menu, language, onOpenMenu, menuOpen }) {
+export default function FloatingNav({
+  menu,
+  language,
+  frequent,
+  openItem,
+  onToggleMega,
+  onCloseMega,
+  onTriggerRef,
+  onBeforeShow,
+  onBeforeHide,
+  onOpenMenu,
+  menuOpen,
+}) {
   const copy = getChromeCopy(language);
   const pathname = usePathname();
   const ref = useRef(null);
+  const onBeforeShowRef = useRef(onBeforeShow);
+  const onBeforeHideRef = useRef(onBeforeHide);
+  const wasVisible = useRef(false);
   const [visible, setVisible] = useState(false);
+
+  useEffect(() => {
+    onBeforeShowRef.current = onBeforeShow;
+    onBeforeHideRef.current = onBeforeHide;
+  }, [onBeforeHide, onBeforeShow]);
 
   useEffect(() => {
     const el = ref.current;
@@ -32,6 +53,9 @@ export default function FloatingNav({ menu, language, onOpenMenu, menuOpen }) {
     const animate = () => window.matchMedia(MOTION_OK).matches;
 
     function show(on, { instant = false } = {}) {
+      if (on && !wasVisible.current) onBeforeShowRef.current?.();
+      if (!on && wasVisible.current) onBeforeHideRef.current?.();
+      wasVisible.current = on;
       setVisible(on);
       gsap.to(el, {
         // The CSS fallback translateY(-200%) is read by GSAP as a px `y`;
@@ -67,7 +91,12 @@ export default function FloatingNav({ menu, language, onOpenMenu, menuOpen }) {
   }, [pathname]);
 
   return (
-    <div ref={ref} className={styles.wrap} inert={!visible || menuOpen}>
+    <div
+      ref={ref}
+      className={styles.wrap}
+      data-float-nav
+      inert={!visible || menuOpen}
+    >
       <nav className={styles.inner} aria-label={copy.mainNavLabel}>
         <Link
           href={localizedHomeUri(language)}
@@ -79,12 +108,34 @@ export default function FloatingNav({ menu, language, onOpenMenu, menuOpen }) {
         <span className={styles.links}>
           {menu.map((item) => {
             const current = isCurrentSection(item, pathname);
-            return (
+            const hasPanel = item.children.length > 0;
+            const open = openItem?.databaseId === item.databaseId;
+            const className = `${styles.link} ${current || open ? styles.on : ""}`;
+
+            return hasPanel ? (
+              <button
+                key={item.databaseId}
+                ref={(el) => {
+                  onTriggerRef(item.databaseId, el);
+                }}
+                type="button"
+                className={className}
+                aria-expanded={open}
+                aria-controls={`mega-${item.databaseId}`}
+                aria-current={current ? "true" : undefined}
+                onClick={() => onToggleMega(item.databaseId)}
+              >
+                {item.label}
+                <span className={styles.chevron} aria-hidden="true">
+                  <Icon name="chevronDown" size={14} />
+                </span>
+              </button>
+            ) : (
               <Link
                 key={item.databaseId}
                 href={item.uri}
-                className={`${styles.link} ${current ? styles.on : ""}`}
-                aria-current={current ? "true" : undefined}
+                className={className}
+                aria-current={current ? "page" : undefined}
               >
                 {item.label}
               </Link>
@@ -105,6 +156,16 @@ export default function FloatingNav({ menu, language, onOpenMenu, menuOpen }) {
           <Icon name="menu" size={18} />
         </button>
       </nav>
+      {openItem && (
+        <MegaPanel
+          key={openItem.databaseId}
+          item={openItem}
+          language={language}
+          frequent={frequent}
+          floating
+          onClose={onCloseMega}
+        />
+      )}
     </div>
   );
 }

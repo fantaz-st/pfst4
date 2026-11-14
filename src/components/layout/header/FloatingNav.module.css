@@ -48,11 +48,24 @@
   align-items: center;
   height: 44px;
   padding: 0 var(--space-4);
+  border: 0;
   border-radius: var(--r-pill);
+  background: transparent;
+  color: inherit;
   font-size: var(--fs-small);
   font-weight: 500;
   white-space: nowrap;
+  cursor: pointer;
   transition: background var(--dur-hover) var(--ease-out);
+}
+
+.chevron {
+  display: inline-flex;
+  transition: transform var(--dur-hover) var(--ease-out);
+}
+
+.link[aria-expanded="true"] .chevron {
+  transform: rotate(180deg);
 }
 
 .link:hover {

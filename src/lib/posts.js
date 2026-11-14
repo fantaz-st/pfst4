@@ -12,9 +12,10 @@ export function getFallbackCategoryLabel(language = "hr") {
 }
 
 // The post's real categories, without the "istaknuto" flag.
-export function getPostCategories(post) {
+export function getPostCategories(post, featuredSlug = FEATURED_CATEGORY_SLUG) {
+  const featuredSlugs = new Set([FEATURED_CATEGORY_SLUG, featuredSlug]);
   return (post.categories?.nodes ?? []).filter(
-    (category) => category.slug !== FEATURED_CATEGORY_SLUG,
+    (category) => !featuredSlugs.has(category.slug),
   );
 }
 

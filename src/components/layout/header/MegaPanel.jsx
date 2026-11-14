@@ -15,7 +15,7 @@ import styles from "./MegaPanel.module.css";
  * columns, search + "Često traženo" + close along the bottom, signal-flag
  * band at the edge. Focus moves into the panel on open; Escape closes.
  */
-export default function MegaPanel({ item, language, frequent, onClose }) {
+export default function MegaPanel({ item, language, frequent, onClose, floating = false }) {
   const copy = getChromeCopy(language);
   const ref = useRef(null);
   const columns = toColumns(item.children);
@@ -66,7 +66,7 @@ export default function MegaPanel({ item, language, frequent, onClose }) {
     <div
       ref={ref}
       id={`mega-${item.databaseId}`}
-      className={styles.panel}
+      className={`${styles.panel} ${floating ? styles.floating : ""}`}
       role="region"
       aria-label={copy.megaMenuLabel(item.label)}
       tabIndex={-1}

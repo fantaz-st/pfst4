@@ -5,11 +5,23 @@ import styles from "./PhotoTag.module.css";
  * Only ever rendered by <Photo> while it has no real image; it disappears
  * as soon as a `src` is set.
  *
- * @param {{ position?: "top-left" | "bottom-left" | "right", children: React.ReactNode }} props
+ * @param {{ position?: "top-left" | "bottom-left" | "right", hideOnMobile?: boolean, children: React.ReactNode }} props
  */
-export default function PhotoTag({ position = "bottom-left", children }) {
+export default function PhotoTag({
+  position = "bottom-left",
+  hideOnMobile = false,
+  children,
+}) {
   return (
-    <span className={`${styles.tag} ${styles[position] ?? styles["bottom-left"]}`}>
+    <span
+      className={[
+        styles.tag,
+        styles[position] ?? styles["bottom-left"],
+        hideOnMobile ? styles.hideOnMobile : null,
+      ]
+        .filter(Boolean)
+        .join(" ")}
+    >
       {children}
     </span>
   );

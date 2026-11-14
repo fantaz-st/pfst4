@@ -1,7 +1,12 @@
 import { Suspense } from "react";
 import { wpFetch } from "@/lib/wp";
 import { NEWS_POSTS } from "@/lib/queries";
-import { buildNewsWhere, getFeaturedCategorySlug, getNewsTaxonomies } from "@/lib/news";
+import {
+  buildNewsWhere,
+  getFeaturedCategorySlug,
+  getNewsTaxonomies,
+  toDateInput,
+} from "@/lib/news";
 import { getNewsCopy } from "@/lib/newsCopy";
 import PageHero from "@/components/content/PageHero";
 import NewsList from "./NewsList";
@@ -35,27 +40,84 @@ export function getNewsArchiveMetadata(language) {
 function readFilters(params) {
   const single = (value) => (typeof value === "string" && value ? value : undefined);
   const cilj = params.cilj;
+  const dateFrom = single(params.od);
+  const dateTo = single(params.do);
   return {
     categorySlug: single(params.kategorija),
     ciljeviSlugs: (Array.isArray(cilj) ? cilj : cilj ? [cilj] : []).filter(Boolean),
     search: single(params.q),
-    dateFrom: single(params.od),
-    dateTo: single(params.do),
+    dateFrom: toDateInput(dateFrom) ? dateFrom : undefined,
+    dateTo: toDateInput(dateTo) ? dateTo : undefined,
   };
 }
 
+function getActiveChips(filters, categories, ciljevi, featuredSlug, copy, archivePath) {
+  const params = new URLSearchParams();
+  if (filters.categorySlug) params.set("kategorija", filters.categorySlug);
+  filters.ciljeviSlugs.forEach((slug) => params.append("cilj", slug));
+  if (filters.search) params.set("q", filters.search);
+  if (filters.dateFrom) params.set("od", filters.dateFrom);
+  if (filters.dateTo) params.set("do", filters.dateTo);
+
+  const makeHref = (mutate) => {
+    const next = new URLSearchParams(params);
+    mutate(next);
+    const query = next.toString();
+    return query ? `${archivePath}?${query}` : archivePath;
+  };
+  const chips = [];
+
+  if (filters.categorySlug) {
+    const label =
+      filters.categorySlug === featuredSlug
+        ? copy.featuredFilter
+        : categories.find((category) => category.slug === filters.categorySlug)?.name ??
+          filters.categorySlug;
+    chips.push({
+      label,
+      href: makeHref((next) => next.delete("kategorija")),
+    });
+  }
+  filters.ciljeviSlugs.forEach((slug) => {
+    chips.push({
+      label: ciljevi.find((term) => term.slug === slug)?.name ?? slug,
+      href: makeHref((next) => {
+        const remaining = next.getAll("cilj").filter((value) => value !== slug);
+        next.delete("cilj");
+        remaining.forEach((value) => next.append("cilj", value));
+      }),
+    });
+  });
+  if (filters.search) {
+    chips.push({
+      label: filters.search,
+      href: makeHref((next) => next.delete("q")),
+    });
+  }
+  if (filters.dateFrom || filters.dateTo) {
+    chips.push({
+      label: `${copy.dateFilter}: ${filters.dateFrom || "…"} – ${filters.dateTo || "…"}`,
+      href: makeHref((next) => {
+        next.delete("od");
+        next.delete("do");
+      }),
+    });
+  }
+  return chips;
+}
+
 /**
- * The news archive: hero, then the filters beside the news rows (the
- * layout of "Ostale novosti" in design/reference/home.html). Filters stack
- * above the list below 1080px.
+ * The news archive: hero, filter panel, and the card feed from
+ * design/reference/news.html. Filters stack above the feed below 1080px.
  */
 export default async function NewsArchive({ language, searchParams }) {
   const copy = getNewsCopy(language);
-  const filters = readFilters(await searchParams);
+  const params = await searchParams;
+  const filters = readFilters(params);
 
-  const [{ categories, ciljevi }, featuredSlug, listData] = await Promise.all([
-    getNewsTaxonomies(language),
-    getFeaturedCategorySlug(language),
+  const featuredSlug = await getFeaturedCategorySlug(language);
+  const [{ categories, ciljevi, featuredCount }, listData] = await Promise.all([
+    getNewsTaxonomies(language, featuredSlug),
     wpFetch(
       NEWS_POSTS,
       { first: LIST_FIRST, after: null, where: buildNewsWhere({ ...filters, language }) },
@@ -66,6 +128,15 @@ export default async function NewsArchive({ language, searchParams }) {
 
   // Remount the list (resetting "load more") whenever the filters change.
   const listKey = JSON.stringify(filters);
+  const archivePath = NEWS_ARCHIVE_URI[language] ?? NEWS_ARCHIVE_URI.hr;
+  const activeChips = getActiveChips(
+    filters,
+    categories,
+    ciljevi,
+    featuredSlug,
+    copy,
+    archivePath,
+  );
 
   return (
     <>
@@ -83,6 +154,7 @@ export default async function NewsArchive({ language, searchParams }) {
                 categories={categories}
                 ciljevi={ciljevi}
                 featuredSlug={featuredSlug}
+                featuredCount={featuredCount}
                 language={language}
               />
             </Suspense>
@@ -92,6 +164,9 @@ export default async function NewsArchive({ language, searchParams }) {
             initialPosts={list.nodes}
             initialPageInfo={list.pageInfo}
             filters={filters}
+            activeChips={activeChips}
+            archivePath={archivePath}
+            featuredSlug={featuredSlug}
             language={language}
           />
         </div>

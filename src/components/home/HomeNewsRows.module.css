@@ -1,0 +1,130 @@
+.content {
+  min-width: 0;
+}
+
+.tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  margin-bottom: var(--space-4);
+}
+
+.tab {
+  min-height: 44px;
+  padding: 0 var(--space-4);
+  border: 0;
+  border-radius: var(--r-pill);
+  background: var(--color-surface);
+  color: var(--color-text);
+  font: 500 var(--fs-body) / 1 var(--font-sans);
+  cursor: pointer;
+  transition: background var(--dur-hover) var(--ease-out), color var(--dur-hover) var(--ease-out);
+}
+
+.tab:hover {
+  background: var(--color-bg-hover);
+}
+
+.tab.active {
+  background: var(--color-primary);
+  color: var(--color-surface);
+}
+
+.panel {
+  margin: 0;
+  padding: var(--space-2) var(--space-6);
+  border-radius: var(--r-feature);
+  background: var(--color-surface);
+  list-style: none;
+}
+
+.row {
+  display: grid;
+  grid-template-columns: 120px minmax(0, 1fr) auto 44px;
+  gap: var(--space-6);
+  align-items: center;
+  min-height: 92px;
+  padding: var(--space-4) var(--space-2);
+  border-bottom: 1px solid var(--color-line);
+}
+
+.panel li:last-child .row {
+  border-bottom: 0;
+}
+
+.date {
+  color: var(--color-text-muted);
+  font-size: var(--fs-meta);
+  font-weight: 500;
+}
+
+.title {
+  font-size: var(--fs-title-s);
+  font-weight: 500;
+  line-height: 1.35;
+  transition: transform var(--dur-hover) var(--ease-out);
+}
+
+.row:is(:hover, :focus-visible) .title {
+  transform: translateX(8px);
+}
+
+.category {
+  white-space: nowrap;
+}
+
+.arrow {
+  justify-self: end;
+}
+
+.empty {
+  padding: var(--space-8) var(--space-6);
+  border-radius: var(--r-feature);
+  background: var(--color-surface);
+  color: var(--color-text-muted);
+}
+
+.more {
+  display: flex;
+  justify-content: center;
+  margin-top: var(--space-6);
+}
+
+@media (max-width: 720px) {
+  .panel {
+    padding: var(--space-2) var(--space-4);
+  }
+
+  .row {
+    grid-template-columns: minmax(0, 1fr) 44px;
+    grid-template-areas:
+      "date arrow"
+      "title arrow"
+      "category arrow";
+    gap: var(--space-2) var(--space-3);
+    padding: var(--space-4) 0;
+  }
+
+  .date {
+    grid-area: date;
+  }
+
+  .title {
+    grid-area: title;
+    font-size: var(--fs-body-l);
+  }
+
+  .category {
+    grid-area: category;
+  }
+
+  .arrow {
+    grid-area: arrow;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .row:is(:hover, :focus-visible) .title {
+    transform: none;
+  }
+}

@@ -130,6 +130,11 @@ const POST_FIELDS = /* GraphQL */ `
     excerpt
     contentTypeName
     ...SeoFields
+    author {
+      node {
+        name
+      }
+    }
     language {
       code
       slug
@@ -145,6 +150,7 @@ const POST_FIELDS = /* GraphQL */ `
       node {
         sourceUrl
         altText
+        caption
       }
     }
     categories(first: 10) {

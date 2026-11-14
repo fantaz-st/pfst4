@@ -1,150 +1,305 @@
-.filters {
+.panel {
   display: flex;
   flex-direction: column;
-  gap: 28px;
-}
-
-/* ---- Category tabs (reference .tab) ---- */
-.tabs {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 6px;
-}
-
-.tab {
-  height: 44px;
-  padding: 0 18px;
-  border: 0;
-  border-radius: var(--r-pill);
+  gap: var(--space-6);
+  padding: var(--space-6);
+  border-radius: var(--r-card);
   background: var(--color-surface);
-  color: var(--color-text);
-  font-size: var(--fs-small);
-  font-weight: 500;
-  transition:
-    background var(--dur-hover) var(--ease-out),
-    color var(--dur-hover) var(--ease-out);
 }
 
-.tab:hover {
-  background: var(--color-bg-hover);
-}
-
-.tab[aria-pressed="true"] {
-  background: var(--color-primary);
-  color: var(--color-surface);
-}
-
-/* ---- Search + dates (STYLEGUIDE §6 forms) ---- */
-.form {
+.panelHeading,
+.categoryOption,
+.archive {
   display: flex;
-  flex-direction: column;
-  gap: var(--space-4);
+  align-items: center;
+  justify-content: space-between;
 }
 
-.field {
+.panelHeading,
+.groupTitle {
+  color: var(--color-text-muted);
+  font-size: var(--fs-micro);
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.activeCount {
+  color: var(--color-text-muted);
+  font-size: var(--fs-small);
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+.search {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  height: 48px;
+  padding: 0 var(--space-4);
+  border-radius: var(--r-pill);
+  background: var(--color-bg);
+  color: var(--color-text-muted);
+}
+
+.search:focus-within {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 0;
+}
+
+.search input {
+  width: 100%;
+  min-width: 0;
+  height: 100%;
+  padding: 0;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  color: var(--color-text);
+  font: inherit;
+  font-size: var(--fs-small);
+}
+
+.search input::placeholder {
+  color: var(--color-text-muted);
+}
+
+.group {
   display: flex;
   flex-direction: column;
   gap: var(--space-2);
   min-width: 0;
-}
-
-.label {
-  font-size: var(--fs-label);
-  font-weight: 500;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--color-text-muted);
-}
-
-.input {
-  width: 100%;
-  height: 52px;
-  padding: 0 var(--space-4);
-  border: 1px solid var(--color-input-border);
-  border-radius: var(--r-field);
-  background: var(--color-surface);
-  color: var(--color-text);
-  font-size: var(--fs-body);
-  transition: border-color var(--dur-hover) var(--ease-out);
-}
-
-.input:hover {
-  border-color: var(--color-input-border-hover);
-}
-
-.input:focus-visible {
-  border-color: var(--color-primary);
-  outline: 2px solid var(--color-primary);
-  outline-offset: -1px;
-}
-
-.dates {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: var(--space-3);
-}
-
-.actions {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--space-2);
-}
-
-/* ---- Goals: official SDG icons ---- */
-.goals {
   margin: 0;
   padding: 0;
   border: 0;
 }
 
-.goals legend {
-  margin-bottom: var(--space-3);
+.groupTitle {
+  margin-bottom: var(--space-2);
+  padding: 0;
+}
+
+.categoryOptions {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.categoryOption {
+  min-height: 44px;
+  gap: var(--space-3);
+  padding: 0 var(--space-3);
+  border-radius: var(--r-icon);
+  color: var(--color-text);
+  font-size: var(--fs-small);
+  font-weight: 500;
+  cursor: pointer;
+  transition: background var(--dur-hover) var(--ease-out);
+}
+
+.categoryOption:hover {
+  background: var(--color-bg);
+}
+
+.categoryOption input {
+  display: grid;
+  flex: none;
+  width: 22px;
+  height: 22px;
+  margin: 0;
+  appearance: none;
+  place-content: center;
+  border-radius: var(--r-mini);
+  background: var(--color-surface);
+  box-shadow: inset 0 0 0 1px var(--color-line-strong);
+  cursor: pointer;
+}
+
+.categoryOption input:checked {
+  background: var(--color-primary);
+  box-shadow: none;
+}
+
+.categoryOption input:checked::after {
+  width: 9px;
+  height: 5px;
+  border-bottom: 2px solid var(--color-surface);
+  border-left: 2px solid var(--color-surface);
+  content: "";
+  transform: rotate(-45deg) translate(1px, -1px);
+}
+
+.categoryOption input:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
+.count {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 28px;
+  height: 24px;
+  margin-left: auto;
+  padding: 0 var(--space-2);
+  border-radius: var(--r-pill);
+  background: var(--color-bg);
+  color: var(--color-text-muted-2);
+  font-size: var(--fs-micro);
+  font-variant-numeric: tabular-nums;
+}
+
+.periodOptions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+.period {
+  min-height: 44px;
+  padding: 0 var(--space-4);
+  border: 0;
+  border-radius: var(--r-pill);
+  background: var(--color-bg);
+  color: var(--color-text);
+  font: inherit;
+  font-size: var(--fs-label);
+  font-weight: 500;
+  cursor: pointer;
+  transition:
+    background var(--dur-hover) var(--ease-out),
+    color var(--dur-hover) var(--ease-out);
+}
+
+.period:hover {
+  background: var(--color-line);
+}
+
+.period[data-active="true"] {
+  background: var(--color-primary);
+  color: var(--color-surface);
 }
 
 .goalGrid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(52px, 1fr));
-  gap: 6px;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: var(--space-2);
 }
 
 .goal {
-  position: relative;
-  display: block;
+  display: grid;
+  min-width: 44px;
+  min-height: 44px;
+  place-items: center;
+  padding: var(--space-1);
+  border: 0;
   border-radius: var(--r-mini);
+  background: transparent;
   cursor: pointer;
 }
 
 .goalIcon {
   display: block;
-  width: 100%;
-  height: auto;
+  width: 40px;
+  height: 40px;
   border-radius: var(--r-mini);
-  transition: opacity var(--dur-hover) var(--ease-out);
+  object-fit: cover;
+}
+
+.goal[data-selected="true"] {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 1px;
+}
+
+.goal:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
 }
 
 .goalText {
-  display: flex;
-  align-items: center;
-  min-height: 52px;
-  padding: var(--space-1);
   font-size: var(--fs-micro);
+  text-align: center;
 }
 
-/* With goals selected, unselected ones step back; selected get a ring. */
-.goalGrid:has([data-checked="true"]) .goal[data-checked="false"] .goalIcon {
-  opacity: 0.4;
+.clear {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  min-height: 44px;
+  border: 0;
+  border-radius: var(--r-pill);
+  background: transparent;
+  box-shadow: inset 0 0 0 1px var(--color-line-strong);
+  color: var(--color-text);
+  font: inherit;
+  font-size: var(--fs-small);
+  font-weight: 500;
+  cursor: pointer;
 }
 
-.goal[data-checked="true"] {
+.clear:hover:not(:disabled) {
+  box-shadow: inset 0 0 0 1px var(--color-primary);
+}
+
+.clear:focus-visible,
+.period:focus-visible,
+.archive:focus-visible {
   outline: 2px solid var(--color-primary);
   outline-offset: 2px;
 }
 
-.goal:has(input:focus-visible) {
-  outline: 2px solid var(--color-primary);
-  outline-offset: 2px;
+.clear:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
 }
 
-.goal:hover .goalIcon {
-  opacity: 1;
+.archive {
+  min-height: 80px;
+  gap: var(--space-3);
+  margin-top: var(--space-3);
+  padding: var(--space-4) var(--space-6);
+  border-radius: var(--r-panel);
+  background: var(--color-primary);
+  color: var(--color-surface);
+}
+
+.archiveText {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.archiveTitle {
+  font-size: var(--fs-body);
+  font-weight: 600;
+}
+
+.archiveDescription {
+  color: var(--color-text-on-dark);
+  font-size: var(--fs-label);
+}
+
+.archiveArrow {
+  display: grid;
+  flex: none;
+  width: 44px;
+  height: 44px;
+  place-items: center;
+  border-radius: var(--r-pill);
+  background: color-mix(in srgb, var(--pfst-bijela) 12%, transparent);
+  color: var(--color-surface);
+  transition: transform var(--dur-hover) var(--ease-out);
+}
+
+.archive:hover .archiveArrow {
+  transform: rotate(-45deg);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .categoryOption,
+  .period,
+  .archiveArrow {
+    transition: none;
+  }
 }

@@ -1,0 +1,76 @@
+/* PFST — novosti (referenca). Osnova: inner.css; vrijednosti: ../tokens.css */
+.nl{display:flex;flex-wrap:wrap;gap:40px;align-items:flex-start}
+.nl-side{flex:1 1 280px;max-width:300px;position:sticky;top:104px}
+.nl-main{flex:999 1 560px;min-width:0}
+.fpanel{display:flex;flex-direction:column;gap:26px;padding:22px;border-radius:24px;background:#FFFFFF}
+.fh{display:flex;align-items:center;justify-content:space-between;font-size:11px;font-weight:500;letter-spacing:0.14em;text-transform:uppercase;color:#4F5B73}
+.fsearch{display:flex;align-items:center;gap:10px;height:48px;padding:0 16px;border-radius:999px;background:#F1F4F8;color:#4F5B73}
+.fsearch:focus-within{box-shadow:inset 0 0 0 2px #00246F}
+.fsearch input{flex:1;min-width:0;height:100%;border:none;background:transparent;font:400 14.5px 'Montserrat',sans-serif;color:#00246F;outline:none}
+.fsearch input::placeholder{color:#4F5B73}
+.fcheck{display:flex;align-items:center;gap:12px;min-height:44px;padding:0 10px;border-radius:12px;font-size:14.5px;font-weight:500;color:#00246F;cursor:pointer;transition:background .2s}
+.fcheck:hover{background:#F1F4F8}
+.fcheck input{appearance:none;-webkit-appearance:none;flex:none;width:22px;height:22px;margin:0;border-radius:7px;background:#FFFFFF;box-shadow:inset 0 0 0 1px #C3CCD8;display:grid;place-content:center;cursor:pointer;transition:background .2s,box-shadow .2s}
+.fcheck input:checked{background:#00246F;box-shadow:none}
+.fcheck input:checked::after{content:'';width:9px;height:5px;border-left:2px solid #FFFFFF;border-bottom:2px solid #FFFFFF;transform:rotate(-45deg) translate(1px,-1px)}
+.fcheck input:focus-visible{box-shadow:inset 0 0 0 2px #00246F}
+.fcount{margin-left:auto;display:inline-flex;align-items:center;justify-content:center;min-width:28px;height:24px;padding:0 8px;border-radius:999px;background:#F1F4F8;font-size:12px;font-weight:600;color:#3F4B63;font-variant-numeric:tabular-nums}
+.fpill{height:38px;padding:0 14px;border:none;border-radius:999px;background:#F1F4F8;font:500 13.5px 'Montserrat',sans-serif;color:#00246F;cursor:pointer;transition:background .25s,color .25s}
+.fpill:hover{background:#E3E9F1}
+.fpill.is-on{background:#00246F;color:#FFFFFF}
+.fclear{display:inline-flex;align-items:center;justify-content:center;gap:8px;height:44px;border:none;border-radius:999px;background:transparent;box-shadow:inset 0 0 0 1px #C3CCD8;font:500 14px 'Montserrat',sans-serif;color:#00246F;cursor:pointer}
+.fclear:hover{box-shadow:inset 0 0 0 1px #00246F}
+.tb{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-bottom:24px}
+.achip{display:inline-flex;align-items:center;gap:6px;height:34px;padding:0 6px 0 14px;border:none;border-radius:999px;background:#00246F;color:#FFFFFF;font:500 13px 'Montserrat',sans-serif;cursor:pointer}
+.achip span{display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;border-radius:999px;background:rgba(255,255,255,0.16)}
+.seg{display:inline-flex;padding:4px;border-radius:999px;background:#FFFFFF}
+.seg button{display:inline-flex;align-items:center;justify-content:center;gap:6px;height:36px;padding:0 14px;border:none;border-radius:999px;background:transparent;font:500 13px 'Montserrat',sans-serif;color:#00246F;cursor:pointer}
+.seg button.is-on{background:#00246F;color:#FFFFFF}
+
+.nc{display:flex;flex-direction:column;gap:14px;color:#00246F}
+.nc .ph{aspect-ratio:4/3;border-radius:20px}
+.nc:hover .ph-inner{transform:scale(1.06)}
+.nc:hover .nt{text-decoration:underline;text-decoration-thickness:1.5px;text-underline-offset:4px}
+.nc.feat{grid-column:span 2}
+.nc.feat .ph{aspect-ratio:16/10}
+.nc.feat .nt{font-size:28px;line-height:1.15;font-weight:600;letter-spacing:-0.03em}
+.nt{font-size:18px;line-height:1.32;font-weight:500;letter-spacing:-0.015em}
+.meta{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.mdate{font-size:12.5px;font-weight:500;color:#4F5B73;font-variant-numeric:tabular-nums;margin-right:2px}
+.mchip{display:inline-flex;align-items:center;height:26px;padding:0 11px;border-radius:999px;background:#FFFFFF;font-size:12px;font-weight:500;color:#26324A}
+.nlist{display:flex;flex-direction:column;gap:8px}
+.nr{display:grid;grid-template-columns:150px minmax(0,1fr) 44px;gap:20px;align-items:center;padding:10px 14px 10px 10px;border-radius:20px;background:#FFFFFF;color:#00246F;transition:transform .5s cubic-bezier(.16,1,.3,1)}
+.nr .ph{height:104px;border-radius:14px}
+.nr:hover{transform:translateY(-3px)}
+.nr:hover .go{transform:rotate(-45deg);background:#00246F;color:#FFFFFF}
+.nr .mchip{background:#F1F4F8}
+.pager{display:flex;flex-direction:column;align-items:center;gap:16px;margin-top:56px}
+/* one markup, two views */
+.nfeed.is-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:28px 16px}
+.nfeed.is-grid .nbody{display:flex;flex-direction:column;gap:12px}
+.nfeed.is-grid .go{display:none}
+.nfeed.is-grid .nc[hidden]{display:none}
+.nfeed.is-list{display:flex;flex-direction:column;gap:8px}
+.nfeed.is-list .nc{display:grid;grid-template-columns:150px minmax(0,1fr) 44px;gap:20px;align-items:center;padding:10px 14px 10px 10px;border-radius:20px;background:#FFFFFF;transition:transform .5s cubic-bezier(.16,1,.3,1)}
+.nfeed.is-list .nc .ph{aspect-ratio:auto;height:104px;border-radius:14px}
+.nfeed.is-list .nc.feat{grid-column:auto}
+.nfeed.is-list .nc.feat .nt{font-size:18px;line-height:1.32;font-weight:500;letter-spacing:-0.015em}
+.nfeed.is-list .nbody{display:flex;flex-direction:column;gap:10px;min-width:0}
+.nfeed.is-list .mchip{background:#F1F4F8}
+.nfeed.is-list .nc:hover{transform:translateY(-3px)}
+.nfeed.is-list .nc:hover .go{transform:rotate(-45deg);background:#00246F;color:#FFFFFF}
+.nfeed:not(.has-feat) .nc.feat{grid-column:auto}
+.nfeed:not(.has-feat) .nc.feat .ph{aspect-ratio:4/3}
+.nfeed:not(.has-feat) .nc.feat .nt{font-size:18px;line-height:1.32;font-weight:500;letter-spacing:-0.015em}
+[hidden]{display:none !important}
+@media (max-width:1080px){
+  .nl-side{max-width:none;flex-basis:100%;position:static}
+  .nfeed.is-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media (max-width:720px){
+  .nfeed.is-grid{grid-template-columns:minmax(0,1fr)}
+  .nc.feat{grid-column:span 1}
+  .nfeed.is-list .nc{grid-template-columns:96px minmax(0,1fr)}
+  .nfeed.is-list .nc .ph{height:80px}
+  .nfeed.is-list .go{display:none}
+}

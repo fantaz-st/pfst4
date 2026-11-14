@@ -1,5 +1,4 @@
-import SiteChrome from "@/components/layout/SiteChrome";
-import Hero from "@/components/layout/Hero";
+import HomePage from "@/components/home/HomePage";
 
 const LANGUAGE = "en";
 
@@ -10,13 +9,6 @@ export const metadata = {
   alternates: { canonical: `${process.env.NEXT_PUBLIC_SITE_URL}/en/` },
 };
 
-// TODO: homepage sections arrive in phase 5. Placeholder only.
 export default function EnglishHome() {
-  return (
-    <SiteChrome language={LANGUAGE}>
-      <Hero size="home" photo={{ tag: "Video · TODO training ship / campus aerial" }}>
-        <h1>Faculty of Maritime Studies</h1>
-      </Hero>
-    </SiteChrome>
-  );
+  return <HomePage language={LANGUAGE} />;
 }

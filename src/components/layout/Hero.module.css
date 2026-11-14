@@ -13,10 +13,23 @@
 
 .home {
   height: 880px;
+  transform-origin: 50% 0%;
 }
 
 .page {
   height: 520px;
+}
+
+.post {
+  background: var(--pfst-modra);
+}
+
+.post .content {
+  position: relative;
+  inset: auto;
+  min-height: 0;
+  justify-content: flex-start;
+  padding: 120px var(--space-10) 64px;
 }
 
 /* Photo layer: bleeds 8% top and bottom so the scroll parallax
@@ -60,5 +73,9 @@
     position: relative;
     min-height: inherit;
     padding: 96px var(--gutter) var(--space-8);
+  }
+
+  .post .content {
+    padding: 120px var(--gutter) 64px;
   }
 }

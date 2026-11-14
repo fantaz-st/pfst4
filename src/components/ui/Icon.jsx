@@ -18,11 +18,42 @@ const ICONS = {
       </>
     ),
   },
+  grid: {
+    stroke: UI,
+    shape: (
+      <>
+        <rect x="4" y="4" width="7" height="7" rx="1.5" />
+        <rect x="13" y="4" width="7" height="7" rx="1.5" />
+        <rect x="4" y="13" width="7" height="7" rx="1.5" />
+        <rect x="13" y="13" width="7" height="7" rx="1.5" />
+      </>
+    ),
+  },
+  list: {
+    stroke: UI,
+    shape: (
+      <>
+        <path d="M9 6h11M9 12h11M9 18h11" />
+        <circle cx="4.5" cy="6" r=".5" />
+        <circle cx="4.5" cy="12" r=".5" />
+        <circle cx="4.5" cy="18" r=".5" />
+      </>
+    ),
+  },
   menu: { stroke: UI, shape: <path d="M4 9h16M4 15h16" /> },
   close: { stroke: UI, shape: <path d="M6 6l12 12M18 6L6 18" /> },
   home: {
     stroke: UI,
     shape: <path d="M3 11l9-7 9 7v9a1 1 0 0 1-1 1h-5v-6h-6v6H4a1 1 0 0 1-1-1z" />,
+  },
+  calendar: {
+    stroke: PICTO,
+    shape: (
+      <>
+        <rect x="3" y="5" width="18" height="16" rx="2" />
+        <path d="M3 10h18M8 3v4M16 3v4" />
+      </>
+    ),
   },
   download: { stroke: UI, shape: <path d="M12 4v12M6 10l6 6 6-6M5 20h14" /> },
 

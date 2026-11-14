@@ -84,7 +84,7 @@
 }
 
 .menuButton {
-  display: inline-flex;
+  display: none;
   align-items: center;
   justify-content: center;
   width: 48px;
@@ -118,6 +118,10 @@
 @media (max-width: 1080px) {
   .gnav {
     display: none;
+  }
+
+  .menuButton {
+    display: inline-flex;
   }
 }
 

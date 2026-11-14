@@ -37,6 +37,7 @@ export async function loadMoreNews({
   search,
   dateFrom,
   dateTo,
+  sort,
   language,
 } = {}) {
   const data = await wpFetch(
@@ -52,6 +53,7 @@ export async function loadMoreNews({
         search: cleanString(search),
         dateFrom: cleanString(dateFrom),
         dateTo: cleanString(dateTo),
+        sort: sort === "old" ? "old" : "new",
         language: cleanLanguage(language),
       }),
     },

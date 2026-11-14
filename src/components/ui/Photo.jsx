@@ -20,6 +20,7 @@ const RADII = new Set(["panel", "card", "feature", "block"]);
  *   radius?: "panel" | "card" | "feature" | "block",
  *   tone?: "dark" | "light",
  *   tag?: string, tagPosition?: "top-left" | "bottom-left" | "right",
+ *   hideTagOnMobile?: boolean,
  *   zoom?: boolean,      // scale 1.06 when an ancestor link is hovered
  *   priority?: boolean,
  *   className?: string,
@@ -34,6 +35,7 @@ export default function Photo({
   tone = "dark",
   tag,
   tagPosition,
+  hideTagOnMobile = false,
   zoom = false,
   priority = false,
   className,
@@ -63,7 +65,14 @@ export default function Photo({
       ) : (
         <>
           <span className={styles.media} aria-hidden="true" />
-          {tag && <PhotoTag position={tagPosition}>{tag}</PhotoTag>}
+          {tag && (
+            <PhotoTag
+              position={tagPosition}
+              hideOnMobile={hideTagOnMobile}
+            >
+              {tag}
+            </PhotoTag>
+          )}
         </>
       )}
     </span>
