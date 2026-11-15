@@ -8,95 +8,110 @@
 
 :root {
   /* ---- Brand (Faculty visual standard) ---- */
-  --pfst-modra: #00246F;          /* Pantone 662 C · CMYK 100 80 38 30 · RGB 0 36 111 */
-  --pfst-plava: #30ABF0;          /* Pantone 298 C · CMYK 81 33 6 0 · RGB 48 171 240 */
-  --pfst-crna: #000000;           /* print / monochrome only — web text uses modra */
-  --pfst-bijela: #FFFFFF;
+  --pfst-modra: #00246f; /* Pantone 662 C · CMYK 100 80 38 30 · RGB 0 36 111 */
+  --pfst-plava: #30abf0; /* Pantone 298 C · CMYK 81 33 6 0 · RGB 48 171 240 */
+  --pfst-crna: #000000; /* print / monochrome only — web text uses modra */
+  --pfst-bijela: #ffffff;
 
   /* ---- Semantic colours ---- */
-  --color-bg: #F1F4F8;            /* page background */
-  --color-bg-hover: #E3E9F1;      /* hover on grey (--color-bg) controls — icon buttons, chips, tools */
-  --color-surface: #FFFFFF;       /* cards, tiles, panels */
-  --color-text: var(--pfst-modra);/* 14.2:1 on white */
-  --color-text-muted: #4F5B73;    /* 6.8:1 on white, 6.2:1 on bg */
-  --color-text-muted-2: #3F4B63;  /* 8.8:1 on white */
-  --color-text-on-dark: #B4C2DD;  /* 7.9:1 on modra */
-  --color-label-on-dark: #93A6CC; /* 5.8:1 on modra */
-  --color-text-on-dark-strong: #CDD7EA;
-  --color-line: #E6EBF2;          /* row dividers */
-  --color-line-strong: #C3CCD8;   /* outline buttons, inputs */
-  --color-input-border: #D3DBE6;
-  --color-input-border-hover: #93A6CC; /* input hover (STYLEGUIDE §6 forms) */
-  --color-chip-text: #26324A;     /* chip label (reference .chip) — 12.6:1 on bg, 13.9:1 on white */
+  --color-bg: #f1f4f8; /* page background */
+  --color-bg-hover: #e3e9f1; /* hover on grey (--color-bg) controls — icon buttons, chips, tools */
+  --color-surface: #ffffff; /* cards, tiles, panels */
+  --color-text: var(--pfst-modra); /* 14.2:1 on white */
+  --color-text-muted: #4f5b73; /* 6.8:1 on white, 6.2:1 on bg */
+  --color-text-muted-2: #3f4b63; /* 8.8:1 on white */
+  --color-text-on-dark: #b4c2dd; /* 7.9:1 on modra */
+  --color-label-on-dark: #93a6cc; /* 5.8:1 on modra */
+  --color-text-on-dark-strong: #cdd7ea;
+  --color-line: #e6ebf2; /* row dividers */
+  --color-line-strong: #c3ccd8; /* outline buttons, inputs */
+  --color-input-border: #d3dbe6;
+  --color-input-border-hover: #93a6cc; /* input hover (STYLEGUIDE §6 forms) */
+  --color-chip-text: #26324a; /* chip label (reference .chip) — 12.6:1 on bg, 13.9:1 on white */
 
   --color-primary: var(--pfst-modra);
-  --color-primary-hover: #0A3590;
-  --color-accent: var(--pfst-plava);   /* text ON accent is always modra (5.5:1) */
-  --color-accent-hover: #6CC4F5;
-  --color-deep: #00194D;               /* image placeholder while loading */
+  --color-primary-hover: #0a3590;
+  --color-accent: var(--pfst-plava); /* text ON accent is always modra (5.5:1) */
+  --color-accent-hover: #6cc4f5;
+  --color-deep: #00194d; /* image placeholder while loading */
 
-  --color-error: #C42B1C;         /* 5.7:1 white text */
-  --color-success: #0E7C4A;       /* 5.3:1 white text */
+  --color-error: #c42b1c; /* 5.7:1 white text */
+  --color-success: #0e7c4a; /* 5.3:1 white text */
 
   /* card tints (modra text ≥ 10.8:1 on all) */
-  --tint-plava-1: #D3ECFB;
-  --tint-plava-2: #C6E5F9;
-  --tint-plava-3: #EAF4FC;
-  --tint-modra-1: #DCE6F4;
-  --tint-modra-2: #E3EBF6;
+  --tint-plava-1: #d3ecfb;
+  --tint-plava-2: #c6e5f9;
+  --tint-plava-3: #eaf4fc;
+  --tint-modra-1: #dce6f4;
+  --tint-modra-2: #e3ebf6;
 
   /* translucent */
-  --glass: rgba(255, 255, 255, .14);      /* + backdrop-filter: blur(14–16px), only over photos/dark */
-  --scrim-hero: rgba(0, 20, 60, .22);     /* the only overlay allowed on photos */
-  --photo-tag: rgba(0, 24, 74, .72);
+  --glass: rgba(255, 255, 255, 0.14); /* + backdrop-filter: blur(14–16px), only over photos/dark */
+  --scrim-hero: rgba(0, 20, 60, 0.22); /* the only overlay allowed on photos */
+  --photo-tag: rgba(0, 24, 74, 0.72);
 
   /* ---- Typography ---- */
   /* --font-montserrat is set by next/font (lib/fonts.js) on <html>; it
      includes next/font's size-adjusted fallback face. */
-  --font-sans: var(--font-montserrat, 'Montserrat'), system-ui, sans-serif;
+  --font-sans: var(--font-inter, "Montserrat"), system-ui, sans-serif;
 
-  --fs-hero: clamp(48px, 7.4vw, 120px);       /* lh .90 · ls -.04em · 600 */
-  --fs-page-title: clamp(44px, 6.4vw, 96px);  /* inner page H1 · lh .92 · ls -.04em · 600 */
-  --fs-h2: clamp(40px, 5vw, 76px);            /* lh .95 · ls -.035em · 600 */
-  --fs-statement: clamp(32px, 4vw, 62px);     /* lh 1.04 · ls -.035em · 600 */
-  --fs-h3: clamp(32px, 3.5vw, 52px);          /* lh .98 · ls -.035em · 600 */
-  --fs-title-l: 34px;                         /* lh 1 · ls -.035em · 600 */
-  --fs-title-m: 23px;                         /* lh 1.25 · ls -.025em · 500 */
-  --fs-title-s: 20px;                         /* lh 1.3 · ls -.02em · 500–600 */
+  --fs-hero: clamp(48px, 7.4vw, 120px); /* lh .90 · ls -.04em · 600 */
+  --fs-page-title: clamp(44px, 6.4vw, 96px); /* inner page H1 · lh .92 · ls -.04em · 600 */
+  --fs-h2: clamp(40px, 5vw, 76px); /* lh .95 · ls -.035em · 600 */
+  --fs-statement: clamp(32px, 4vw, 62px); /* lh 1.04 · ls -.035em · 600 */
+  --fs-h3: clamp(32px, 3.5vw, 52px); /* lh .98 · ls -.035em · 600 */
+  --fs-title-l: 34px; /* lh 1 · ls -.035em · 600 */
+  --fs-title-m: 23px; /* lh 1.25 · ls -.025em · 500 */
+  --fs-title-s: 20px; /* lh 1.3 · ls -.02em · 500–600 */
   --fs-post-title: clamp(40px, 5.4vw, 80px); /* article hero title */
-  --fs-post-lead: 21px;                       /* article lead paragraph */
-  --fs-post-heading: 30px;                    /* article section heading */
+  --fs-post-lead: 21px; /* article lead paragraph */
+  --fs-post-heading: 30px; /* article section heading */
   --fs-related-title: clamp(36px, 4.4vw, 64px);
-  --fs-body-l: 17px;                          /* lh 1.55 · 400 */
-  --fs-body: 15px;                            /* lh 1.5 · 400 */
-  --fs-small: 14.5px;                         /* lh 1.45 · 400 */
-  --fs-meta: 13px;                            /* dates, breadcrumbs, menu chips · 500 */
-  --fs-chip: 12.5px;                          /* chip label · 500 (STYLEGUIDE §6) */
-  --fs-label: 12px;                           /* 500 · ls .08em · uppercase */
-  --fs-micro: 11px;                           /* 500 · ls .14em · uppercase */
+  --fs-body-l: 17px; /* lh 1.55 · 400 */
+  --fs-body: 15px; /* lh 1.5 · 400 */
+  --fs-small: 14.5px; /* lh 1.45 · 400 */
+  --fs-meta: 13px; /* dates, breadcrumbs, menu chips · 500 */
+  --fs-chip: 12.5px; /* chip label · 500 (STYLEGUIDE §6) */
+  --fs-label: 12px; /* 500 · ls .08em · uppercase */
+  --fs-micro: 11px; /* 500 · ls .14em · uppercase */
 
   --ls-display: -0.035em;
   --ls-hero: -0.04em;
 
   /* ---- Spacing (4px base) ---- */
-  --space-1: 4px;  --space-2: 8px;  --space-3: 12px; --space-4: 16px;
-  --space-6: 24px; --space-8: 32px; --space-10: 40px; --space-12: 48px;
-  --space-16: 64px; --space-24: 96px; --space-32: 128px; --space-36: 144px;
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-10: 40px;
+  --space-12: 48px;
+  --space-16: 64px;
+  --space-24: 96px;
+  --space-32: 128px;
+  --space-36: 144px;
 
   --container: 1400px;
-  --gutter: 40px;          /* 20px below 720px */
-  --frame-inset: 12px;     /* full-width rounded blocks sit 12px from the viewport edge */
-  --section-y: 128px;      /* 128–144 */
-  --grid-gap: 12px;        /* bento, card grids, CTA pair */
+  --gutter: 40px; /* 20px below 720px */
+  --frame-inset: 12px; /* full-width rounded blocks sit 12px from the viewport edge */
+  --section-y: 128px; /* 128–144 */
+  --grid-gap: 12px; /* bento, card grids, CTA pair */
 
   /* ---- Radii ---- */
-  --r-mini: 10px;   --r-icon: 14px;  --r-field: 16px;  --r-panel: 20px;
-  --r-card: 24px;   --r-feature: 28px; --r-block: 32px; --r-pill: 999px;
+  --r-mini: 10px;
+  --r-icon: 14px;
+  --r-field: 16px;
+  --r-panel: 20px;
+  --r-card: 24px;
+  --r-feature: 28px;
+  --r-block: 32px;
+  --r-pill: 999px;
 
   /* ---- Motion ---- */
-  --ease-out: cubic-bezier(.16, 1, .3, 1);   /* = GSAP expo.out, also for CSS hovers */
-  --dur-hover: .5s;      /* .3–.6s */
-  --dur-reveal: 1.2s;    /* 1.1–1.4s */
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1); /* = GSAP expo.out, also for CSS hovers */
+  --dur-hover: 0.5s; /* .3–.6s */
+  --dur-reveal: 1.2s; /* 1.1–1.4s */
   --dur-intro: 2.2s;
 
   /* ---- Breakpoints (reference — CSS vars can't be used in @media) ----

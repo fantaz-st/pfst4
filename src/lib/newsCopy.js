@@ -4,7 +4,7 @@ const NEWS_COPY = {
     archiveTitle: "Novosti",
     archiveEyebrow: "Obavijesti",
     archiveLead: "Službene obavijesti, natječaji i najave događanja.",
-    archiveMetaTitle: "Novosti — Pomorski fakultet u Splitu",
+    archiveMetaTitle: "Novosti",
     archiveMetaDescription:
       "Obavijesti, natječaji i najave Pomorskog fakulteta u Splitu.",
     filterByCategoryLabel: "Filtriraj novosti",
@@ -69,7 +69,7 @@ const NEWS_COPY = {
     archiveTitle: "News",
     archiveEyebrow: "Announcements",
     archiveLead: "Official announcements, calls and upcoming events.",
-    archiveMetaTitle: "News — Faculty of Maritime Studies, University of Split",
+    archiveMetaTitle: "News",
     archiveMetaDescription:
       "Announcements, calls and news from the Faculty of Maritime Studies, University of Split.",
     filterByCategoryLabel: "Filter news",

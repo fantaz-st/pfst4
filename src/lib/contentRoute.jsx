@@ -4,8 +4,9 @@ import { wpFetch } from "@/lib/wp";
 import { NODE_BY_URI } from "@/lib/queries";
 import { getAllContentNodes } from "@/lib/content";
 import { getLanguageFromUri } from "@/lib/language";
-import { buildMetaDescription, buildLanguageAlternates } from "@/lib/seo";
+import { buildContentMetadata, contentJsonLd } from "@/lib/seo";
 import ContentView from "@/components/content/ContentView";
+import JsonLd from "@/components/seo/JsonLd";
 
 export const hrContentRoute = createContentRoute({ language: "hr" });
 export const enContentRoute = createContentRoute({
@@ -55,25 +56,19 @@ export function createContentRoute({ language, prefix = null }) {
     const { slug } = await params;
     const node = await getNode(slug);
     if (!node) return {};
-
-    return {
-      title: node.seo?.title || node.title,
-      description: buildMetaDescription(node),
-      alternates: {
-        canonical: `${process.env.NEXT_PUBLIC_SITE_URL}${node.uri}`,
-        languages: buildLanguageAlternates(node),
-      },
-      openGraph: node.seo?.opengraphImage?.sourceUrl
-        ? { images: [node.seo.opengraphImage.sourceUrl] }
-        : undefined,
-    };
+    return buildContentMetadata(node, language);
   }
 
   async function ContentPage({ params }) {
     const { slug } = await params;
     const node = await getNode(slug);
     if (!node) notFound();
-    return <ContentView node={node} />;
+    return (
+      <>
+        <JsonLd data={contentJsonLd(node, language)} />
+        <ContentView node={node} />
+      </>
+    );
   }
 
   // Used by the route's own layout.jsx to build the Header's language

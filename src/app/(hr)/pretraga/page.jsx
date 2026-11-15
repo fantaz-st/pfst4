@@ -1,11 +1,14 @@
 import SearchResults from "@/components/search/SearchResults";
+import { buildPageMetadata } from "@/lib/seo";
 
-export const metadata = {
-  title: "Pretraživanje — Pomorski fakultet u Splitu",
-  // Result pages are thin, infinite (one per query) and duplicate content
-  // that is indexed elsewhere.
-  robots: { index: false, follow: true },
-};
+// Result pages are thin, infinite (one per query) and duplicate content
+// that is indexed elsewhere: noindex, but links are still followed.
+export const metadata = buildPageMetadata({
+  language: "hr",
+  uri: "/pretraga/",
+  title: "Pretraživanje",
+  noindex: true,
+});
 
 export default async function SearchPage({ searchParams }) {
   const params = await searchParams;

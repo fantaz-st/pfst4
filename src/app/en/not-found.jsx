@@ -2,7 +2,7 @@ import SiteChrome from "@/components/layout/SiteChrome";
 import NotFoundView from "@/components/content/NotFoundView";
 
 export const metadata = {
-  title: "Page not found — Faculty of Maritime Studies, University of Split",
+  title: "Page not found",
 };
 
 export default function NotFound() {

@@ -1,0 +1,19 @@
+/* Decorative compass rose. Position and size come from the parent's module
+   (absolute + width); this file only sets how it draws. */
+.compass {
+  position: absolute;
+  display: block;
+  pointer-events: none;
+  transform-origin: 50% 50%;
+  will-change: transform;
+}
+
+/* 18% white on modra / plava surfaces — the original Upisi card value. */
+.onDark {
+  color: color-mix(in srgb, var(--pfst-bijela) 18%, transparent);
+}
+
+/* Faint modra on white / --color-bg surfaces. */
+.onLight {
+  color: color-mix(in srgb, var(--pfst-modra) 12%, transparent);
+}

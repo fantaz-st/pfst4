@@ -1,13 +1,14 @@
 import HomePage from "@/components/home/HomePage";
+import { buildPageMetadata, SITE, toAbsoluteUrl } from "@/lib/seo";
 
 const LANGUAGE = "en";
 
-export const metadata = {
-  title: "Faculty of Maritime Studies, University of Split",
-  description:
-    "Faculty of Maritime Studies, University of Split — nautical studies, marine engineering, marine electrical technologies and maritime management.",
-  alternates: { canonical: `${process.env.NEXT_PUBLIC_SITE_URL}/en/` },
-};
+export const metadata = buildPageMetadata({
+  language: LANGUAGE,
+  uri: "/en/",
+  title: { absolute: SITE.en.name },
+  languages: { hr: toAbsoluteUrl("/"), en: toAbsoluteUrl("/en/"), "x-default": toAbsoluteUrl("/") },
+});
 
 export default function EnglishHome() {
   return <HomePage language={LANGUAGE} />;

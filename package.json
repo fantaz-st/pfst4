@@ -12,6 +12,7 @@
     "lint": "eslint"
   },
   "dependencies": {
+    "@gsap/react": "^2.1.2",
     "gsap": "^3.15.0",
     "html-react-parser": "^5.2.8",
     "isomorphic-dompurify": "^2.31.0",

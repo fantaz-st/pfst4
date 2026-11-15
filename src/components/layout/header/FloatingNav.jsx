@@ -21,19 +21,7 @@ import styles from "./FloatingNav.module.css";
  * decoration, so it also works under reduced motion — just without the
  * slide. While hidden it is `inert`, so it's never tabbable off-screen.
  */
-export default function FloatingNav({
-  menu,
-  language,
-  frequent,
-  openItem,
-  onToggleMega,
-  onCloseMega,
-  onTriggerRef,
-  onBeforeShow,
-  onBeforeHide,
-  onOpenMenu,
-  menuOpen,
-}) {
+export default function FloatingNav({ menu, language, frequent, openItem, onToggleMega, onCloseMega, onTriggerRef, onBeforeShow, onBeforeHide, onOpenMenu, menuOpen }) {
   const copy = getChromeCopy(language);
   const pathname = usePathname();
   const ref = useRef(null);
@@ -80,9 +68,7 @@ export default function FloatingNav({
     });
     // Sync with the page we landed on (e.g. after navigation or a reload
     // mid-page), without animating.
-    const frame = requestAnimationFrame(() =>
-      show(trigger.scroll() >= trigger.start, { instant: true }),
-    );
+    const frame = requestAnimationFrame(() => show(trigger.scroll() >= trigger.start, { instant: true }));
     return () => {
       cancelAnimationFrame(frame);
       trigger.kill();
@@ -91,18 +77,9 @@ export default function FloatingNav({
   }, [pathname]);
 
   return (
-    <div
-      ref={ref}
-      className={styles.wrap}
-      data-float-nav
-      inert={!visible || menuOpen}
-    >
+    <div ref={ref} className={styles.wrap} data-float-nav inert={!visible || menuOpen}>
       <nav className={styles.inner} aria-label={copy.mainNavLabel}>
-        <Link
-          href={localizedHomeUri(language)}
-          className={styles.logo}
-          aria-label={copy.siteNameHome}
-        >
+        <Link href={localizedHomeUri(language)} className={styles.logo} aria-label={copy.siteNameHome}>
           <BrandMark className={styles.mark} />
         </Link>
         <span className={styles.links}>
@@ -131,41 +108,20 @@ export default function FloatingNav({
                 </span>
               </button>
             ) : (
-              <Link
-                key={item.databaseId}
-                href={item.uri}
-                className={className}
-                aria-current={current ? "page" : undefined}
-              >
+              <Link key={item.databaseId} href={item.uri} className={className} aria-current={current ? "page" : undefined}>
                 {item.label}
               </Link>
             );
           })}
         </span>
-        <Button href={ENROLL_URL} variant="accent" size="s" className={styles.enroll}>
+        {/* <Button href={ENROLL_URL} variant="accent" size="s" className={styles.enroll}>
           {copy.enroll}
-        </Button>
-        <button
-          type="button"
-          className={styles.menuButton}
-          aria-label={copy.menu}
-          aria-expanded={menuOpen}
-          aria-controls="site-menu"
-          onClick={onOpenMenu}
-        >
+        </Button> */}
+        <button type="button" className={styles.menuButton} aria-label={copy.menu} aria-expanded={menuOpen} aria-controls="site-menu" onClick={onOpenMenu}>
           <Icon name="menu" size={18} />
         </button>
       </nav>
-      {openItem && (
-        <MegaPanel
-          key={openItem.databaseId}
-          item={openItem}
-          language={language}
-          frequent={frequent}
-          floating
-          onClose={onCloseMega}
-        />
-      )}
+      {openItem && <MegaPanel key={openItem.databaseId} item={openItem} language={language} frequent={frequent} floating onClose={onCloseMega} />}
     </div>
   );
 }

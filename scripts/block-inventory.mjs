@@ -1,8 +1,3 @@
-// One-off inventory: tallies every Gutenberg block name in use across
-// WordPress, including nested innerBlocks, with example URIs. Read-only.
-//
-// Usage: node scripts/block-inventory.mjs
-
 import { readFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import path from "node:path";
@@ -11,9 +6,7 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 loadEnv(path.join(__dirname, "..", ".env"));
 
 const { wpFetch } = await import("../src/lib/wp.js");
-const { ALL_CONTENT_URIS, NODE_BY_URI } = await import(
-  "../src/lib/queries.js"
-);
+const { ALL_CONTENT_URIS, NODE_BY_URI } = await import("../src/lib/queries.js");
 
 const CONCURRENCY = 8;
 

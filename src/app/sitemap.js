@@ -1,20 +1,19 @@
 import { getAllContentNodes } from "@/lib/content";
-
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL;
+import { toAbsoluteUrl } from "@/lib/seo";
 
 export default async function sitemap() {
   const nodes = await getAllContentNodes();
 
   const contentEntries = nodes.map((node) => ({
-    url: `${SITE_URL}${node.uri}`,
+    url: toAbsoluteUrl(node.uri),
     lastModified: node.modifiedGmt ? new Date(`${node.modifiedGmt}Z`) : undefined,
   }));
 
   return [
-    { url: `${SITE_URL}/`, priority: 1 },
-    { url: `${SITE_URL}/en/`, priority: 1 },
-    { url: `${SITE_URL}/novosti/` },
-    { url: `${SITE_URL}/en/news/` },
+    { url: toAbsoluteUrl("/"), priority: 1, alternates: { languages: { hr: toAbsoluteUrl("/"), en: toAbsoluteUrl("/en/") } } },
+    { url: toAbsoluteUrl("/en/"), priority: 1, alternates: { languages: { hr: toAbsoluteUrl("/"), en: toAbsoluteUrl("/en/") } } },
+    { url: toAbsoluteUrl("/novosti/"), changeFrequency: "daily" },
+    { url: toAbsoluteUrl("/en/news/"), changeFrequency: "daily" },
     ...contentEntries,
   ];
 }

@@ -1082,3 +1082,19 @@
     transition: none;
   }
 }
+
+.compassRose {
+  top: -120px;
+  right: -140px;
+  width: 520px;
+  height: 520px;
+}
+
+@media (max-width: 720px) {
+  .compassRose {
+    top: -90px;
+    right: -110px;
+    width: 360px;
+    height: 360px;
+  }
+}

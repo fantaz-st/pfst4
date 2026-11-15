@@ -8,12 +8,17 @@
   justify-content: center;
   pointer-events: none;
   transform: translateY(-200%);
+  padding: 0 var(--frame-inset) var(--frame-inset);
 }
 
 .inner {
   --focus-ring: var(--color-surface);
   display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: space-between;
   align-items: center;
+  align-content: center;
   gap: 6px;
   height: 60px;
   padding: 0 var(--space-2) 0 18px;
@@ -23,6 +28,7 @@
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
   pointer-events: auto;
+  width: 100%;
 }
 
 .logo {

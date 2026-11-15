@@ -12,6 +12,7 @@ import PageHero from "@/components/content/PageHero";
 import NewsList from "./NewsList";
 import NewsFilters from "./NewsFilters";
 import { NEWS_ARCHIVE_URI } from "@/lib/posts";
+import { buildPageMetadata, toAbsoluteUrl } from "@/lib/seo";
 import styles from "./NewsArchive.module.css";
 
 const LIST_FIRST = 20;
@@ -20,21 +21,19 @@ const EMPTY_PAGE = { nodes: [], pageInfo: { hasNextPage: false, endCursor: null 
 // Shared by app/(hr)/novosti and app/en/news, which differ only in language.
 export function getNewsArchiveMetadata(language) {
   const copy = getNewsCopy(language);
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL;
-  return {
+  return buildPageMetadata({
+    language,
+    // Filtered views (?kategorija=, ?q=, …) all canonicalize to the
+    // unfiltered archive.
+    uri: NEWS_ARCHIVE_URI[language] ?? NEWS_ARCHIVE_URI.hr,
     title: copy.archiveMetaTitle,
     description: copy.archiveMetaDescription,
-    alternates: {
-      // Filtered views (?kategorija=, ?q=, …) all canonicalize to the
-      // unfiltered archive.
-      canonical: `${siteUrl}${NEWS_ARCHIVE_URI[language] ?? NEWS_ARCHIVE_URI.hr}`,
-      languages: {
-        hr: `${siteUrl}${NEWS_ARCHIVE_URI.hr}`,
-        en: `${siteUrl}${NEWS_ARCHIVE_URI.en}`,
-        "x-default": `${siteUrl}${NEWS_ARCHIVE_URI.hr}`,
-      },
+    languages: {
+      hr: toAbsoluteUrl(NEWS_ARCHIVE_URI.hr),
+      en: toAbsoluteUrl(NEWS_ARCHIVE_URI.en),
+      "x-default": toAbsoluteUrl(NEWS_ARCHIVE_URI.hr),
     },
-  };
+  });
 }
 
 function readFilters(params) {

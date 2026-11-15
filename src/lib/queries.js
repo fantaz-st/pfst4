@@ -127,6 +127,7 @@ const POST_FIELDS = /* GraphQL */ `
     title
     uri
     date
+    modified
     excerpt
     contentTypeName
     ...SeoFields
