@@ -505,7 +505,7 @@ export default async function HomePage({ language }) {
   const heroLabel = "home-hero-title";
   return (
     <SiteChrome language={language}>
-      <Hero size="home" labelledBy={heroLabel} photo={{ tag: copy.photoTag, hideTagOnMobile: true }}>
+      <Hero size="home" labelledBy={heroLabel} photo={{ tag: copy.photoTag, hideTagOnMobile: true, src: "/images/PFST - hero -sailing -team.png" }}>
         {featuredPosts[0] && <HeroNews post={featuredPosts[0]} copy={copy} language={language} />}
         <div className={styles.heroContent} data-home-hero-content>
           <div className={styles.heroChips} data-hero-fade>

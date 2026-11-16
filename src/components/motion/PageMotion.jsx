@@ -124,17 +124,24 @@ export default function PageMotion() {
         });
       }
 
+      // Reveal targets often carry a CSS `transition: transform` for their
+      // hover lift. Left on, the browser re-transitions every frame GSAP
+      // writes, so the element fades in first and only slides up ~0.5s
+      // later. Transitions are switched off until the reveal has finished.
       gsap.utils.toArray("[data-fade]").forEach((el) => {
+        gsap.set(el, { transition: "none" });
         gsap.from(el, {
           y: 32,
           opacity: 0,
           duration: 1.1,
           ease: EASE.fade,
+          clearProps: "transform,transition",
           scrollTrigger: { trigger: el, start: "top 92%", once: true },
         });
       });
 
       gsap.utils.toArray("[data-stagger]").forEach((el) => {
+        gsap.set(el.children, { transition: "none" });
         gsap.from(el.children, {
           y: 60,
           opacity: 0,
@@ -142,7 +149,7 @@ export default function PageMotion() {
           duration: 1.2,
           ease: EASE.out,
           stagger: 0.06,
-          clearProps: "transform",
+          clearProps: "transform,transition",
           scrollTrigger: { trigger: el, start: "top 88%", once: true },
         });
       });
@@ -184,11 +191,7 @@ export default function PageMotion() {
           });
           gsap.to(track, { x: () => -distance(), ease: "none", scrollTrigger: scrollConfig });
           if (progress) {
-            gsap.fromTo(
-              progress,
-              { scaleX: 0.08 },
-              { scaleX: 1, ease: "none", scrollTrigger: scrollConfig },
-            );
+            gsap.fromTo(progress, { scaleX: 0.08 }, { scaleX: 1, ease: "none", scrollTrigger: scrollConfig });
           }
         }
 
@@ -222,11 +225,7 @@ export default function PageMotion() {
             end: "bottom 45%",
             scrub: true,
           };
-          gsap.fromTo(
-            split.words,
-            { opacity: 0.14 },
-            { opacity: 1, stagger: 0.1, ease: "none", scrollTrigger: trigger },
-          );
+          gsap.fromTo(split.words, { opacity: 0.14 }, { opacity: 1, stagger: 0.1, ease: "none", scrollTrigger: trigger });
           gsap.from(el.querySelectorAll("[data-home-pill]"), {
             width: 0,
             marginLeft: 0,

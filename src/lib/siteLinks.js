@@ -12,7 +12,7 @@ export const ENROLL_URL = "https://upisi.pfst.hr/";
 const LINKS = {
   hr: {
     utility: [
-      { label: "Webmail", href: "/TODO-webmail" }, // TODO: webmail URL
+      { label: "Webmail", href: "https://outlook.office.com/mail/" }, // TODO: webmail URL
       { label: "Raspored", href: "/nastava/studiranje/raspored" },
       { label: "Pristupačnost", href: "/fakultet/opcenito/digitalna-pristupacnost" },
     ],
@@ -20,8 +20,8 @@ const LINKS = {
     help: {
       href: "/fakultet/opcenito/opci-podaci-kontakt",
       contacts: [
-        { icon: "phone", label: "TODO telefon" }, // TODO: dean's office phone
-        { icon: "mail", label: "TODO e-mail" }, // TODO: dean's office e-mail
+        { icon: "phone", label: "+385 (0)21 619 399" }, // TODO: dean's office phone
+        { icon: "mail", label: "info@pfst.hr" }, // TODO: dean's office e-mail
       ],
     },
     frequent: [
@@ -33,9 +33,9 @@ const LINKS = {
     footer: {
       address: ["Ruđera Boškovića 37", "21000 Split, Hrvatska"],
       contact: [
-        { label: "TODO telefon", href: null }, // TODO: phone number
-        { label: "TODO e-mail referade", href: null }, // TODO: student office e-mail
-        { label: "Facebook", href: "/TODO-facebook" }, // TODO: Facebook page URL
+        { label: "Telefon", href: "tel+:38521619399" }, // TODO: phone number
+        { label: "E-mail", href: "info@pfst.hr" }, // TODO: student office e-mail
+        { label: "Facebook", href: "https://www.facebook.com/pfst.hr" }, // TODO: Facebook page URL
       ],
       faculty: [
         { label: "O fakultetu", href: "/fakultet/opcenito" },
@@ -53,7 +53,7 @@ const LINKS = {
   },
   en: {
     utility: [
-      { label: "Webmail", href: "/TODO-webmail" }, // TODO: webmail URL
+      { label: "Webmail", href: "https://outlook.office.com/mail/" }, // TODO: webmail URL
       { label: "Timetable", href: "/nastava/studiranje/raspored" }, // TODO: no English page yet
       {
         label: "Accessibility",
