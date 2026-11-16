@@ -8,6 +8,9 @@
 
   position: absolute;
   display: block;
+  /* globals.css caps every svg at max-width: 100%, which would squeeze the
+     compass to the card's width and push it off to the right. */
+  max-width: none;
   overflow: visible;
   pointer-events: none;
   transform: perspective(1600px) rotate(var(--turn)) rotateX(var(--tilt));
