@@ -720,7 +720,6 @@
   gap: var(--grid-gap);
 }
 
-.admissionsCard,
 .trainingCard {
   position: relative;
   display: flex;
@@ -730,58 +729,12 @@
   border-radius: var(--r-block);
 }
 
-.admissionsCard {
-  flex-direction: column;
-  padding: var(--space-10);
-  background: var(--color-primary);
-  color: var(--color-surface);
-}
-
-.ctaLabel,
 .trainingLabel {
   position: relative;
   font-size: var(--fs-label);
   font-weight: 500;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-}
-
-.ctaLabel {
-  color: var(--color-text-on-dark);
-}
-
-.admissionsBody {
-  position: relative;
-  z-index: 1;
-  display: flex;
-  max-width: 520px;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: var(--space-6);
-  margin-top: 28px;
-}
-
-.ctaTitle {
-  font-size: var(--fs-h2);
-  font-weight: 600;
-  line-height: 0.95;
-  letter-spacing: var(--ls-display);
-}
-
-.ctaLead {
-  max-width: 420px;
-  color: var(--color-text-on-dark-strong);
-  font-size: var(--fs-body-l);
-  line-height: 1.55;
-}
-
-.flags {
-  position: absolute;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  height: 200px;
-  background: url("/design/flags.svg") left center / auto 100% repeat-x;
 }
 
 .trainingCard {
@@ -830,34 +783,7 @@
   line-height: 1.5;
 }
 
-.ctaButton {
-  display: inline-flex;
-  min-height: 52px;
-  align-items: center;
-  gap: var(--space-2);
-  padding: 0 var(--space-2) 0 var(--space-6);
-  border-radius: var(--r-pill);
-  background: var(--color-surface);
-  color: var(--color-text);
-  font-size: var(--fs-body);
-  font-weight: 500;
-}
-
-.ctaButton > span {
-  display: inline-flex;
-  width: 38px;
-  height: 38px;
-  align-items: center;
-  justify-content: center;
-  border-radius: var(--r-pill);
-  background: var(--color-primary);
-  color: var(--color-surface);
-}
-
-.tile:is(:hover, :focus-visible) .tileArrow,
-.featuredCard:is(:hover, :focus-visible) .featuredPhoto img,
-.newsCard:is(:hover, :focus-visible) .newsPhoto img,
-.trainingCard:is(:hover, :focus-visible) .trainingPhoto img {
+.tile:is(:hover, :focus-visible) .tileArrow {
   transform: rotate(-45deg);
 }
 
@@ -867,10 +793,72 @@
   transform: scale(1.06);
 }
 
+/* ---- News hover / focus: frame pulls in, arrow after the title, chip
+   turns modra (same as components/news/NewsCard) ---- */
+.featuredPhoto {
+  clip-path: inset(0 round var(--r-feature));
+  transition: clip-path 0.8s var(--ease-out);
+}
+
+.newsPhoto {
+  clip-path: inset(0 round var(--r-card));
+  transition: clip-path 0.8s var(--ease-out);
+}
+
+.featuredCard:is(:hover, :focus-visible) .featuredPhoto {
+  clip-path: inset(10px round 20px);
+}
+
+.newsCard:is(:hover, :focus-visible) .newsPhoto {
+  clip-path: inset(10px round 16px);
+}
+
+.featuredTitle,
+.newsTitle {
+  transition: transform 0.6s var(--ease-out);
+}
+
+.titleArrow {
+  display: inline-block;
+  margin-left: 6px;
+  vertical-align: -2px;
+  opacity: 0;
+  transform: translateX(-10px);
+  transition:
+    opacity 0.4s,
+    transform 0.6s var(--ease-out);
+}
+
+.featuredCard:is(:hover, :focus-visible) .featuredTitle,
 .newsCard:is(:hover, :focus-visible) .newsTitle {
-  text-decoration: underline;
-  text-decoration-thickness: 1.5px;
-  text-underline-offset: 5px;
+  transform: translateX(6px);
+}
+
+:is(.featuredCard, .newsCard):is(:hover, :focus-visible) .titleArrow {
+  opacity: 1;
+  transform: none;
+}
+
+.newsChip {
+  transition:
+    background var(--dur-hover) var(--ease-out),
+    color var(--dur-hover) var(--ease-out);
+}
+
+:is(.featuredCard, .newsCard):is(:hover, :focus-visible) .newsChip {
+  background: var(--color-primary);
+  color: var(--color-surface);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .featuredPhoto,
+  .newsPhoto,
+  .featuredTitle,
+  .newsTitle,
+  .titleArrow,
+  .newsChip {
+    transition: none;
+  }
 }
 
 .archiveCard:is(:hover, :focus-visible) > span:last-child {
@@ -1058,13 +1046,8 @@
     padding-bottom: var(--frame-inset);
   }
 
-  .admissionsCard,
   .trainingCard {
     height: 540px;
-  }
-
-  .admissionsCard {
-    padding: 28px;
   }
 
   .trainingPanel {
@@ -1080,21 +1063,5 @@
 
   .archiveCard > span:last-child {
     transition: none;
-  }
-}
-
-.compassRose {
-  top: -120px;
-  right: -140px;
-  width: 520px;
-  height: 520px;
-}
-
-@media (max-width: 720px) {
-  .compassRose {
-    top: -90px;
-    right: -110px;
-    width: 360px;
-    height: 360px;
   }
 }

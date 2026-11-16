@@ -14,7 +14,7 @@ import Icon from "@/components/ui/Icon";
 import ArrowCircle from "@/components/ui/ArrowCircle";
 import HomeNewsRows from "./HomeNewsRows";
 import styles from "./HomePage.module.css";
-// import CompassRose from "./CompassRose";
+import AdmissionsCard from "./AdmissionsCard";
 
 const EMPTY_POSTS = { nodes: [] };
 
@@ -29,19 +29,19 @@ const COPY = {
     newLabel: "Novo",
     quickEyebrow: "Brzi pristup",
     quickTitle: "Najposjećenije stranice",
-    quickLead: "[OPIS BRZOG PRISTUPA — DOPUNITI]",
+    quickLead: "Raspored, ispitni rokovi, konzultacije i ostalo što studenti i nastavnici najčešće traže.",
     training: "Trening centar",
-    itemDescription: "[OPIS — DOPUNITI]",
+    // itemDescription: "[OPIS — DOPUNITI]",
     studyDescription: "[OPIS STUDIJA — DOPUNITI]",
     highlightsEyebrow: "Istaknuto",
     highlightsTitle: "Novosti s fakulteta",
     allNews: "Sve novosti",
     noHighlights: "Trenutačno nema istaknutih novosti.",
-    statement: "[IZJAVA FAKULTETA — DOPUNITI]",
+    statement: "Od nautike do digitalnih tehnologija – pripremamo stručnjake koje traži pomorsko gospodarstvo.",
     about: "O fakultetu",
     studyEyebrow: "Studiji",
     studyTitle: "Studiji",
-    studyLead: "[OPIS STUDIJA — DOPUNITI]",
+    studyLead: "Studiji usklađeni s međunarodnim pomorskim standardima.",
     studyPrograms: [
       { title: "Pomorska nautika", href: "/nastava/studiji/prijediplomski-studiji/pomorska-nautika", photo: "[FOTO: BRODSKI MOST]" },
       { title: "Brodostrojarstvo", href: "/nastava/studiji/prijediplomski-studiji/brodostrojarstvo", photo: "[FOTO: STROJARNICA]" },
@@ -54,7 +54,7 @@ const COPY = {
     ],
     otherEyebrow: "Obavijesti",
     otherTitle: "Ostale novosti",
-    otherLead: "[OPIS OBAVIJESTI — DOPUNITI]",
+    otherLead: "Službene obavijesti, natječaji i najave događanja.",
     newsFilters: "Filtriraj novosti",
     all: "Sve",
     featured: "Istaknuto",
@@ -62,11 +62,11 @@ const COPY = {
     showMore: "Prikaži još obavijesti",
     fewer: "Prikaži manje",
     ctaLabel: "Upisi",
-    ctaTitle: "[NASLOV UPISA — DOPUNITI]",
+    ctaTitle: "Upiši Pomorski!",
     ctaLead: "[OPIS UPISA — DOPUNITI]",
     allAdmissions: "Sve o upisima",
-    trainingLead: "[OPIS TRENING CENTRA — DOPUNITI]",
-    trainingHeadline: "[NASLOV TRENING CENTRA — DOPUNITI]",
+    trainingLead: "Osposobljavanje i obnova svjedodžbi pomoraca.",
+    trainingHeadline: "Edukacija pomoraca",
     trainingPhoto: "[FOTO: TRENING CENTAR]",
     ctaSectionLabel: "Upisi i Trening centar",
     photoTag: "[FOTO: KAMPUS ILI BROD]",
@@ -84,7 +84,7 @@ const COPY = {
     quickTitle: "Frequently visited pages",
     quickLead: "[QUICK ACCESS INTRODUCTION — TO BE PROVIDED]",
     training: "Training centre",
-    itemDescription: "[DESCRIPTION — TO BE PROVIDED]",
+    // itemDescription: "[DESCRIPTION — TO BE PROVIDED]",
     studyDescription: "[PROGRAMME DESCRIPTION — TO BE PROVIDED]",
     highlightsEyebrow: "Featured",
     highlightsTitle: "News from the Faculty",
@@ -129,12 +129,15 @@ const COPY = {
   },
 };
 
+// `description` is optional — a tile without one shows only its title.
+// TODO: the "Izmijenjeno" dates are placeholders; they could come from the
+// WordPress page's `modified` date.
 const QUICK_LINKS = {
   hr: [
-    { title: "Raspored nastave", href: "/nastava/studiranje/raspored", icon: "clock", style: "large" },
+    { title: "Raspored nastave", href: "/nastava/studiranje/raspored", icon: "clock", style: "large", description: "Izmijenjeno: 14. 11. 2026." },
     { title: "Upisi", href: "/nastava/upisi", icon: "cap", style: "accent" },
-    { title: "Ispitni rokovi", href: "/nastava/studiranje/ispitni-rokovi", icon: "exam" },
-    { title: "Konzultacije", href: "/nastava/studiranje/konzultacije", icon: "chat" },
+    { title: "Ispitni rokovi", href: "/nastava/studiranje/ispitni-rokovi", icon: "exam", description: "Izmijenjeno: 12. 11. 2026." },
+    { title: "Konzultacije", href: "/nastava/studiranje/konzultacije", icon: "chat", description: "Izmijenjeno: 10. 11. 2026." },
     { title: "Trening centar", href: "/edukacija-pomoraca/trening-centar", icon: "building", style: "image" },
     { title: "Nastavnici i suradnici", href: "/fakultet/opcenito/ustroj/nastavnici-i-suradnici", icon: "users" },
     { title: "Natječaji", href: "/novosti?kategorija=natjecaji", icon: "doc" },
@@ -150,16 +153,16 @@ const QUICK_LINKS = {
   ],
 };
 
-function getQuickLinks(language, copy) {
+function getQuickLinks(language) {
   return QUICK_LINKS[language].map((link, index) => ({
     ...link,
-    description: copy.itemDescription,
+    // description: copy.itemDescription,
     className: index === 0 ? "large" : link.style,
   }));
 }
 
 function QuickLinks({ language, copy }) {
-  const links = getQuickLinks(language, copy);
+  const links = getQuickLinks(language);
 
   return (
     <section className={styles.quick} aria-labelledby="home-quick-title">
@@ -196,7 +199,7 @@ function QuickLinks({ language, copy }) {
                   <Photo className={styles.tilePhoto} sizes="(max-width: 720px) 100vw, 50vw" tag={copy.trainingPhoto} tagPosition="top-left" />
                   <span className={styles.tileImagePanel}>
                     <span className={styles.tileTitle}>{copy.training}</span>
-                    <span className={styles.tileDescription}>{copy.itemDescription}</span>
+                    {/* <span className={styles.tileDescription}>{copy.itemDescription}</span> */}
                   </span>
                 </>
               ) : (
@@ -207,7 +210,7 @@ function QuickLinks({ language, copy }) {
                   {index === 0 && <TimetableGraphic days={copy.timetableDays} />}
                   <span className={styles.tileBody}>
                     <span className={styles.tileTitle}>{link.title}</span>
-                    <span className={styles.tileDescription}>{link.description}</span>
+                    {link.description && <span className={styles.tileDescription}>{link.description}</span>}
                   </span>
                 </>
               )}
@@ -318,9 +321,12 @@ function FeaturedCard({ post, language, featuredSlug, featured = false }) {
             <time dateTime={post.date} className="num">
               {formatDate(post.date, language)}
             </time>
-            {category && <Chip>{category.name}</Chip>}
+            {category && <Chip className={styles.newsChip}>{category.name}</Chip>}
           </span>
-          <span className={styles.featuredTitle}>{post.title}</span>
+          <span className={styles.featuredTitle}>
+            {post.title}
+            <Icon name="arrow" size={24} className={styles.titleArrow} />
+          </span>
         </span>
       )}
       {!featured && (
@@ -329,9 +335,16 @@ function FeaturedCard({ post, language, featuredSlug, featured = false }) {
             <time dateTime={post.date} className="num">
               {formatDate(post.date, language)}
             </time>
-            {category && <Chip tone="white">{category.name}</Chip>}
+            {category && (
+              <Chip tone="white" className={styles.newsChip}>
+                {category.name}
+              </Chip>
+            )}
           </span>
-          <span className={styles.newsTitle}>{post.title}</span>
+          <span className={styles.newsTitle}>
+            {post.title}
+            <Icon name="arrow" size={18} className={styles.titleArrow} />
+          </span>
         </>
       )}
     </Link>
@@ -448,21 +461,7 @@ function CallsToAction({ copy, language }) {
   return (
     <section className={styles.ctaSection} aria-label={copy.ctaSectionLabel}>
       <div className={styles.ctaGrid}>
-        <Link href={admissionsHref} className={styles.admissionsCard} data-home-clip>
-          {/* <CompassRose className={styles.compassRose} /> */}
-          <span className={styles.ctaLabel}>{copy.ctaLabel}</span>
-          <span className={styles.admissionsBody}>
-            <span className={styles.ctaTitle}>{copy.ctaTitle}</span>
-            <span className={styles.ctaLead}>{copy.ctaLead}</span>
-            <span className={styles.ctaButton}>
-              {copy.allAdmissions}
-              <span aria-hidden="true">
-                <Icon name="arrow" size={15} />
-              </span>
-            </span>
-          </span>
-          <span className={styles.flags} aria-hidden="true" />
-        </Link>
+        <AdmissionsCard href={admissionsHref} label={copy.ctaLabel} title={copy.ctaTitle} lead={copy.ctaLead} cta={copy.allAdmissions} />
         <Link href={trainingHref} className={styles.trainingCard}>
           <Photo className={styles.trainingPhoto} sizes="(max-width: 1080px) 100vw, 50vw" tag={copy.trainingPhoto} tagPosition="top-left" />
           <span className={styles.trainingPanel}>

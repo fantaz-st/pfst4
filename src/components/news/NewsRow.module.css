@@ -29,6 +29,44 @@ li:last-child > .row {
   transform: translateX(8px);
 }
 
+/* ---- Hover / focus (same family as the news cards): a tinted frame pulls
+   in behind the row, the title nudges right, the arrow circle fills modra
+   (ArrowCircle) and the category chip turns modra ---- */
+.row {
+  position: relative;
+  isolation: isolate;
+}
+
+.row::before {
+  content: "";
+  position: absolute;
+  inset: 6px calc(-1 * var(--space-3));
+  z-index: -1;
+  border-radius: var(--r-panel);
+  background: var(--color-bg);
+  opacity: 0;
+  transform: scale(0.97);
+  transition:
+    opacity 0.4s ease,
+    transform 0.8s var(--ease-out);
+}
+
+.row:is(:hover, :focus-visible)::before {
+  opacity: 1;
+  transform: none;
+}
+
+.chipPill {
+  transition:
+    background var(--dur-hover) var(--ease-out),
+    color var(--dur-hover) var(--ease-out);
+}
+
+.row:is(:hover, :focus-visible) .chipPill {
+  background: var(--color-primary);
+  color: var(--color-surface);
+}
+
 @media (max-width: 720px) {
   .row {
     grid-template-columns: minmax(0, 1fr) 44px;
@@ -61,5 +99,12 @@ li:last-child > .row {
 @media (prefers-reduced-motion: reduce) {
   .row:is(:hover, :focus-visible) .title {
     transform: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .row::before,
+  .chipPill {
+    transition: none;
   }
 }

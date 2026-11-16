@@ -1,0 +1,287 @@
+/* Hover options for a post card (styleguide demo). Every option class is
+   self-contained: .draw, .marker, .arrow, .chip, .zoom, .inset, .round,
+   .colour, .cursor, .flags — combine them on the card. */
+
+.root {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--grid-gap);
+}
+
+.groupLabel {
+  margin: var(--space-6) 0 var(--space-2);
+  color: var(--color-text-muted);
+  font-size: var(--fs-micro);
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.option {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  padding: 28px;
+  border-radius: var(--r-card);
+  background: var(--color-surface);
+}
+
+.head {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.label {
+  color: var(--color-text-muted);
+  font-size: var(--fs-micro);
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.name {
+  font-size: var(--fs-title-s);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+}
+
+.spec {
+  margin: 0;
+  color: var(--color-text-muted-2);
+  font-size: 12px;
+  line-height: 1.6;
+}
+
+/* ---- The card ---- */
+.card {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  border-radius: var(--r-panel);
+  color: var(--color-text);
+}
+
+.card:hover {
+  color: var(--color-text);
+}
+
+.card:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 6px;
+}
+
+.image {
+  position: relative;
+  display: block;
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+  border-radius: var(--r-panel);
+  clip-path: inset(0 round var(--r-panel));
+  background: var(--color-deep);
+  transition:
+    clip-path 0.8s var(--ease-out),
+    border-radius 0.7s var(--ease-out),
+    filter 0.7s ease;
+}
+
+.media {
+  position: absolute;
+  inset: 0;
+  background: url("/design/contours.svg") center / cover no-repeat;
+  transition: transform 1.2s var(--ease-out);
+}
+
+.light {
+  background: var(--tint-plava-1);
+}
+
+.light .media {
+  background-image: url("/design/contours-dark.svg");
+}
+
+.meta {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--color-text-muted);
+  font-size: 12.5px;
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+}
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  height: 26px;
+  padding: 0 11px;
+  border-radius: var(--r-pill);
+  background: var(--color-bg);
+  color: var(--color-chip-text);
+  transition:
+    background 0.4s,
+    color 0.4s;
+}
+
+.title {
+  display: block;
+  font-size: 19px;
+  font-weight: 500;
+  line-height: 1.3;
+  letter-spacing: -0.02em;
+  transition: transform 0.6s var(--ease-out);
+}
+
+/* ---- A · Underline draws in, leaves to the right ---- */
+.draw .title > span {
+  background: linear-gradient(currentColor, currentColor) 100% 100% / 0 1.5px no-repeat;
+  transition: background-size 0.6s var(--ease-out);
+}
+
+.draw:is(:hover, :focus-visible) .title > span {
+  background-position: 0 100%;
+  background-size: 100% 1.5px;
+}
+
+/* ---- B · Highlighter ---- */
+.marker .title > span {
+  background: linear-gradient(var(--tint-plava-1), var(--tint-plava-1)) 0 88% / 0 44% no-repeat;
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+  transition: background-size 0.7s var(--ease-out);
+}
+
+.marker:is(:hover, :focus-visible) .title > span {
+  background-size: 100% 44%;
+}
+
+/* ---- C · Arrow after the title ---- */
+.titleArrow {
+  display: inline-block;
+  margin-left: 6px;
+  vertical-align: -2px;
+  opacity: 0;
+  transform: translateX(-10px);
+  transition:
+    opacity 0.4s,
+    transform 0.6s var(--ease-out);
+}
+
+.arrow:is(:hover, :focus-visible) .title {
+  transform: translateX(6px);
+}
+
+.arrow:is(:hover, :focus-visible) .titleArrow {
+  opacity: 1;
+  transform: none;
+}
+
+/* ---- D · Chip turns modra ---- */
+.chipFlip:is(:hover, :focus-visible) .chip {
+  background: var(--color-primary);
+  color: var(--color-surface);
+}
+
+/* ---- Slow zoom ---- */
+.zoom:is(:hover, :focus-visible) .media {
+  transform: scale(1.07);
+}
+
+/* ---- E · Frame pulls in ---- */
+.inset:is(:hover, :focus-visible) .image {
+  clip-path: inset(10px round 14px);
+}
+
+.inset:is(:hover, :focus-visible) .media {
+  transform: scale(1.1);
+}
+
+/* ---- F · Corners round ---- */
+.round:is(:hover, :focus-visible) .image {
+  border-radius: 64px;
+  clip-path: inset(0 round 64px);
+}
+
+/* ---- G · Colour on hover ---- */
+.colour .image {
+  filter: saturate(0.1) brightness(1.15);
+}
+
+.colour:is(:hover, :focus-visible) .image {
+  filter: none;
+}
+
+/* ---- H · "Pročitaj" pill follows the pointer (JS in HoverOptions) ---- */
+.cursor .image {
+  cursor: none;
+}
+
+.cursorPill {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  z-index: 3;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 16px;
+  border-radius: var(--r-pill);
+  background: var(--color-primary);
+  color: var(--color-surface);
+  font-size: 13px;
+  font-weight: 500;
+  white-space: nowrap;
+  pointer-events: none;
+  transform: translate(-50%, -50%) scale(0);
+  transition: transform 0.4s var(--ease-out);
+}
+
+.cursor:is(:hover, :focus-visible) .cursorPill {
+  transform: translate(-50%, -50%) scale(1);
+}
+
+/* ---- I · Signal flags slide up ---- */
+.flagBand {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 2;
+  height: 64px;
+  background: url("/design/flags.svg") left center / auto 100% repeat-x;
+  transform: translateY(101%);
+  transition: transform 0.7s var(--ease-out);
+}
+
+.flags:is(:hover, :focus-visible) .flagBand {
+  transform: none;
+}
+
+@media (max-width: 1080px) {
+  .grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 720px) {
+  .grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .option {
+    padding: 20px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .card,
+  .card * {
+    transition: none !important;
+  }
+}

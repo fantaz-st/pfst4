@@ -20,7 +20,7 @@ export default function NewsRow({ post, language = "hr", featuredSlug }) {
       </time>
       <span className={styles.title}>{post.title}</span>
       <span className={styles.chip}>
-        <Chip>{category?.name ?? getFallbackCategoryLabel(language)}</Chip>
+        <Chip className={styles.chipPill}>{category?.name ?? getFallbackCategoryLabel(language)}</Chip>
       </span>
       <ArrowCircle className={styles.go} />
     </Link>

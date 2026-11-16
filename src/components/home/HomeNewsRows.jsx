@@ -74,7 +74,7 @@ export default function HomeNewsRows({ posts, featuredSlug, language, labels }) 
                   </time>
                   <span className={styles.title}>{post.title}</span>
                   <span className={styles.category}>
-                    <Chip>{category?.name ?? labels.categoryFallback}</Chip>
+                    <Chip className={styles.chipPill}>{category?.name ?? labels.categoryFallback}</Chip>
                   </span>
                   <ArrowCircle className={styles.arrow} />
                 </Link>

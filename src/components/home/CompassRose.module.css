@@ -1,19 +1,47 @@
-/* Decorative compass rose. Position and size come from the parent's module
-   (absolute + width); this file only sets how it draws. */
+/* Decorative compass dial seen at an angle. Position and size come from the
+   parent's module (absolute + width + height); this file sets how it draws. */
 .compass {
+  /* How far the dial leans back, and how the leaning dial sits on screen:
+     W upper left, E lower right, N upper right, S lower left. */
+  --tilt: 58deg;
+  --turn: 32deg;
+
   position: absolute;
   display: block;
+  overflow: visible;
   pointer-events: none;
+  transform: perspective(1600px) rotate(var(--turn)) rotateX(var(--tilt));
   transform-origin: 50% 50%;
-  will-change: transform;
 }
 
-/* 18% white on modra / plava surfaces — the original Upisi card value. */
+/* Main colour, and the lighter facet of the needles. */
+.a {
+  fill: var(--rose-a);
+  fill-rule: evenodd;
+}
+
+.b {
+  fill: var(--rose-b);
+  fill-rule: evenodd;
+}
+
+/* Faint white on modra / plava surfaces. Opacity is on the whole drawing so
+   overlapping shapes don't stack into darker patches. */
 .onDark {
-  color: color-mix(in srgb, var(--pfst-bijela) 18%, transparent);
+  --rose-a: var(--pfst-bijela);
+  --rose-b: color-mix(in srgb, var(--pfst-bijela) 50%, transparent);
+  opacity: 0.22;
 }
 
 /* Faint modra on white / --color-bg surfaces. */
 .onLight {
-  color: color-mix(in srgb, var(--pfst-modra) 12%, transparent);
+  --rose-a: var(--pfst-modra);
+  --rose-b: color-mix(in srgb, var(--pfst-modra) 50%, transparent);
+  opacity: 0.12;
+}
+
+/* The artwork's own blues, at full strength. */
+.brand {
+  --rose-a: var(--pfst-plava);
+  --rose-b: color-mix(in srgb, var(--pfst-plava) 60%, var(--pfst-bijela));
 }

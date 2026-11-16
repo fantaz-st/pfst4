@@ -1,0 +1,37 @@
+.pill {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  z-index: 3;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 16px;
+  border-radius: var(--r-pill);
+  background: var(--color-primary);
+  color: var(--color-surface);
+  font-size: 13px;
+  font-weight: 500;
+  white-space: nowrap;
+  pointer-events: none;
+  transform: translate(-50%, -50%) scale(0);
+  transition: transform 0.4s var(--ease-out);
+}
+
+/* Shown while the tracked element is hovered (pointer devices only, so a
+   tap doesn't leave it stuck), and centred when the card has keyboard focus. */
+@media (hover: hover) {
+  :hover > .pill {
+    transform: translate(-50%, -50%) scale(1);
+  }
+}
+
+:focus-visible .pill {
+  transform: translate(-50%, -50%) scale(1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pill {
+    transition: none;
+  }
+}

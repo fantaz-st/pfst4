@@ -9,6 +9,8 @@ import Hero from "@/components/layout/Hero";
 import BlockRenderer from "@/components/blocks/BlockRenderer";
 import styles from "./styleguide.module.css";
 
+import HoverOptions from "./HoverOptions";
+
 export const metadata = {
   title: "Styleguide",
   robots: { index: false, follow: false },
@@ -45,10 +47,7 @@ const TYPE = [
   ["titleL", "Title L — naslov"],
   ["titleM", "Title M — naslov novosti"],
   ["titleS", "Title S — pločica, redak"],
-  [
-    "bodyL",
-    "Body L — uvodni tekst stranice, najviše oko šezdeset znakova u retku.",
-  ],
+  ["bodyL", "Body L — uvodni tekst stranice, najviše oko šezdeset znakova u retku."],
   ["body", "Body — osnovni tekst. Čćžšđ ČĆŽŠĐ."],
   ["small", "Small — datumi, opisi, sekundarni tekst"],
   ["label", "Label — oznaka"],
@@ -64,8 +63,7 @@ const PROSE_BLOCKS = [
   {
     name: "core/paragraph",
     attributes: {
-      content:
-        'TODO odlomak teksta s <a href="/styleguide">poveznicom unutar sadržaja</a> i <strong>naglašenim dijelom</strong>.',
+      content: 'TODO odlomak teksta s <a href="/styleguide">poveznicom unutar sadržaja</a> i <strong>naglašenim dijelom</strong>.',
     },
   },
   {
@@ -82,32 +80,20 @@ const PROSE_BLOCKS = [
     attributes: {
       headers: ["Ime Prezime", "Zvanje", "E-pošta"],
       rows: [
-        [
-          "Ime Prezime",
-          "TODO",
-          '<a href="mailto:todo@example.com">todo@example.com</a>',
-        ],
-        [
-          "Ime Prezime",
-          "TODO",
-          '<a href="mailto:todo@example.com">todo@example.com</a>',
-        ],
+        ["Ime Prezime", "TODO", '<a href="mailto:todo@example.com">todo@example.com</a>'],
+        ["Ime Prezime", "TODO", '<a href="mailto:todo@example.com">todo@example.com</a>'],
       ],
     },
   },
   {
     name: "core/details",
     attributes: { summary: "TODO pitanje harmonike", showContent: false },
-    innerBlocks: [
-      { name: "core/paragraph", attributes: { content: "TODO odgovor." } },
-    ],
+    innerBlocks: [{ name: "core/paragraph", attributes: { content: "TODO odgovor." } }],
   },
   {
     name: "core/details",
     attributes: { summary: "TODO otvorena harmonika", showContent: true },
-    innerBlocks: [
-      { name: "core/paragraph", attributes: { content: "TODO sadržaj." } },
-    ],
+    innerBlocks: [{ name: "core/paragraph", attributes: { content: "TODO sadržaj." } }],
   },
   {
     name: "core/file",
@@ -145,10 +131,7 @@ export default function StyleguidePage() {
           <ul className={styles.swatches} role="list">
             {COLOURS.map(([token, label]) => (
               <li key={token} className={styles.swatch}>
-                <span
-                  className={styles.swatchColour}
-                  style={{ "--swatch": `var(${token})` }}
-                />
+                <span className={styles.swatchColour} style={{ "--swatch": `var(${token})` }} />
                 <span className={styles.swatchLabel}>{label}</span>
                 <code className={styles.swatchToken}>{token}</code>
               </li>
@@ -244,33 +227,15 @@ export default function StyleguidePage() {
         <Section title="Fotografije">
           <div className={styles.photoGrid}>
             <Link href="/styleguide" className={styles.photoDemo}>
-              <Photo
-                ratio="4/3"
-                radius="card"
-                sizes="(max-width: 720px) 100vw, 33vw"
-                tag="Foto · TODO kampus"
-                zoom
-              />
+              <Photo ratio="4/3" radius="card" sizes="(max-width: 720px) 100vw, 33vw" tag="Foto · TODO kampus" zoom />
               <span>4:3 · r24 · zoom</span>
             </Link>
             <div className={styles.photoDemo}>
-              <Photo
-                ratio="5/4"
-                radius="feature"
-                tone="light"
-                sizes="(max-width: 720px) 100vw, 33vw"
-                tag="Foto · TODO brod"
-                tagPosition="top-left"
-              />
+              <Photo ratio="5/4" radius="feature" tone="light" sizes="(max-width: 720px) 100vw, 33vw" tag="Foto · TODO brod" tagPosition="top-left" />
               <span>5:4 · r28 · svijetla</span>
             </div>
             <div className={styles.photoDemo}>
-              <Photo
-                ratio="1/1"
-                radius="panel"
-                sizes="(max-width: 720px) 100vw, 33vw"
-                tag="Foto · TODO simulator"
-              />
+              <Photo ratio="1/1" radius="panel" sizes="(max-width: 720px) 100vw, 33vw" tag="Foto · TODO simulator" />
               <span>1:1 · r20</span>
             </div>
           </div>
@@ -297,6 +262,9 @@ export default function StyleguidePage() {
               <cite>Ime Prezime</cite>
             </blockquote>
           </div>
+        </Section>
+        <Section title="Kartice">
+          <HoverOptions />
         </Section>
       </div>
     </>
