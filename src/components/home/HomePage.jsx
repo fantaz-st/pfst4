@@ -32,7 +32,6 @@ const COPY = {
     quickLead: "Raspored, ispitni rokovi, konzultacije i ostalo što studenti i nastavnici najčešće traže.",
     training: "Trening centar",
     // itemDescription: "[OPIS — DOPUNITI]",
-    studyDescription: "[OPIS STUDIJA — DOPUNITI]",
     highlightsEyebrow: "Istaknuto",
     highlightsTitle: "Novosti s fakulteta",
     allNews: "Sve novosti",
@@ -43,14 +42,30 @@ const COPY = {
     studyTitle: "Studiji",
     studyLead: "Studiji usklađeni s međunarodnim pomorskim standardima.",
     studyPrograms: [
-      { title: "Pomorska nautika", href: "/nastava/studiji/prijediplomski-studiji/pomorska-nautika", photo: "[FOTO: BRODSKI MOST]" },
-      { title: "Brodostrojarstvo", href: "/nastava/studiji/prijediplomski-studiji/brodostrojarstvo", photo: "[FOTO: STROJARNICA]" },
+      {
+        title: "Pomorska nautika",
+        href: "/nastava/studiji/prijediplomski-studiji/pomorska-nautika",
+        photo: "[FOTO: BRODSKI MOST]",
+        description: "Za buduće časnike palube i zapovjednike broda – navigacija, upravljanje brodom i sigurnost plovidbe.",
+      },
+      {
+        title: "Brodostrojarstvo",
+        href: "/nastava/studiji/prijediplomski-studiji/brodostrojarstvo",
+        photo: "[FOTO: STROJARNICA]",
+        description: "Za buduće časnike i upravitelje stroja – brodski pogonski sustavi, energetika i održavanje.",
+      },
       {
         title: "Pomorske elektrotehničke i informatičke tehnologije",
         href: "/nastava/studiji/prijediplomski-studiji/pomorske-elektrotehnicke-i-informaticke-tehnologije",
         photo: "[FOTO: LABORATORIJ]",
+        description: "Elektrotehnika, automatizacija i informacijski sustavi za suvremene brodove i luke.",
       },
-      { title: "Pomorski menadžment", href: "/nastava/studiji/prijediplomski-studiji/pomorski-menadzment", photo: "[FOTO: LUKA]" },
+      {
+        title: "Pomorski menadžment",
+        href: "/nastava/studiji/prijediplomski-studiji/pomorski-menadzment",
+        photo: "[FOTO: LUKA]",
+        description: "Upravljanje lukama, brodarskim tvrtkama i logistikom – poslovna znanja za pomorsko gospodarstvo.",
+      },
     ],
     otherEyebrow: "Obavijesti",
     otherTitle: "Ostale novosti",
@@ -85,7 +100,6 @@ const COPY = {
     quickLead: "[QUICK ACCESS INTRODUCTION — TO BE PROVIDED]",
     training: "Training centre",
     // itemDescription: "[DESCRIPTION — TO BE PROVIDED]",
-    studyDescription: "[PROGRAMME DESCRIPTION — TO BE PROVIDED]",
     highlightsEyebrow: "Featured",
     highlightsTitle: "News from the Faculty",
     allNews: "All news",
@@ -94,16 +108,32 @@ const COPY = {
     about: "About the Faculty",
     studyEyebrow: "Studies",
     studyTitle: "Study programmes",
-    studyLead: "[STUDY PROGRAMME INTRODUCTION — TO BE PROVIDED]",
+    studyLead: "Study programmes aligned with international maritime standards.",
     studyPrograms: [
-      { title: "Nautical Studies", href: "/en/studies/undergraduate-studies/nautical-studies", photo: "[PHOTO: SHIP BRIDGE]" },
-      { title: "Marine Engineering", href: "/en/studies/undergraduate-studies/marine-engineering", photo: "[PHOTO: ENGINE ROOM]" },
+      {
+        title: "Nautical Studies",
+        href: "/en/studies/undergraduate-studies/nautical-studies",
+        photo: "[PHOTO: SHIP BRIDGE]",
+        description: "For future deck officers and masters – navigation, ship handling and safety at sea.",
+      },
+      {
+        title: "Marine Engineering",
+        href: "/en/studies/undergraduate-studies/marine-engineering",
+        photo: "[PHOTO: ENGINE ROOM]",
+        description: "For future engineer officers and chief engineers – marine propulsion, energy systems and maintenance.",
+      },
       {
         title: "Marine Electrical Engineering and Information Technologies",
         href: "/en/studies/undergraduate-studies/marine-electrical-engineering-and-information-technologies",
         photo: "[PHOTO: LABORATORY]",
+        description: "Electrical engineering, automation and information systems for modern ships and ports.",
       },
-      { title: "Maritime Management", href: "/en/studies/undergraduate-studies/maritime-management", photo: "[PHOTO: PORT]" },
+      {
+        title: "Maritime Management",
+        href: "/en/studies/undergraduate-studies/maritime-management",
+        photo: "[PHOTO: PORT]",
+        description: "Managing ports, shipping companies and logistics – business skills for the maritime economy.",
+      },
     ],
     otherEyebrow: "Announcements",
     otherTitle: "More news",
@@ -405,7 +435,7 @@ function StudyProgrammes({ copy, language }) {
                   </span>
                   <span className={styles.studyBody}>
                     <span className={styles.studyTitle}>{program.title}</span>
-                    <span className={styles.studyDescription}>{copy.studyDescription}</span>
+                    <span className={styles.studyDescription}>{program.description}</span>
                   </span>
                 </span>
                 <span className={styles.studyMedia}>

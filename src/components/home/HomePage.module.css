@@ -1016,26 +1016,46 @@
     margin-bottom: var(--space-8);
   }
 
+  /* Cards stay sticky on phones and stack under the floating nav, like on
+     desktop (PageMotion scales and dims the ones underneath). A fixed
+     height keeps each card's top edge visible in the stack. */
   .studyCard {
-    position: relative;
-    top: auto;
+    height: min(540px, calc(100svh - 150px));
+    grid-template-rows: minmax(0, 1fr) 190px;
     padding: var(--space-3);
   }
 
-  .studyCard1,
-  .studyCard2,
-  .studyCard3,
+  .studyCard1 {
+    top: 88px;
+  }
+
+  .studyCard2 {
+    top: 100px;
+  }
+
+  .studyCard3 {
+    top: 112px;
+  }
+
   .studyCard4 {
-    top: auto;
+    top: 124px;
   }
 
   .studyText {
-    min-height: 300px;
+    min-height: 0;
     padding: var(--space-4);
   }
 
+  .studyTitle {
+    font-size: 28px;
+  }
+
+  .studyDescription {
+    font-size: var(--fs-body);
+  }
+
   .studyMedia {
-    height: 220px;
+    height: auto;
   }
 
   .other {

@@ -195,6 +195,14 @@ export default function PageMotion() {
           }
         }
 
+        return () => cleanups.forEach((cleanup) => cleanup());
+      });
+
+      // Study cards stack on every width: each card is sticky (CSS), and while
+      // the next one slides over it, it shrinks a little and dims. The scrub
+      // starts when the next card reaches its own sticky top, read from CSS
+      // so the desktop and mobile offsets both line up.
+      homeMotion.add("(min-width: 0px)", () => {
         const cards = gsap.utils.toArray("[data-home-study-card]");
         cards.forEach((card, index) => {
           const next = cards[index + 1];
@@ -202,15 +210,14 @@ export default function PageMotion() {
           if (!next || !dim) return;
           const trigger = {
             trigger: next,
-            start: "top 104px",
+            start: () => `top ${parseFloat(getComputedStyle(next).top) || 104}px`,
             end: "top top",
             scrub: true,
+            invalidateOnRefresh: true,
           };
           gsap.to(card, { scale: 0.9 + index * 0.02, scrollTrigger: trigger });
           gsap.to(dim, { opacity: 0.45, scrollTrigger: trigger });
         });
-
-        return () => cleanups.forEach((cleanup) => cleanup());
       });
 
       homeMotion.add("(min-width: 0px)", () => {
