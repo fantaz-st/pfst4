@@ -11,7 +11,9 @@
   flex: none;
   width: auto;
 }
-
+.line {
+  fill: var(--pfst-bijela);
+}
 .wave {
   fill: var(--color-accent);
 }

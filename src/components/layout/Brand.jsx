@@ -10,14 +10,9 @@ import styles from "./Brand.module.css";
  */
 export function BrandMark({ className }) {
   return (
-    <svg
-      className={className}
-      viewBox="0 0 150.48 217.98"
-      aria-hidden="true"
-      focusable="false"
-    >
+    <svg className={className} viewBox="0 0 150.48 217.98" aria-hidden="true" focusable="false">
       <path
-        fill="currentColor"
+        className={styles.line}
         d="M54.38 190.79c0 15.02-12.17 27.19-27.19 27.19S0 205.81 0 190.79s12.17-27.19 27.19-27.19 27.19 12.17 27.19 27.19M150.48 92.05l-.33-.45H4.22l-.56.49v41.84l.46.35h146.23l.13-.14z"
       />
       <path
@@ -35,11 +30,7 @@ export function BrandMark({ className }) {
 export default function Brand({ language = "hr", size = "m", className }) {
   const copy = getChromeCopy(language);
   return (
-    <Link
-      href={localizedHomeUri(language)}
-      className={[styles.brand, styles[size], className].filter(Boolean).join(" ")}
-      aria-label={copy.siteNameHome}
-    >
+    <Link href={localizedHomeUri(language)} className={[styles.brand, styles[size], className].filter(Boolean).join(" ")} aria-label={copy.siteNameHome}>
       <BrandMark className={styles.mark} />
       <span className={styles.text} aria-hidden="true">
         {copy.brandLines.map((line) => (

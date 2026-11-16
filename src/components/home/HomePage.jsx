@@ -22,7 +22,7 @@ const EMPTY_POSTS = { nodes: [] };
 // WordPress content. Destinations follow the legacy route inventory.
 const COPY = {
   hr: {
-    heroTitle: "POMORSKI FALKULTET",
+    heroTitle: "POMORSKI FAKULTET",
     heroLead: "Više od 65 godina tradicije u obuci, podučavanju i prenošenju znanja budućim pomorcima i inženjerima.",
     exploreStudies: "Istraži studije",
     admissions: "Upisi",
@@ -166,10 +166,10 @@ function QuickLinks({ language, copy }) {
       <div className={styles.wrap}>
         <div className={styles.sectionHead}>
           <div className={styles.sectionHeadLeft}>
-            <span className={styles.eyebrow}>
+            {/* <span className={styles.eyebrow}>
               <span />
               {copy.quickEyebrow}
-            </span>
+            </span> */}
             <h2 id="home-quick-title" className={styles.sectionTitle}>
               {copy.quickTitle}
             </h2>
@@ -259,10 +259,10 @@ function FeaturedNews({ copy, language, posts, featuredSlug }) {
       <div className={styles.highlightsSticky} data-home-news-sticky>
         <div className={`${styles.wrap} ${styles.highlightsHead}`}>
           <div className={styles.sectionHeadLeft}>
-            <span className={styles.eyebrow}>
+            {/* <span className={styles.eyebrow}>
               <span />
               {copy.highlightsEyebrow}
-            </span>
+            </span> */}
             <h2 id="home-highlights-title" className={styles.sectionTitle}>
               {copy.highlightsTitle}
             </h2>
@@ -371,10 +371,10 @@ function StudyProgrammes({ copy, language }) {
         <div className={styles.wrap}>
           <div className={`${styles.sectionHead} ${styles.studiesHead}`}>
             <div className={styles.sectionHeadLeft}>
-              <span className={`${styles.eyebrow} ${styles.eyebrowDark}`}>
+              {/* <span className={`${styles.eyebrow} ${styles.eyebrowDark}`}>
                 <span />
                 {copy.studyEyebrow}
-              </span>
+              </span> */}
               <h2 id="home-studies-title" className={styles.sectionTitle}>
                 {copy.studyTitle}
               </h2>
@@ -413,10 +413,10 @@ function HomeNews({ copy, language, posts, featuredSlug }) {
     <section className={styles.other} aria-labelledby="home-other-title">
       <div className={`${styles.wrap} ${styles.otherGrid}`}>
         <div className={styles.otherAside}>
-          <span className={styles.eyebrow}>
+          {/* <span className={styles.eyebrow}>
             <span />
             {copy.otherEyebrow}
-          </span>
+          </span> */}
           <h2 id="home-other-title" className={styles.otherTitle}>
             {copy.otherTitle}
           </h2>

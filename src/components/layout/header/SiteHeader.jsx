@@ -44,17 +44,13 @@ export default function SiteHeader({ menu, language, frequent, languages, utilit
 
   function closeMega({ restoreFocus = true } = {}) {
     if (restoreFocus && openMenu) {
-      triggerRefs.current
-        .get(`${openMenu.source}:${openMenu.id}`)
-        ?.focus({ preventScroll: true });
+      triggerRefs.current.get(`${openMenu.source}:${openMenu.id}`)?.focus({ preventScroll: true });
     }
     setOpenMenu(null);
   }
 
   function toggleMega(id, source) {
-    setOpenMenu((current) =>
-      current?.id === id && current.source === source ? null : { id, source },
-    );
+    setOpenMenu((current) => (current?.id === id && current.source === source ? null : { id, source }));
   }
 
   function openMobileMenu() {
@@ -80,14 +76,8 @@ export default function SiteHeader({ menu, language, frequent, languages, utilit
             {menu.map((item) => {
               const current = isCurrentSection(item, pathname);
               const hasPanel = item.children.length > 0;
-              const open =
-                openMenu?.source === "header" && openMenu.id === item.databaseId;
-              const className = [
-                styles.navItem,
-                current || open ? styles.on : null,
-              ]
-                .filter(Boolean)
-                .join(" ");
+              const open = openMenu?.source === "header" && openMenu.id === item.databaseId;
+              const className = [styles.navItem, current || open ? styles.on : null].filter(Boolean).join(" ");
 
               return hasPanel ? (
                 <button
@@ -100,9 +90,7 @@ export default function SiteHeader({ menu, language, frequent, languages, utilit
                   aria-expanded={open}
                   aria-controls={`mega-${item.databaseId}`}
                   aria-current={current ? "true" : undefined}
-                  onClick={() =>
-                    open ? closeMega() : toggleMega(item.databaseId, "header")
-                  }
+                  onClick={() => (open ? closeMega() : toggleMega(item.databaseId, "header"))}
                 >
                   {item.label}
                   <span className={styles.chevron} aria-hidden="true">
@@ -110,12 +98,7 @@ export default function SiteHeader({ menu, language, frequent, languages, utilit
                   </span>
                 </button>
               ) : (
-                <Link
-                  key={item.databaseId}
-                  href={item.uri}
-                  className={className}
-                  aria-current={current ? "page" : undefined}
-                >
+                <Link key={item.databaseId} href={item.uri} className={className} aria-current={current ? "page" : undefined}>
                   {item.label}
                 </Link>
               );
@@ -126,39 +109,16 @@ export default function SiteHeader({ menu, language, frequent, languages, utilit
             <Button href={ENROLL_URL} variant="white" size="m">
               {copy.enroll}
             </Button>
-            <button
-              type="button"
-              className={styles.menuButton}
-              aria-label={copy.menu}
-              aria-expanded={sheetOpen}
-              aria-controls="site-menu"
-              onClick={openMobileMenu}
-            >
+            <button type="button" className={styles.menuButton} aria-label={copy.menu} aria-expanded={sheetOpen} aria-controls="site-menu" onClick={openMobileMenu}>
               <Icon name="menu" size={18} />
             </button>
           </div>
         </header>
 
-        {openItem && openMenu.source === "header" && (
-          <MegaPanel
-            key={openItem.databaseId}
-            item={openItem}
-            language={language}
-            frequent={frequent}
-            onClose={closeMega}
-          />
-        )}
+        {openItem && openMenu.source === "header" && <MegaPanel key={openItem.databaseId} item={openItem} language={language} frequent={frequent} onClose={closeMega} />}
       </div>
 
-      {openItem && (
-        <button
-          type="button"
-          className={styles.backdrop}
-          tabIndex={-1}
-          aria-label={copy.closeMenu}
-          onClick={() => closeMega()}
-        />
-      )}
+      {openItem && <button type="button" className={styles.backdrop} tabIndex={-1} aria-label={copy.closeMenu} onClick={() => closeMega()} />}
 
       <FloatingNav
         menu={menu}
@@ -182,15 +142,7 @@ export default function SiteHeader({ menu, language, frequent, languages, utilit
         menuOpen={sheetOpen}
       />
 
-      <MobileMenu
-        key={pathname}
-        open={sheetOpen}
-        onClose={() => setSheetOpen(false)}
-        menu={menu}
-        language={language}
-        languages={languages}
-        utility={utility}
-      />
+      <MobileMenu key={pathname} open={sheetOpen} onClose={() => setSheetOpen(false)} menu={menu} language={language} languages={languages} utility={utility} />
     </>
   );
 }

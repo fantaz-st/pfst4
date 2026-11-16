@@ -28,7 +28,6 @@
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
   pointer-events: auto;
-  width: 100%;
 }
 
 .logo {
@@ -109,5 +108,8 @@
 
   .menuButton {
     display: inline-flex;
+  }
+  .inner {
+    width: 100%;
   }
 }

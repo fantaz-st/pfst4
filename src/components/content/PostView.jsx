@@ -10,12 +10,7 @@ import NewsCard from "@/components/news/NewsCard";
 import { getGoalIcon, sortByGoalNumber } from "@/lib/ciljevi";
 import { formatDate } from "@/lib/format";
 import { getNodeLanguage } from "@/lib/language";
-import {
-  buildNewsWhere,
-  getFeaturedCategorySlug,
-  getPostCategories,
-  getRelatedPosts,
-} from "@/lib/news";
+import { buildNewsWhere, getFeaturedCategorySlug, getPostCategories, getRelatedPosts } from "@/lib/news";
 import { NEWS_POSTS } from "@/lib/queries";
 import { wpFetch } from "@/lib/wp";
 import { NEWS_ARCHIVE_URI } from "@/lib/posts";
@@ -40,6 +35,30 @@ function getReadingTime(blocks) {
   return Math.max(1, Math.ceil(words / 200));
 }
 
+// Plain text for comparing an excerpt with the post body.
+function toPlainText(html = "") {
+  return html
+    .replace(/<[^>]+>/g, " ")
+    .replace(/&[#\w]+;/g, " ")
+    .replace(/\[\s*(…|\.\.\.)?\s*\]|…/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+// The hero shows only an excerpt an editor wrote. WordPress fills `excerpt`
+// from the first words of the post when there isn't one, which would just
+// repeat the lead paragraph under the title — those are recognised by
+// matching the start of the body text and skipped.
+function getManualExcerpt(node) {
+  const excerpt = toPlainText(node.excerpt);
+  if (!excerpt) return null;
+  const firstParagraph = (node.blocks ?? []).find((block) => block.name === "core/paragraph" && block.attributes?.content?.trim());
+  const body = toPlainText(firstParagraph?.attributes?.content);
+  const probe = excerpt.slice(0, 60);
+  if (body && body.startsWith(probe)) return null;
+  return node.excerpt;
+}
+
 function RailGroup({ label, children }) {
   return (
     <div className={styles.railGroup}>
@@ -55,7 +74,6 @@ export default async function PostView({ node }) {
   const archiveUri = NEWS_ARCHIVE_URI[language] ?? NEWS_ARCHIVE_URI.hr;
   const featuredSlug = await getFeaturedCategorySlug(language);
   const categories = getPostCategories(node, featuredSlug);
-  const tags = node.tags?.nodes ?? [];
   const goals = sortByGoalNumber(node.ciljevi?.nodes ?? []);
   let relatedPosts = await getRelatedPosts(node, language);
   if (relatedPosts.length === 0) {
@@ -68,64 +86,57 @@ export default async function PostView({ node }) {
       },
       { tags: ["wp"] },
     );
-    relatedPosts = (data?.posts?.nodes ?? [])
-      .filter((post) => post.id !== node.id)
-      .slice(0, 3);
+    relatedPosts = (data?.posts?.nodes ?? []).filter((post) => post.id !== node.id).slice(0, 3);
   }
   const readingTime = getReadingTime(node.blocks);
   const coverImage = node.featuredImage?.node;
+  const hasCover = Boolean(coverImage?.sourceUrl);
+  const excerpt = getManualExcerpt(node);
 
   return (
     <>
       <div className={styles.progress} data-post-progress aria-hidden="true" />
-      <Hero
-        size="post"
-        solid
-        labelledBy="post-title"
-      >
-        <div className={styles.heroInner}>
-          <Breadcrumbs
-            items={
-              categories[0]
-                ? [{ label: copy.archiveTitle, uri: archiveUri }]
-                : []
-            }
-            current={categories[0]?.name ?? copy.archiveTitle}
-            language={language}
-          />
-          <div className={styles.heroBottom}>
-            <div className={styles.heroMeta} data-hero-fade>
-              {categories[0] && (
-                <Link
-                  className={styles.heroCategory}
-                  href={`${archiveUri}?kategorija=${encodeURIComponent(categories[0].slug)}`}
-                >
-                  {categories[0].name}
-                </Link>
-              )}
-              {tags.slice(0, 1).map((tag) => (
-                <span className={styles.heroTag} key={tag.slug}>
-                  {tag.name}
-                </span>
-              ))}
-              <span className={styles.heroDate}>
-                {formatDate(node.date, language)} · {copy.readingTime(readingTime)}
-              </span>
-            </div>
-            <SplitReveal
-              as="h1"
-              id="post-title"
-              mode="chars"
-              start="top bottom"
-              className={styles.title}
-            >
-              {node.title}
-            </SplitReveal>
-          </div>
-        </div>
+      <Hero size="post" solid>
+        <Breadcrumbs items={categories[0] ? [{ label: copy.archiveTitle, uri: archiveUri }] : []} current={categories[0]?.name ?? copy.archiveTitle} language={language} />
       </Hero>
 
-      <main className={styles.main}>
+      <div className={styles.main}>
+        <header className={styles.header}>
+          <div className={styles.meta} data-fade>
+            {categories[0] && (
+              <Link className={styles.category} href={`${archiveUri}?kategorija=${encodeURIComponent(categories[0].slug)}`}>
+                {categories[0].name}
+              </Link>
+            )}
+            <span className="num">
+              <time dateTime={node.date}>{formatDate(node.date, language)}</time> · {copy.readingTime(readingTime)}
+            </span>
+          </div>
+          <SplitReveal as="h1" id="post-title" mode="lines" start="top bottom" className={styles.title}>
+            {node.title}
+          </SplitReveal>
+          {excerpt && (
+            <div className={styles.excerpt} data-fade>
+              {renderWpHtml(excerpt)}
+            </div>
+          )}
+          {hasCover && (
+            <figure className={styles.cover}>
+              <div className={styles.coverImage} data-post-cover>
+                <Image
+                  src={coverImage.sourceUrl}
+                  alt={coverImage.altText || node.title}
+                  width={coverImage.mediaDetails?.width ?? 1600}
+                  height={coverImage.mediaDetails?.height ?? 900}
+                  sizes="(max-width: 1080px) 100vw, 996px"
+                  priority
+                />
+              </div>
+              {coverImage.caption && <figcaption className={styles.caption}>{renderWpHtml(coverImage.caption)}</figcaption>}
+            </figure>
+          )}
+        </header>
+
         <div className={styles.layout}>
           <aside className={styles.rail} aria-label={copy.postDetails} data-fade>
             <RailGroup label={copy.published}>
@@ -148,11 +159,7 @@ export default async function PostView({ node }) {
               <RailGroup label={copy.categoriesLabel}>
                 <span className={styles.categoryList}>
                   {categories.map((category) => (
-                    <Chip
-                      key={category.slug}
-                      tone="white"
-                      href={`${archiveUri}?kategorija=${encodeURIComponent(category.slug)}`}
-                    >
+                    <Chip key={category.slug} tone="white" href={`${archiveUri}?kategorija=${encodeURIComponent(category.slug)}`}>
                       {category.name}
                     </Chip>
                   ))}
@@ -165,12 +172,7 @@ export default async function PostView({ node }) {
                   {goals.map((goal) => {
                     const icon = getGoalIcon(goal.slug, language);
                     return icon ? (
-                      <Link
-                        key={goal.slug}
-                        href={`${archiveUri}?cilj=${encodeURIComponent(goal.slug)}`}
-                        className={styles.goal}
-                        aria-label={copy.goalLink(goal.name)}
-                      >
+                      <Link key={goal.slug} href={`${archiveUri}?cilj=${encodeURIComponent(goal.slug)}`} className={styles.goal} aria-label={copy.goalLink(goal.name)}>
                         <Image src={icon} alt="" sizes="48px" />
                       </Link>
                     ) : null;
@@ -184,42 +186,18 @@ export default async function PostView({ node }) {
           </aside>
 
           <article className={styles.article} data-post-article>
-            {coverImage?.sourceUrl && (
-              <figure className={styles.coverFigure}>
-                <div className={styles.coverImage} data-post-cover>
-                  <Image
-                    src={coverImage.sourceUrl}
-                    alt={coverImage.altText || node.title}
-                    fill
-                    sizes="(min-width: 1080px) 720px, 100vw"
-                    priority
-                  />
-                </div>
-                {coverImage.caption && (
-                  <figcaption className={styles.coverCaption}>
-                    {renderWpHtml(coverImage.caption)}
-                  </figcaption>
-                )}
-              </figure>
-            )}
             <div className={`${styles.prose} prose`}>
               <BlockRenderer blocks={node.blocks} language={language} />
             </div>
           </article>
           <div className={styles.railSpacer} aria-hidden="true" />
         </div>
-      </main>
+      </div>
 
       {relatedPosts.length > 0 && (
         <section className={styles.relatedSection} aria-labelledby="related-heading">
           <div className={styles.relatedHeader}>
-            <SplitReveal
-              as="h2"
-              id="related-heading"
-              mode="lines"
-              start="top bottom"
-              className={styles.relatedTitle}
-            >
+            <SplitReveal as="h2" id="related-heading" mode="lines" start="top bottom" className={styles.relatedTitle}>
               {copy.relatedHeading}
             </SplitReveal>
             <Button href={archiveUri} variant="primary" size="m">
@@ -229,12 +207,7 @@ export default async function PostView({ node }) {
           <ul className={styles.related} role="list" data-stagger>
             {relatedPosts.slice(0, 3).map((post) => (
               <li key={post.id}>
-                <NewsCard
-                  post={post}
-                  language={language}
-                  featuredSlug={featuredSlug}
-                  sizes="(max-width: 720px) 100vw, (max-width: 1080px) 50vw, 33vw"
-                />
+                <NewsCard post={post} language={language} featuredSlug={featuredSlug} sizes="(max-width: 720px) 100vw, (max-width: 1080px) 50vw, 33vw" />
               </li>
             ))}
           </ul>

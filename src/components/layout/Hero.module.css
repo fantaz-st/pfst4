@@ -24,12 +24,14 @@
   background: var(--pfst-modra);
 }
 
+/* Single post: a slim bar — the nav and the breadcrumbs. The title and the
+   cover sit below it on the page (PostView). */
 .post .content {
   position: relative;
   inset: auto;
   min-height: 0;
   justify-content: flex-start;
-  padding: 120px var(--space-10) 64px;
+  padding: 120px var(--space-10) var(--space-8);
 }
 
 /* Photo layer: bleeds 8% top and bottom so the scroll parallax
@@ -76,6 +78,6 @@
   }
 
   .post .content {
-    padding: 120px var(--gutter) 64px;
+    padding: 104px var(--gutter) var(--space-6);
   }
 }

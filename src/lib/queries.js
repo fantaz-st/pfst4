@@ -152,6 +152,10 @@ const POST_FIELDS = /* GraphQL */ `
         sourceUrl
         altText
         caption
+        mediaDetails {
+          width
+          height
+        }
       }
     }
     categories(first: 10) {
@@ -220,11 +224,7 @@ export const PREVIEW_POST = /* GraphQL */ `
 // directly by location rather than going through menu(id: "main").
 export const MENU_ITEMS = /* GraphQL */ `
   query MenuItems($language: LanguageCodeFilterEnum, $after: String) {
-    menuItems(
-      first: 100
-      after: $after
-      where: { location: SECONDARY_MENU, language: $language }
-    ) {
+    menuItems(first: 100, after: $after, where: { location: SECONDARY_MENU, language: $language }) {
       pageInfo {
         hasNextPage
         endCursor
@@ -278,11 +278,7 @@ export const FEATURED_CATEGORY_TRANSLATION = /* GraphQL */ `
 `;
 
 export const NEWS_POSTS = /* GraphQL */ `
-  query NewsPosts(
-    $first: Int!
-    $after: String
-    $where: RootQueryToPostConnectionWhereArgs
-  ) {
+  query NewsPosts($first: Int!, $after: String, $where: RootQueryToPostConnectionWhereArgs) {
     posts(first: $first, after: $after, where: $where) {
       pageInfo {
         hasNextPage
@@ -357,18 +353,11 @@ export const SITE_SEARCH = /* GraphQL */ `
 // once for posts sharing a category. tags carry `count` so shared tags can
 // be weighted by rarity without a separate all-tags query.
 export const RELATED_POSTS = /* GraphQL */ `
-  query RelatedPosts(
-    $first: Int!
-    $byTag: RootQueryToPostConnectionWhereArgs
-    $byCategory: RootQueryToPostConnectionWhereArgs
-    $skipTags: Boolean!
-    $skipCategories: Boolean!
-  ) {
+  query RelatedPosts($first: Int!, $byTag: RootQueryToPostConnectionWhereArgs, $byCategory: RootQueryToPostConnectionWhereArgs, $skipTags: Boolean!, $skipCategories: Boolean!) {
     byTag: posts(first: $first, where: $byTag) @skip(if: $skipTags) {
       ...RelatedPostNodes
     }
-    byCategory: posts(first: $first, where: $byCategory)
-      @skip(if: $skipCategories) {
+    byCategory: posts(first: $first, where: $byCategory) @skip(if: $skipCategories) {
       ...RelatedPostNodes
     }
   }
@@ -417,11 +406,7 @@ export const CILJ_TERM = /* GraphQL */ `
 // from generateStaticParams and the sitemap.
 export const ALL_CONTENT_URIS = /* GraphQL */ `
   query AllContentUris($first: Int!, $after: String) {
-    contentNodes(
-      first: $first
-      after: $after
-      where: { contentTypes: [PAGE, POST], status: PUBLISH, language: ALL }
-    ) {
+    contentNodes(first: $first, after: $after, where: { contentTypes: [PAGE, POST], status: PUBLISH, language: ALL }) {
       pageInfo {
         hasNextPage
         endCursor
