@@ -7,7 +7,14 @@ import { EASE } from "./gsap";
 /**
  * Page-level motion stays outside the content tree and runs only when
  * prefers-reduced-motion is not set (useGsap).
+ *
+ * One-shot reveals (data-split, data-fade, data-stagger, data-home-clip,
+ * data-post-cover) accept data-delay="0.3" — seconds added after the
+ * reveal is triggered. Scrubbed effects ignore it (they follow the scroll).
  */
+
+// data-delay="0.3" → 0.3; missing or not a number → 0.
+const delayOf = (el) => Math.max(0, parseFloat(el?.dataset?.delay) || 0);
 export default function PageMotion() {
   const pathname = usePathname();
 
@@ -51,10 +58,11 @@ export default function PageMotion() {
         };
         const targets = chars ? split.chars : split.lines;
         if (hero?.contains(el)) {
-          intro.from(targets, vars, 0.35);
+          intro.from(targets, vars, 0.35 + delayOf(el));
         } else {
           gsap.from(targets, {
             ...vars,
+            delay: delayOf(el),
             scrollTrigger: { trigger: el, start: "top 88%", once: true },
           });
         }
@@ -103,6 +111,7 @@ export default function PageMotion() {
             clipPath: "inset(0% 0% 0% 0%)",
             duration: 1.4,
             ease: EASE.wipe,
+            delay: delayOf(postCover),
             clearProps: "clipPath",
             scrollTrigger: { trigger: postCover, start: "top 90%", once: true },
           },
@@ -135,6 +144,7 @@ export default function PageMotion() {
           opacity: 0,
           duration: 1.1,
           ease: EASE.fade,
+          delay: delayOf(el),
           clearProps: "transform,transition",
           scrollTrigger: { trigger: el, start: "top 92%", once: true },
         });
@@ -149,6 +159,7 @@ export default function PageMotion() {
           duration: 1.2,
           ease: EASE.out,
           stagger: 0.06,
+          delay: delayOf(el),
           clearProps: "transform,transition",
           scrollTrigger: { trigger: el, start: "top 88%", once: true },
         });
@@ -253,12 +264,13 @@ export default function PageMotion() {
       document.querySelectorAll("[data-home-clip]").forEach((el) => {
         gsap.fromTo(
           el,
-          { clipPath: "inset(10% 6% 10% 6% round 32px)" },
+          { clipPath: "inset(40% 20% 40% 20% round 32px)" },
           {
             clipPath: "inset(0% 0% 0% 0% round 32px)",
             duration: 1.6,
             ease: EASE.wipe,
-            scrollTrigger: { trigger: el, start: "top 88%", once: true },
+            delay: delayOf(el),
+            scrollTrigger: { trigger: el, start: "top bottom+=250", once: true },
           },
         );
       });

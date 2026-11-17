@@ -26,7 +26,30 @@ export default function SmoothScroll() {
       lenisRef.current = lenis;
       setLenis(lenis);
 
+      // Keep every ScrollTrigger's start/end in sync with the page height.
+      // ScrollTrigger only re-measures on resize and on the window `load`
+      // event; anything that changes the page's height afterwards — the
+      // homepage news section sizing itself (PageMotion), "Prikaži još",
+      // late images — leaves triggers further down measured against the old
+      // layout. On a reload where `load` fired before the motion setup ran
+      // (fonts cached, so document.fonts.ready resolved late), nothing
+      // re-measured at all, and e.g. the compass's scrub was already at its
+      // end by the time its card scrolled into view. Watch the body and
+      // refresh (debounced) whenever its height really changes.
+      let refreshTimer;
+      let lastHeight = document.body.scrollHeight;
+      const resizeObserver = new ResizeObserver(() => {
+        const height = document.body.scrollHeight;
+        if (Math.abs(height - lastHeight) < 2) return;
+        lastHeight = height;
+        clearTimeout(refreshTimer);
+        refreshTimer = setTimeout(() => ScrollTrigger.refresh(), 150);
+      });
+      resizeObserver.observe(document.body);
+
       return () => {
+        resizeObserver.disconnect();
+        clearTimeout(refreshTimer);
         gsap.ticker.remove(tick);
         gsap.ticker.lagSmoothing(500, 33);
         lenis.destroy();

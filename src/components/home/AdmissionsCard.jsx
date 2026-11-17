@@ -3,15 +3,6 @@ import Icon from "@/components/ui/Icon";
 import CompassRose from "./CompassRose";
 import styles from "./AdmissionsCard.module.css";
 
-/**
- * Upisi CTA card (homepage, next to the Trening centar card): modra card,
- * label, title, lead and a white "go" button, and a compass rose in the
- * top-right corner that turns as the page scrolls (CompassRose, off under
- * reduced motion). data-home-clip gives it
- * the homepage's clip reveal (PageMotion).
- *
- * @param {{ href: string, label: string, title: string, lead: string, cta: string }} props
- */
 export default function AdmissionsCard({ href, label, title, lead, cta }) {
   return (
     <Link href={href} className={styles.card} data-home-clip>

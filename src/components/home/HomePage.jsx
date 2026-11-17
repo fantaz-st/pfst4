@@ -18,8 +18,6 @@ import AdmissionsCard from "./AdmissionsCard";
 
 const EMPTY_POSTS = { nodes: [] };
 
-// TODO: Replace the bracketed homepage copy and descriptions with approved
-// WordPress content. Destinations follow the legacy route inventory.
 const COPY = {
   hr: {
     heroTitle: "POMORSKI FAKULTET",
@@ -33,7 +31,7 @@ const COPY = {
     training: "Trening centar",
     // itemDescription: "[OPIS — DOPUNITI]",
     highlightsEyebrow: "Istaknuto",
-    highlightsTitle: "Novosti s fakulteta",
+    highlightsTitle: "Istaknute novosti",
     allNews: "Sve novosti",
     noHighlights: "Trenutačno nema istaknutih novosti.",
     statement: "Od nautike do digitalnih tehnologija – pripremamo stručnjake koje traži pomorsko gospodarstvo.",
@@ -46,25 +44,29 @@ const COPY = {
         title: "Pomorska nautika",
         href: "/nastava/studiji/prijediplomski-studiji/pomorska-nautika",
         photo: "[FOTO: BRODSKI MOST]",
-        description: "Za buduće časnike palube i zapovjednike broda – navigacija, upravljanje brodom i sigurnost plovidbe.",
+        description: "Za buduće časnike palube i zapovjednike broda - navigacija, upravljanje brodom i sigurnost plovidbe.",
+        src: "/images/studies-banners/bridge.webp",
       },
       {
         title: "Brodostrojarstvo",
         href: "/nastava/studiji/prijediplomski-studiji/brodostrojarstvo",
         photo: "[FOTO: STROJARNICA]",
-        description: "Za buduće časnike i upravitelje stroja – brodski pogonski sustavi, energetika i održavanje.",
+        description: "Za buduće časnike i upravitelje stroja - brodski pogonski sustavi, energetika i održavanje.",
+        src: "/images/studies-banners/engine-room.webp",
       },
       {
         title: "Pomorske elektrotehničke i informatičke tehnologije",
         href: "/nastava/studiji/prijediplomski-studiji/pomorske-elektrotehnicke-i-informaticke-tehnologije",
         photo: "[FOTO: LABORATORIJ]",
         description: "Elektrotehnika, automatizacija i informacijski sustavi za suvremene brodove i luke.",
+        src: "/images/studies-banners/electrical.webp",
       },
       {
         title: "Pomorski menadžment",
         href: "/nastava/studiji/prijediplomski-studiji/pomorski-menadzment",
         photo: "[FOTO: LUKA]",
-        description: "Upravljanje lukama, brodarskim tvrtkama i logistikom – poslovna znanja za pomorsko gospodarstvo.",
+        description: "Upravljanje lukama, brodarskim tvrtkama i logistikom - poslovna znanja za pomorsko gospodarstvo.",
+        src: "/images/studies-banners/luka split PFST.webp",
       },
     ],
     otherEyebrow: "Obavijesti",
@@ -83,6 +85,7 @@ const COPY = {
     trainingLead: "Osposobljavanje i obnova svjedodžbi pomoraca.",
     trainingHeadline: "Edukacija pomoraca",
     trainingPhoto: "[FOTO: TRENING CENTAR]",
+    trainingPhotoSrc: "/images/trening centar PFST 2.webp",
     ctaSectionLabel: "Upisi i Trening centar",
     photoTag: "[FOTO: KAMPUS ILI BROD]",
     eyebrow: "Sveučilište u Splitu",
@@ -115,24 +118,28 @@ const COPY = {
         href: "/en/studies/undergraduate-studies/nautical-studies",
         photo: "[PHOTO: SHIP BRIDGE]",
         description: "For future deck officers and masters – navigation, ship handling and safety at sea.",
+        src: "/images/studies-banners/bridge.webp",
       },
       {
         title: "Marine Engineering",
         href: "/en/studies/undergraduate-studies/marine-engineering",
         photo: "[PHOTO: ENGINE ROOM]",
         description: "For future engineer officers and chief engineers – marine propulsion, energy systems and maintenance.",
+        src: "/images/studies-banners/engine-room.webp",
       },
       {
         title: "Marine Electrical Engineering and Information Technologies",
         href: "/en/studies/undergraduate-studies/marine-electrical-engineering-and-information-technologies",
         photo: "[PHOTO: LABORATORY]",
         description: "Electrical engineering, automation and information systems for modern ships and ports.",
+        src: "/images/studies-banners/electrical.webp",
       },
       {
         title: "Maritime Management",
         href: "/en/studies/undergraduate-studies/maritime-management",
         photo: "[PHOTO: PORT]",
         description: "Managing ports, shipping companies and logistics – business skills for the maritime economy.",
+        src: "/images/studies-banners/luka split PFST.webp",
       },
     ],
     otherEyebrow: "Announcements",
@@ -151,6 +158,7 @@ const COPY = {
     trainingLead: "[TRAINING CENTRE DESCRIPTION — TO BE PROVIDED]",
     trainingHeadline: "[TRAINING CENTRE HEADLINE — TO BE PROVIDED]",
     trainingPhoto: "[PHOTO: TRAINING CENTRE]",
+    trainingPhotoSrc: "/images/trening centar cta PFST.webp",
     ctaSectionLabel: "Admissions and Training Centre",
     photoTag: "[PHOTO: CAMPUS OR SHIP]",
     eyebrow: "University of Split",
@@ -226,7 +234,7 @@ function QuickLinks({ language, copy }) {
             >
               {link.className === "image" ? (
                 <>
-                  <Photo className={styles.tilePhoto} sizes="(max-width: 720px) 100vw, 50vw" tag={copy.trainingPhoto} tagPosition="top-left" />
+                  <Photo className={styles.tilePhoto} sizes="(max-width: 720px) 100vw, 50vw" tag={copy.trainingPhoto} src={copy.trainingPhotoSrc} tagPosition="top-left" />
                   <span className={styles.tileImagePanel}>
                     <span className={styles.tileTitle}>{copy.training}</span>
                     {/* <span className={styles.tileDescription}>{copy.itemDescription}</span> */}
@@ -334,17 +342,18 @@ function FeaturedCard({ post, language, featuredSlug, featured = false }) {
   const category = getPostCategories(post, featuredSlug)[0];
   const image = post.featuredImage?.node;
 
+  // Same height as the featured card: the photo takes whatever height the
+  // date row and the (max three-line) title leave, so every card in the
+  // strip lines up top and bottom.
   return (
     <Link href={post.uri} className={featured ? styles.featuredCard : styles.newsCard}>
-      <Photo
-        src={image?.sourceUrl}
-        alt={image?.altText ?? ""}
-        ratio={featured ? undefined : "4/3"}
-        sizes={featured ? "(max-width: 720px) 85vw, 680px" : "(max-width: 720px) 75vw, 420px"}
-        className={featured ? styles.featuredPhoto : styles.newsPhoto}
-        radius={featured ? "feature" : "card"}
-        zoom
-      />
+      {featured ? (
+        <Photo src={image?.sourceUrl} alt={image?.altText ?? ""} sizes="(max-width: 720px) 85vw, 680px" className={styles.featuredPhoto} radius="feature" zoom />
+      ) : (
+        <span className={styles.newsPhoto}>
+          <Photo src={image?.sourceUrl} alt={image?.altText ?? ""} sizes="(max-width: 720px) 75vw, 420px" zoom />
+        </span>
+      )}
       {featured && (
         <span className={styles.featuredPanel}>
           <span className={styles.newsMeta}>
@@ -439,7 +448,7 @@ function StudyProgrammes({ copy, language }) {
                   </span>
                 </span>
                 <span className={styles.studyMedia}>
-                  <Photo className={styles.studyPhoto} sizes="(max-width: 1080px) 100vw, 55vw" tag={program.photo} tagPosition="bottom-left" />
+                  <Photo className={styles.studyPhoto} src={program.src} sizes="(max-width: 1080px) 100vw, 55vw" tag={program.photo} tagPosition="bottom-left" />
                 </span>
                 {index < copy.studyPrograms.length - 1 && <span className={styles.studyDim} data-home-study-dim aria-hidden="true" />}
               </Link>
@@ -492,8 +501,14 @@ function CallsToAction({ copy, language }) {
     <section className={styles.ctaSection} aria-label={copy.ctaSectionLabel}>
       <div className={styles.ctaGrid}>
         <AdmissionsCard href={admissionsHref} label={copy.ctaLabel} title={copy.ctaTitle} lead={copy.ctaLead} cta={copy.allAdmissions} />
-        <Link href={trainingHref} className={styles.trainingCard}>
-          <Photo className={styles.trainingPhoto} sizes="(max-width: 1080px) 100vw, 50vw" tag={copy.trainingPhoto} tagPosition="top-left" />
+        <Link href={trainingHref} className={styles.trainingCard} data-home-clip data-delay={0.15}>
+          <Photo
+            className={styles.trainingPhoto}
+            sizes="(max-width: 1080px) 100vw, 50vw"
+            tag={copy.trainingPhoto}
+            src="/images/trening centar cta PFST.webp"
+            tagPosition="top-left"
+          />
           <span className={styles.trainingPanel}>
             <span>
               <span className={styles.trainingLabel}>{copy.training}</span>

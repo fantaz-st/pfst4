@@ -26,20 +26,7 @@ const RADII = new Set(["panel", "card", "feature", "block"]);
  *   className?: string,
  * }} props
  */
-export default function Photo({
-  src,
-  alt = "",
-  sizes,
-  ratio,
-  radius,
-  tone = "dark",
-  tag,
-  tagPosition,
-  hideTagOnMobile = false,
-  zoom = false,
-  priority = false,
-  className,
-}) {
+export default function Photo({ src, alt = "", sizes, ratio, radius, tone = "dark", tag, tagPosition, hideTagOnMobile = false, zoom = false, priority = false, className }) {
   const classes = [
     styles.photo,
     ratio ? styles[RATIOS[ratio]] : styles.fill,
@@ -54,22 +41,12 @@ export default function Photo({
   return (
     <span className={classes}>
       {src ? (
-        <Image
-          src={src}
-          alt={alt}
-          fill
-          sizes={sizes}
-          priority={priority}
-          className={styles.media}
-        />
+        <Image src={src} alt={alt} fill sizes={sizes} priority={priority} className={styles.media} />
       ) : (
         <>
           <span className={styles.media} aria-hidden="true" />
           {tag && (
-            <PhotoTag
-              position={tagPosition}
-              hideOnMobile={hideTagOnMobile}
-            >
+            <PhotoTag position={tagPosition} hideOnMobile={hideTagOnMobile}>
               {tag}
             </PhotoTag>
           )}

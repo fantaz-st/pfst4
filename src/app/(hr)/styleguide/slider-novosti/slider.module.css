@@ -1,0 +1,606 @@
+/* Styleguide — featured news slider: five card layouts. Card geometry comes
+   in as --w / --h from the page (literal px, per CLAUDE.md). */
+
+.page {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-24);
+  padding: var(--space-24) 0 var(--section-y);
+}
+
+.header {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-6);
+}
+
+.intro {
+  display: flex;
+  max-width: 760px;
+  flex-direction: column;
+  gap: var(--space-4);
+  margin: 0 auto;
+  padding: 0 var(--gutter);
+  box-sizing: content-box;
+  font-size: var(--fs-body-l);
+  line-height: 1.55;
+}
+
+.intro p {
+  margin: 0;
+}
+
+.note {
+  color: var(--color-text-muted);
+  font-size: var(--fs-small);
+}
+
+/* ---- Example ---- */
+.example {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-8);
+}
+
+.exampleHead {
+  display: flex;
+  width: 100%;
+  max-width: var(--container);
+  gap: var(--space-6);
+  margin: 0 auto;
+  padding: 0 var(--gutter);
+  box-sizing: border-box;
+}
+
+.letter {
+  display: inline-flex;
+  flex: none;
+  width: 52px;
+  height: 52px;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--r-pill);
+  background: var(--color-primary);
+  color: var(--color-surface);
+  font-size: var(--fs-title-s);
+  font-weight: 600;
+}
+
+.exampleText {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.exampleName {
+  margin: 0;
+  font-size: var(--fs-title-l);
+  line-height: 1;
+}
+
+.rules {
+  max-width: 64ch;
+  margin: 0;
+  color: var(--color-text-muted-2);
+  font-size: var(--fs-body);
+  line-height: 1.55;
+}
+
+.specs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.specs li {
+  padding: 6px 12px;
+  border-radius: var(--r-pill);
+  background: var(--color-surface);
+  color: var(--color-chip-text);
+  font-size: var(--fs-chip);
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+}
+
+/* The slider itself: a horizontal track that scrolls. */
+.track {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-4);
+  overflow-x: auto;
+  padding: 4px max(var(--gutter), calc((100% - var(--container)) / 2 + var(--gutter))) var(--space-4);
+  scroll-snap-type: x proximity;
+  scrollbar-width: thin;
+}
+
+.alignEnd {
+  align-items: flex-end;
+}
+
+.group {
+  display: flex;
+  flex: none;
+  gap: var(--space-4);
+}
+
+/* ---- Cards ---- */
+.card {
+  position: relative;
+  display: flex;
+  flex: none;
+  width: min(var(--w, 420px), 85vw);
+  scroll-snap-align: start;
+  color: var(--color-text);
+}
+
+.card:hover {
+  color: var(--color-text);
+}
+
+.card:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 4px;
+}
+
+.photo {
+  width: 100%;
+  height: 100%;
+}
+
+.fill {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  border-radius: inherit;
+  clip-path: inset(0 round var(--r-feature));
+  transition: clip-path 0.8s var(--ease-out);
+}
+
+.photoBox {
+  position: relative;
+  display: block;
+  width: 100%;
+  overflow: hidden;
+  border-radius: var(--r-card);
+  clip-path: inset(0 round var(--r-card));
+  transition: clip-path 0.8s var(--ease-out);
+}
+
+/* Overlay: photo fills the card, text on a panel. */
+.overlay {
+  height: var(--h, 540px);
+  overflow: hidden;
+  border-radius: var(--r-feature);
+  background: var(--color-deep);
+}
+
+.panel {
+  position: absolute;
+  right: 12px;
+  bottom: 12px;
+  left: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  padding: var(--space-6) 24px;
+  border-radius: var(--r-panel);
+  background: var(--color-surface);
+}
+
+.panelDark {
+  background: var(--color-primary);
+  color: var(--color-surface);
+}
+
+.lead {
+  color: var(--color-text-muted-2);
+  font-size: var(--fs-small);
+  line-height: 1.5;
+}
+
+/* Stacked: photo on top, text below on the page background. */
+.stacked {
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* Compact: thumbnail + text, two per column. */
+.column {
+  display: flex;
+  flex: none;
+  width: min(var(--w), 85vw);
+  height: var(--h);
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.compact {
+  flex: 1;
+  width: 100%;
+  align-items: center;
+  gap: var(--space-4);
+  padding: var(--space-3);
+  border-radius: var(--r-card);
+  background: var(--color-surface);
+  box-sizing: border-box;
+}
+
+.thumb {
+  position: relative;
+  flex: none;
+  width: 128px;
+  height: 128px;
+  overflow: hidden;
+  border-radius: var(--r-icon);
+  clip-path: inset(0 round var(--r-icon));
+  transition: clip-path 0.8s var(--ease-out);
+}
+
+.compactText {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+/* ---- Text ---- */
+.meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2);
+  color: var(--color-text-muted);
+  font-size: var(--fs-meta);
+  font-weight: 500;
+}
+
+.metaOnDark {
+  color: var(--color-text-on-dark);
+}
+
+.title {
+  font-weight: 500;
+  line-height: 1.25;
+  letter-spacing: -0.025em;
+  transition: transform 0.6s var(--ease-out);
+}
+
+.titleL {
+  font-size: var(--fs-title-l);
+  font-weight: 600;
+  line-height: 1.04;
+  letter-spacing: var(--ls-display);
+}
+
+.titleM {
+  font-size: var(--fs-title-m);
+}
+
+.titleS {
+  font-size: var(--fs-body-l);
+}
+
+.titleArrow {
+  display: inline-block;
+  margin-left: 6px;
+  vertical-align: -2px;
+  opacity: 0;
+  transform: translateX(-10px);
+  transition:
+    opacity 0.4s,
+    transform 0.6s var(--ease-out);
+}
+
+.chip {
+  transition:
+    background var(--dur-hover) var(--ease-out),
+    color var(--dur-hover) var(--ease-out);
+}
+
+/* ---- Hover / focus (the chosen news hover) ---- */
+.overlay:is(:hover, :focus-visible) .fill {
+  clip-path: inset(10px round 20px);
+}
+
+.stacked:is(:hover, :focus-visible) .photoBox {
+  clip-path: inset(10px round 16px);
+}
+
+.compact:is(:hover, :focus-visible) .thumb {
+  clip-path: inset(6px round 10px);
+}
+
+.card:is(:hover, :focus-visible) .title {
+  transform: translateX(6px);
+}
+
+.card:is(:hover, :focus-visible) .titleArrow {
+  opacity: 1;
+  transform: none;
+}
+
+.card:is(:hover, :focus-visible) .chip {
+  background: var(--color-primary);
+  color: var(--color-surface);
+}
+
+.panelDark .chip {
+  background: var(--glass);
+  color: var(--color-surface);
+}
+
+.card:is(:hover, :focus-visible) .panelDark .chip {
+  background: var(--color-accent);
+  color: var(--color-text);
+}
+
+/* ---- "Sve novosti" end card ---- */
+.archive {
+  display: flex;
+  flex: none;
+  width: min(var(--w), 85vw);
+  height: var(--h);
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 30px;
+  border-radius: var(--r-feature);
+  background: var(--color-primary);
+  color: var(--color-surface);
+  box-sizing: border-box;
+}
+
+.archive:hover {
+  color: var(--color-surface);
+}
+
+.archiveLabel {
+  color: var(--color-text-on-dark);
+  font-size: var(--fs-label);
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.archiveTitle {
+  font-size: var(--fs-title-l);
+  font-weight: 600;
+  line-height: 1.04;
+  letter-spacing: var(--ls-display);
+}
+
+/* ---- F · Gradient over the photo ---- */
+.shade {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(
+    180deg,
+    transparent 40%,
+    color-mix(in srgb, var(--color-deep) 88%, transparent) 100%
+  );
+}
+
+.gradient {
+  color: var(--color-surface);
+}
+
+.gradient:hover {
+  color: var(--color-surface);
+}
+
+.gradientText {
+  position: absolute;
+  right: 28px;
+  bottom: 26px;
+  left: 28px;
+  display: flex;
+  max-width: 520px;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.leadOnDark {
+  color: var(--color-text-on-dark-strong);
+  font-size: var(--fs-small);
+  line-height: 1.5;
+}
+
+.gradient .chip {
+  background: var(--glass);
+  color: var(--color-surface);
+}
+
+.card.gradient:is(:hover, :focus-visible) .chip {
+  background: var(--color-accent);
+  color: var(--color-text);
+}
+
+/* ---- G · Landscape: photo left, text right ---- */
+.side {
+  display: grid;
+  height: var(--h);
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: var(--space-4);
+  padding: 10px;
+  border-radius: var(--r-feature);
+  background: var(--color-surface);
+  box-sizing: border-box;
+}
+
+.sidePhoto {
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--r-panel);
+  clip-path: inset(0 round var(--r-panel));
+  transition: clip-path 0.8s var(--ease-out);
+}
+
+.sideText {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  justify-content: flex-end;
+  gap: var(--space-3);
+  padding: var(--space-4) var(--space-4) var(--space-4) 0;
+}
+
+.side:is(:hover, :focus-visible) .sidePhoto {
+  clip-path: inset(8px round 14px);
+}
+
+/* ---- H · Text-only card with a big day numeral ---- */
+.textCard {
+  height: var(--h);
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 26px;
+  border-radius: var(--r-feature);
+  background: var(--color-surface);
+  box-sizing: border-box;
+  transition: background var(--dur-hover) var(--ease-out);
+}
+
+.bigDate {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  color: var(--color-text-muted);
+  font-size: var(--fs-meta);
+  font-weight: 500;
+}
+
+.day {
+  color: var(--color-text);
+  font-size: 96px;
+  font-weight: 600;
+  line-height: 0.85;
+  letter-spacing: -0.05em;
+}
+
+.textBody {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-4);
+}
+
+.textCard:is(:hover, :focus-visible) {
+  background: var(--tint-plava-3);
+}
+
+/* ---- I · White frame ---- */
+.framed {
+  height: var(--h);
+  flex-direction: column;
+  gap: var(--space-4);
+  padding: 10px 10px 22px;
+  border-radius: var(--r-feature);
+  background: var(--color-surface);
+  box-sizing: border-box;
+}
+
+.framePhoto {
+  position: relative;
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+  border-radius: var(--r-panel);
+  clip-path: inset(0 round var(--r-panel));
+  transition: clip-path 0.8s var(--ease-out);
+}
+
+.frameText {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  padding: 0 14px;
+}
+
+.framed:is(:hover, :focus-visible) .framePhoto {
+  clip-path: inset(8px round 14px);
+}
+
+/* ---- J · Two-row mosaic ---- */
+.mosaic {
+  display: grid;
+  flex: none;
+  grid-auto-columns: 300px;
+  grid-auto-flow: column dense;
+  grid-template-rows: repeat(2, 290px);
+  gap: var(--space-4);
+}
+
+.mosaic .card {
+  width: auto;
+  height: auto;
+}
+
+.span22 {
+  grid-column: span 2;
+  grid-row: span 2;
+}
+
+.span12 {
+  grid-row: span 2;
+}
+
+.span11 {
+  grid-row: span 1;
+}
+
+.mosaic .span11 .titleM {
+  font-size: var(--fs-body-l);
+}
+
+@media (max-width: 720px) {
+  .exampleHead {
+    flex-direction: column;
+    gap: var(--space-4);
+  }
+
+  .overlay {
+    height: min(var(--h, 540px), 520px);
+  }
+
+  .archive {
+    height: min(var(--h), 520px);
+  }
+
+  .column {
+    height: auto;
+  }
+
+  .thumb {
+    width: 96px;
+    height: 96px;
+  }
+
+  .side {
+    grid-template-columns: minmax(0, 0.8fr) minmax(0, 1fr);
+    height: auto;
+    min-height: 220px;
+  }
+
+  .mosaic {
+    grid-auto-columns: 240px;
+    grid-template-rows: repeat(2, 240px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sidePhoto,
+  .framePhoto,
+  .textCard,
+  .fill,
+  .photoBox,
+  .thumb,
+  .title,
+  .titleArrow,
+  .chip {
+    transition: none;
+  }
+}

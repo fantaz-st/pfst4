@@ -455,17 +455,33 @@
   letter-spacing: var(--ls-display);
 }
 
+/* Same height as .featuredCard; the photo fills what the meta row and
+   title leave. */
 .newsCard {
   width: 420px;
+  height: 540px;
   flex-direction: column;
   gap: 18px;
 }
 
 .newsPhoto {
+  position: relative;
+  display: block;
   width: 100%;
+  min-height: 0;
+  flex: 1;
+  overflow: hidden;
+  border-radius: var(--r-card);
 }
 
+/* Up to three lines, and always the room of three, so every photo in the
+   strip is the same height whatever the title length. */
 .newsTitle {
+  display: -webkit-box;
+  min-height: calc(3 * 1.25em);
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
   font-size: var(--fs-title-m);
   font-weight: 500;
   line-height: 1.25;
@@ -997,6 +1013,7 @@
 
   .newsCard {
     width: 300px;
+    height: 460px;
   }
 
   .archiveCard {

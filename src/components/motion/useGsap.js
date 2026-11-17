@@ -21,6 +21,17 @@ import { gsap, ScrollTrigger, SplitText, MOTION_OK } from "./gsap";
  * @param {{ scope?: React.RefObject<Element>, media?: string, deps?: unknown[] }} [options]
  *   media is ANDed with prefers-reduced-motion: no-preference.
  */
+// Each useGsap setup creates its triggers whenever its own fonts.ready
+// callback runs, so components measure the page at different moments — a
+// trigger made before another component changes the layout (PageMotion
+// sizing the homepage news section) keeps stale positions. One debounced
+// refresh after the last setup of a render measures them all together.
+let refreshTimer;
+function queueRefresh() {
+  clearTimeout(refreshTimer);
+  refreshTimer = setTimeout(() => ScrollTrigger.refresh(), 100);
+}
+
 export function useGsap(setup, { scope, media, deps = [] } = {}) {
   // Always call the latest setup without re-running the effect on every
   // render. Updated in an effect (refs can't be written during render);
@@ -41,6 +52,7 @@ export function useGsap(setup, { scope, media, deps = [] } = {}) {
       mm.add(query, (context) =>
         setupRef.current({ gsap, ScrollTrigger, SplitText, context }),
       );
+      queueRefresh();
     });
 
     return () => {
