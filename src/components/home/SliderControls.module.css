@@ -1,0 +1,62 @@
+.controls {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.progress {
+  position: relative;
+  width: 160px;
+  height: 2px;
+  margin-right: var(--space-4);
+  overflow: hidden;
+  border-radius: var(--r-pill);
+  background: var(--color-line-strong);
+}
+
+.progress > span {
+  position: absolute;
+  inset: 0;
+  transform: scaleX(0.08);
+  transform-origin: 0 50%;
+  background: var(--color-primary);
+  transition: transform 0.2s linear;
+}
+
+.button {
+  display: inline-flex;
+  width: 52px;
+  height: 52px;
+  align-items: center;
+  justify-content: center;
+  border: 0;
+  border-radius: var(--r-pill);
+  background: var(--color-surface);
+  color: var(--color-text);
+  cursor: pointer;
+  transition:
+    background var(--dur-hover) var(--ease-out),
+    color var(--dur-hover) var(--ease-out),
+    opacity var(--dur-hover) var(--ease-out);
+}
+
+.button:is(:hover, :focus-visible):not(:disabled) {
+  background: var(--color-primary);
+  color: var(--color-surface);
+}
+
+.button:disabled {
+  cursor: default;
+  opacity: 0.4;
+}
+
+.back {
+  transform: rotate(180deg);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .progress > span,
+  .button {
+    transition: none;
+  }
+}

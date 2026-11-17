@@ -7,6 +7,7 @@ import { toLanguageCodeEnum } from "@/lib/language";
 import { formatDate } from "@/lib/format";
 import SiteChrome from "@/components/layout/SiteChrome";
 import Hero from "@/components/layout/Hero";
+import Image from "next/image";
 import Photo from "@/components/ui/Photo";
 import Button from "@/components/ui/Button";
 import Chip from "@/components/ui/Chip";
@@ -15,6 +16,7 @@ import ArrowCircle from "@/components/ui/ArrowCircle";
 import HomeNewsRows from "./HomeNewsRows";
 import styles from "./HomePage.module.css";
 import AdmissionsCard from "./AdmissionsCard";
+import NewsSlider, { NewsSliderControls, NewsSliderViewport } from "./NewsSlider";
 
 const EMPTY_POSTS = { nodes: [] };
 
@@ -33,8 +35,25 @@ const COPY = {
     highlightsEyebrow: "Istaknuto",
     highlightsTitle: "Istaknute novosti",
     allNews: "Sve novosti",
+    newsPrev: "Prethodne novosti",
+    newsNext: "Sljedeće novosti",
     noHighlights: "Trenutačno nema istaknutih novosti.",
-    statement: "Od nautike do digitalnih tehnologija – pripremamo stručnjake koje traži pomorsko gospodarstvo.",
+    // Statement with pills: text pieces and pills in reading order. A pill
+    // sits right after the word before it (never alone at a line start).
+    // { src } = photo pill (src: null → placeholder until the photo exists),
+    // { pattern: "flags" } = signal-flag pill, hideOnMobile drops it ≤720px.
+    // TODO: add the photos to public/images/ and fill in src.
+    statement: [
+      "Za zapovjednim mostom",
+      { src: "/images/statement/bridge.webp", alt: "zapovjedni most" },
+      " u strojarnici",
+      { src: "/images/statement/engine room.webp", alt: "simulator" },
+      " ili u luci ",
+      { src: "/images/statement/port.webp", alt: "studenti", hideOnMobile: true },
+      " naši studenti uče posao koji pokreće svjetsko more",
+      { pattern: "flags" },
+      ".",
+    ],
     about: "O fakultetu",
     studyEyebrow: "Studiji",
     studyTitle: "Studiji",
@@ -106,6 +125,8 @@ const COPY = {
     highlightsEyebrow: "Featured",
     highlightsTitle: "News from the Faculty",
     allNews: "All news",
+    newsPrev: "Previous news",
+    newsNext: "Next news",
     noHighlights: "There are no featured news items at this time.",
     statement: "[FACULTY STATEMENT — TO BE PROVIDED]",
     about: "About the Faculty",
@@ -167,9 +188,6 @@ const COPY = {
   },
 };
 
-// `description` is optional — a tile without one shows only its title.
-// TODO: the "Izmijenjeno" dates are placeholders; they could come from the
-// WordPress page's `modified` date.
 const QUICK_LINKS = {
   hr: [
     { title: "Raspored nastave", href: "/nastava/studiranje/raspored", icon: "clock", style: "large", description: "Izmijenjeno: 14. 11. 2026." },
@@ -295,43 +313,47 @@ function FeaturedNews({ copy, language, posts, featuredSlug }) {
   const archive = NEWS_ARCHIVE_URI[language];
   const [lead, ...rest] = posts;
 
-  return (
-    <section className={styles.highlights} id={language === "en" ? "news" : "novosti"} aria-labelledby="home-highlights-title" data-home-news>
-      <div className={styles.highlightsSticky} data-home-news-sticky>
-        <div className={`${styles.wrap} ${styles.highlightsHead}`}>
-          <div className={styles.sectionHeadLeft}>
-            {/* <span className={styles.eyebrow}>
-              <span />
-              {copy.highlightsEyebrow}
-            </span> */}
-            <h2 id="home-highlights-title" className={styles.sectionTitle}>
-              {copy.highlightsTitle}
-            </h2>
-          </div>
-          <div className={styles.highlightsActions}>
-            <span className={styles.progress} aria-hidden="true">
-              <span data-home-news-progress />
-            </span>
-            <Button href={archive} variant="primary">
-              {copy.allNews}
-            </Button>
-          </div>
-        </div>
+  const head = (controls) => (
+    <div className={`${styles.wrap} ${styles.highlightsHead}`}>
+      <div className={styles.sectionHeadLeft}>
+        <h2 id="home-highlights-title" className={styles.sectionTitle}>
+          {copy.highlightsTitle}
+        </h2>
+      </div>
+      <div className={styles.highlightsActions}>
+        {controls}
+        {/* <Button href={archive} variant="primary">
+          {copy.allNews}
+        </Button> */}
+      </div>
+    </div>
+  );
 
+  return (
+    <section className={styles.highlights} id={language === "en" ? "news" : "novosti"} aria-labelledby="home-highlights-title">
+      <div className={styles.highlightsInner}>
         {posts.length ? (
-          <div className={styles.highlightsTrack} data-home-news-track>
-            {lead && <FeaturedCard post={lead} language={language} featuredSlug={featuredSlug} featured />}
-            {rest.map((post) => (
-              <FeaturedCard key={post.id} post={post} language={language} featuredSlug={featuredSlug} />
-            ))}
-            <Link href={archive} className={styles.archiveCard}>
-              <span className={styles.archiveLabel}>{copy.allNews}</span>
-              <span className={styles.archiveTitle}>{copy.highlightsTitle}</span>
-              <ArrowCircle tone="white" size="l" />
-            </Link>
-          </div>
+          // Embla slider. The cards below are Server Components passed in as
+          // children — only the slider shell (NewsSlider) hydrates.
+          <NewsSlider>
+            {head(<NewsSliderControls prevLabel={copy.newsPrev} nextLabel={copy.newsNext} className={styles.sliderControls} />)}
+            <NewsSliderViewport label={copy.highlightsTitle}>
+              {lead && <FeaturedCard post={lead} language={language} featuredSlug={featuredSlug} featured />}
+              {rest.map((post) => (
+                <FeaturedCard key={post.id} post={post} language={language} featuredSlug={featuredSlug} />
+              ))}
+              <Link href={archive} className={styles.archiveCard}>
+                <span className={styles.archiveLabel}>{copy.allNews}</span>
+                <span className={styles.archiveTitle}>{copy.highlightsTitle}</span>
+                <ArrowCircle tone="white" size="l" />
+              </Link>
+            </NewsSliderViewport>
+          </NewsSlider>
         ) : (
-          <p className={`${styles.wrap} ${styles.emptyHighlights}`}>{copy.noHighlights}</p>
+          <>
+            {head(null)}
+            <p className={`${styles.wrap} ${styles.emptyHighlights}`}>{copy.noHighlights}</p>
+          </>
         )}
       </div>
     </section>
@@ -390,20 +412,48 @@ function FeaturedCard({ post, language, featuredSlug, featured = false }) {
   );
 }
 
+// One decorative pill: a photo (or its placeholder) or the signal-flag
+// pattern. aria-hidden — the sentence reads complete without the pills.
+function StatementPill({ pill }) {
+  const kind = pill.pattern === "flags" ? styles.pillFlags : pill.src ? styles.pillPhoto : styles.pillPlaceholder;
+  return (
+    <span className={[styles.pill, kind, pill.hideOnMobile ? styles.pillHideSm : ""].filter(Boolean).join(" ")} data-home-pill aria-hidden="true">
+      <span className={styles.pillMedia} data-home-pill-media>
+        {pill.src && <Image src={pill.src} alt="" fill sizes="160px" />}
+      </span>
+    </span>
+  );
+}
+
+// Renders the statement pieces. The last word before each pill is wrapped
+// with the pill in a nowrap span, so a pill never starts a line on its own.
+function StatementText({ parts }) {
+  if (typeof parts === "string") return parts;
+  return parts.map((part, index) => {
+    if (typeof part !== "string") return null;
+    const next = parts[index + 1];
+    if (!next || typeof next === "string") return <span key={index}>{part}</span>;
+    const match = part.match(/^(.*?)(\S+)$/s);
+    const head = match ? match[1] : "";
+    const lastWord = match ? match[2] : part;
+    return (
+      <span key={index}>
+        {head}
+        <span className={styles.pillWord}>
+          {lastWord} <StatementPill pill={next} />
+        </span>
+      </span>
+    );
+  });
+}
+
 function Statement({ copy, language }) {
   const about = language === "en" ? "/en/faculty/general-information" : "/fakultet/opcenito";
   return (
     <section className={styles.statement} aria-label={copy.about}>
       <div className={styles.wrap}>
         <p className={styles.statementText} data-home-statement>
-          {copy.statement}{" "}
-          <span className={styles.inlinePill} data-home-pill>
-            <span />
-          </span>{" "}
-          <span className={styles.inlinePillAccent} data-home-pill />{" "}
-          <span className={styles.inlinePillLight} data-home-pill>
-            <span />
-          </span>
+          <StatementText parts={copy.statement} />
         </p>
         <div className={styles.statementActions} data-fade>
           <Button href={about}>{copy.about}</Button>

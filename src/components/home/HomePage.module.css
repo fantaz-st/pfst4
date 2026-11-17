@@ -347,7 +347,7 @@
   padding-top: var(--space-6);
 }
 
-.highlightsSticky {
+.highlightsInner {
   padding-bottom: var(--section-y);
   overflow: hidden;
 }
@@ -365,51 +365,17 @@
   gap: var(--space-6);
 }
 
-.progress {
-  position: relative;
-  width: 160px;
-  height: 2px;
-  overflow: hidden;
-  border-radius: var(--r-pill);
-  background: var(--color-line-strong);
-}
-
-.progress > span {
-  position: absolute;
-  inset: 0;
-  transform: scaleX(0.18);
-  transform-origin: 0 50%;
-  background: var(--color-primary);
-}
-
-.highlightsTrack {
-  display: flex;
-  width: max-content;
-  min-width: 100%;
-  align-items: flex-start;
-  gap: var(--space-4);
-  overflow-x: auto;
-  padding-inline: max(var(--gutter), calc((100% - var(--container)) / 2 + var(--gutter)));
-  scroll-snap-type: x mandatory;
-  scrollbar-width: none;
-}
-
-.highlightsTrack::-webkit-scrollbar {
-  display: none;
-}
-
 .featuredCard,
 .newsCard,
 .archiveCard {
   position: relative;
   display: flex;
   flex: none;
-  scroll-snap-align: start;
 }
 
 .featuredCard {
   width: 680px;
-  height: 540px;
+  height: 620px;
   overflow: hidden;
   border-radius: var(--r-feature);
   background: var(--color-deep);
@@ -458,8 +424,8 @@
 /* Same height as .featuredCard; the photo fills what the meta row and
    title leave. */
 .newsCard {
-  width: 420px;
-  height: 540px;
+  width: 360px;
+  height: 620px;
   flex-direction: column;
   gap: 18px;
 }
@@ -531,32 +497,43 @@
   letter-spacing: var(--ls-display);
 }
 
-.inlinePill,
-.inlinePillAccent,
-.inlinePillLight {
+/* ---- Statement pills: small photos inside the sentence ---- */
+.pillWord {
+  white-space: nowrap;
+}
+
+.pill {
   position: relative;
   display: inline-block;
-  width: 1.9em;
-  height: 0.78em;
-  margin-inline: 0.08em;
+  width: 2.4em;
+  height: 0.82em;
+  margin-inline: 0.06em;
   overflow: hidden;
   border-radius: var(--r-pill);
   background: var(--color-deep);
-  vertical-align: -0.02em;
+  vertical-align: -0.04em;
 }
 
-.inlinePill > span {
+.pillMedia {
   position: absolute;
   inset: 0;
+}
+
+.pillMedia img {
+  object-fit: cover;
+}
+
+/* TODO: placeholder until the photo exists. */
+.pillPlaceholder .pillMedia {
   background: url("/design/contours.svg") center / cover no-repeat;
 }
 
-.inlinePillAccent {
-  background: var(--color-accent);
+.pillFlags {
+  background: var(--color-primary);
 }
 
-.inlinePillLight {
-  background: var(--tint-plava-1);
+.pillFlags .pillMedia {
+  background: url("/design/flags.svg") left center / auto 100% repeat-x;
 }
 
 .statementActions {
@@ -922,21 +899,16 @@
 }
 
 @media (max-width: 900px) {
-  .highlightsSticky {
+  .highlightsInner {
     padding-bottom: var(--space-24);
-  }
-
-  .highlightsTrack {
-    width: auto;
-    min-width: 0;
-  }
-
-  .progress {
-    display: none;
   }
 }
 
 @media (max-width: 720px) {
+  .pillHideSm {
+    display: none;
+  }
+
   .heroNews {
     display: none;
   }
@@ -994,8 +966,8 @@
     margin-bottom: var(--space-8);
   }
 
-  .highlightsTrack {
-    padding-inline: var(--gutter);
+  .sliderControls {
+    display: none;
   }
 
   .featuredCard {

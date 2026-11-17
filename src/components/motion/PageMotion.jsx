@@ -19,7 +19,7 @@ export default function PageMotion() {
   const pathname = usePathname();
 
   useGsap(
-    ({ gsap, ScrollTrigger, SplitText }) => {
+    ({ gsap, SplitText }) => {
       const splits = new Set();
       const hero = document.querySelector("[data-hero]");
       const media = hero?.querySelector("[data-hero-media]");
@@ -166,49 +166,6 @@ export default function PageMotion() {
       });
 
       const homeMotion = gsap.matchMedia();
-      homeMotion.add("(min-width: 901px)", () => {
-        const cleanups = [];
-        const section = document.querySelector("[data-home-news]");
-        const sticky = section?.querySelector("[data-home-news-sticky]");
-        const track = section?.querySelector("[data-home-news-track]");
-        const progress = section?.querySelector("[data-home-news-progress]");
-
-        if (section && sticky && track) {
-          const distance = () => Math.max(0, track.scrollWidth - sticky.clientWidth);
-          const size = () => {
-            gsap.set(sticky, { height: window.innerHeight });
-            gsap.set(section, { height: window.innerHeight + distance() });
-          };
-
-          size();
-          ScrollTrigger.addEventListener("refreshInit", size);
-          cleanups.push(() => ScrollTrigger.removeEventListener("refreshInit", size));
-          const scrollConfig = {
-            trigger: section,
-            start: "top top",
-            end: "bottom bottom",
-            scrub: true,
-            invalidateOnRefresh: true,
-          };
-          gsap.set(track, { overflow: "visible", scrollSnapType: "none" });
-          gsap.set(sticky, {
-            position: "sticky",
-            top: 0,
-            display: "flex",
-            flexDirection: "column",
-            justifyContent: "center",
-            paddingTop: 72,
-            paddingBottom: 24,
-          });
-          gsap.to(track, { x: () => -distance(), ease: "none", scrollTrigger: scrollConfig });
-          if (progress) {
-            gsap.fromTo(progress, { scaleX: 0.08 }, { scaleX: 1, ease: "none", scrollTrigger: scrollConfig });
-          }
-        }
-
-        return () => cleanups.forEach((cleanup) => cleanup());
-      });
-
       // Study cards stack on every width: each card is sticky (CSS), and while
       // the next one slides over it, it shrinks a little and dims. The scrub
       // starts when the next card reaches its own sticky top, read from CSS
@@ -248,6 +205,13 @@ export default function PageMotion() {
             width: 0,
             marginLeft: 0,
             marginRight: 0,
+            ease: "none",
+            stagger: 0.3,
+            scrollTrigger: trigger,
+          });
+          // The photo inside each pill settles from a slight zoom as it opens.
+          gsap.from(el.querySelectorAll("[data-home-pill-media]"), {
+            scale: 1.4,
             ease: "none",
             stagger: 0.3,
             scrollTrigger: trigger,
