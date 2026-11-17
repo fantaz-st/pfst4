@@ -1,0 +1,109 @@
+/* Fills the whole tile behind its content (the tile sets isolation, so
+   z-index -1 stays above the tile background). The fade at the bottom
+   keeps the title readable. */
+.marquee {
+  position: absolute;
+  z-index: -1;
+  inset: 0;
+  overflow: hidden;
+  perspective: 1400px;
+}
+
+.marquee::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, var(--color-surface) 22%, transparent 60%);
+}
+
+.wall {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  display: flex;
+  gap: 12px;
+  transform: translate(-50%, -50%) rotateX(35deg) rotateZ(-28deg);
+}
+
+.column {
+  display: flex;
+  width: 220px;
+  flex: none;
+  flex-direction: column;
+  animation: drift var(--duration) linear infinite;
+}
+
+.reverse {
+  animation-direction: reverse;
+}
+
+/* The gap lives on the track's end too, so the two copies join seamlessly. */
+.track {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding-bottom: 12px;
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 12px 12px 16px;
+  border-left: 3px solid var(--color-line-strong);
+  border-radius: var(--r-mini);
+  background: var(--color-bg);
+  color: var(--color-text);
+  font-size: var(--fs-micro);
+  line-height: 1.35;
+}
+
+.top {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  color: var(--color-text-muted);
+  font-weight: 500;
+}
+
+.room {
+  color: var(--color-text);
+  font-weight: 600;
+}
+
+.subject {
+  font-size: var(--fs-small);
+  font-weight: 600;
+  line-height: 1.25;
+}
+
+.meta {
+  color: var(--color-text-muted);
+}
+
+.typeP {
+  border-left-color: var(--color-primary);
+  background: var(--tint-modra-1);
+}
+
+.typeA {
+  border-left-color: var(--color-accent);
+  background: var(--tint-plava-1);
+}
+
+.typeL {
+  border-left-color: var(--color-accent-hover);
+  background: var(--tint-plava-2);
+}
+
+@keyframes drift {
+  to {
+    transform: translateY(-50%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .column {
+    animation: none;
+  }
+}

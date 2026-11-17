@@ -1,0 +1,83 @@
+.wrap {
+  max-width: var(--container);
+  margin: 0 auto;
+  padding: var(--space-12) var(--gutter) var(--section-y);
+}
+
+.toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--space-4);
+  margin-bottom: var(--space-8);
+}
+
+.weekNav {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.weekArrow {
+  display: grid;
+  width: 44px;
+  height: 44px;
+  place-items: center;
+  border: 1px solid var(--color-line-strong);
+  border-radius: var(--r-pill);
+  color: var(--color-primary);
+  transition: background-color var(--dur-hover) var(--ease-out);
+}
+
+.weekArrow:hover {
+  background: var(--color-bg-hover);
+}
+
+.flip {
+  transform: scaleX(-1);
+}
+
+.weekLabel {
+  min-width: 170px;
+  font-size: var(--fs-body);
+  font-weight: 600;
+  text-align: center;
+  white-space: nowrap;
+}
+
+.message {
+  padding: var(--space-12) var(--space-6);
+  border-radius: var(--r-card);
+  background: var(--color-surface);
+  color: var(--color-text-muted);
+  font-size: var(--fs-body-l);
+  text-align: center;
+}
+
+.updated {
+  margin-top: var(--space-6);
+  color: var(--color-text-muted);
+  font-size: var(--fs-small);
+}
+
+@media (max-width: 720px) {
+  .wrap {
+    padding-right: 20px;
+    padding-left: 20px;
+  }
+
+  .weekNav {
+    width: 100%;
+    flex-wrap: wrap;
+  }
+
+  .weekLabel {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .year {
+    display: none;
+  }
+}

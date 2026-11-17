@@ -5,6 +5,8 @@ import { getFeaturedCategorySlug } from "@/lib/news";
 import { NEWS_ARCHIVE_URI, getPostCategories } from "@/lib/posts";
 import { toLanguageCodeEnum } from "@/lib/language";
 import { formatDate } from "@/lib/format";
+import { getTimetableData } from "@/lib/sceduly";
+import { pickMarqueeEntries, todayInZagreb } from "@/lib/timetable";
 import SiteChrome from "@/components/layout/SiteChrome";
 import Hero from "@/components/layout/Hero";
 import Image from "next/image";
@@ -17,6 +19,7 @@ import HomeNewsRows from "./HomeNewsRows";
 import styles from "./HomePage.module.css";
 import AdmissionsCard from "./AdmissionsCard";
 import NewsSlider, { NewsSliderControls, NewsSliderViewport } from "./NewsSlider";
+import TimetableMarquee from "./TimetableMarquee";
 
 const EMPTY_POSTS = { nodes: [] };
 
@@ -190,7 +193,14 @@ const COPY = {
 
 const QUICK_LINKS = {
   hr: [
-    { title: "Raspored nastave", href: "/nastava/studiranje/raspored", icon: "clock", style: "large", description: "Izmijenjeno: 14. 11. 2026." },
+    {
+      title: "Raspored nastave",
+      href: "/nastava/studiranje/raspored",
+      icon: "clock",
+      style: "large",
+      description: "Izmijenjeno: 14. 11. 2026.",
+      imageSrc: "/images/sceduly-timetable.webp",
+    },
     { title: "Upisi", href: "/nastava/upisi", icon: "cap", style: "accent" },
     { title: "Ispitni rokovi", href: "/nastava/studiranje/ispitni-rokovi", icon: "exam", description: "Izmijenjeno: 12. 11. 2026." },
     { title: "Konzultacije", href: "/nastava/studiranje/konzultacije", icon: "chat", description: "Izmijenjeno: 10. 11. 2026." },
@@ -217,7 +227,7 @@ function getQuickLinks(language) {
   }));
 }
 
-function QuickLinks({ language, copy }) {
+function QuickLinks({ language, copy, marquee }) {
   const links = getQuickLinks(language);
 
   return (
@@ -237,42 +247,54 @@ function QuickLinks({ language, copy }) {
         </div>
 
         <div className={styles.bento} data-stagger>
-          {links.map((link, index) => (
-            <Link
-              key={link.title}
-              href={link.href}
-              className={[
-                styles.tile,
-                link.className === "large" ? styles.tileLarge : "",
-                link.className === "accent" ? styles.tileAccent : "",
-                link.className === "image" ? styles.tileImage : "",
-              ]
-                .filter(Boolean)
-                .join(" ")}
-            >
-              {link.className === "image" ? (
-                <>
-                  <Photo className={styles.tilePhoto} sizes="(max-width: 720px) 100vw, 50vw" tag={copy.trainingPhoto} src={copy.trainingPhotoSrc} tagPosition="top-left" />
-                  <span className={styles.tileImagePanel}>
-                    <span className={styles.tileTitle}>{copy.training}</span>
-                    {/* <span className={styles.tileDescription}>{copy.itemDescription}</span> */}
-                  </span>
-                </>
-              ) : (
-                <>
-                  <span className={styles.tileIcon}>
-                    <Icon name={link.icon} size={24} />
-                  </span>
-                  {index === 0 && <TimetableGraphic days={copy.timetableDays} />}
-                  <span className={styles.tileBody}>
-                    <span className={styles.tileTitle}>{link.title}</span>
-                    {link.description && <span className={styles.tileDescription}>{link.description}</span>}
-                  </span>
-                </>
-              )}
-              <ArrowCircle className={styles.tileArrow} tone={["large", "accent", "image"].includes(link.className) ? "white" : "light"} />
-            </Link>
-          ))}
+          {links.map((link, index) => {
+            // The first tile shows the live timetable wall when Sceduly data is in.
+            const wall = index === 0 && marquee.length > 0;
+            return (
+              <Link
+                key={link.title}
+                href={link.href}
+                className={[
+                  styles.tile,
+                  link.className === "large" ? styles.tileLarge : "",
+                  wall ? styles.tileTimetable : "",
+                  link.className === "accent" ? styles.tileAccent : "",
+                  link.className === "image" ? styles.tileImage : "",
+                ]
+                  .filter(Boolean)
+                  .join(" ")}
+              >
+                {wall && <TimetableMarquee entries={marquee} />}
+                {link.className === "image" ? (
+                  <>
+                    <Photo className={styles.tilePhoto} sizes="(max-width: 720px) 100vw, 50vw" tag={copy.trainingPhoto} src={copy.trainingPhotoSrc} tagPosition="top-left" />
+                    <span className={styles.tileImagePanel}>
+                      <span className={styles.tileTitle}>{copy.training}</span>
+                      {/* <span className={styles.tileDescription}>{copy.itemDescription}</span> */}
+                    </span>
+                  </>
+                ) : (
+                  <>
+                    <span className={styles.tileIcon}>
+                      <Icon name={link.icon} size={24} />
+                    </span>
+                    {wall ? null : link.imageSrc ? (
+                      <span className={styles.tileShot}>
+                        <Image src={link.imageSrc} alt="" fill sizes="(max-width: 720px) 100vw, 50vw" />
+                      </span>
+                    ) : (
+                      index === 0 && <TimetableGraphic days={copy.timetableDays} />
+                    )}
+                    <span className={styles.tileBody}>
+                      <span className={styles.tileTitle}>{link.title}</span>
+                      {link.description && <span className={styles.tileDescription}>{link.description}</span>}
+                    </span>
+                  </>
+                )}
+                <ArrowCircle className={styles.tileArrow} tone={!wall && ["large", "accent", "image"].includes(link.className) ? "white" : "light"} />
+              </Link>
+            );
+          })}
         </div>
       </div>
     </section>
@@ -578,7 +600,14 @@ export default async function HomePage({ language }) {
   const languageCode = toLanguageCodeEnum(language);
   const featuredSlugPromise = getFeaturedCategorySlug(language);
   const recentPromise = wpFetch(NEWS_POSTS, { first: 24, after: null, where: { language: languageCode } }, { tags: ["wp"] });
-  const [featuredSlug, recentData] = await Promise.all([featuredSlugPromise, recentPromise]);
+  // The timetable tile's marquee uses the same daily-cached Sceduly data as
+  // /nastava/studiranje/raspored (hr only — subject names are Croatian).
+  const timetablePromise = language === "hr" ? getTimetableData() : null;
+  const [featuredSlug, recentData, timetable] = await Promise.all([featuredSlugPromise, recentPromise, timetablePromise]);
+  // Below 12 entries the rows would be too short to loop — the tile falls
+  // back to the screenshot / drawn timetable.
+  const marqueeEntries = timetable ? pickMarqueeEntries(timetable.events, timetable.holidays, todayInZagreb()) : [];
+  const marquee = marqueeEntries.length >= 12 ? marqueeEntries : [];
   const featuredData = featuredSlug
     ? await wpFetch(
         NEWS_POSTS,
@@ -626,7 +655,7 @@ export default async function HomePage({ language }) {
         </div>
       </Hero>
 
-      <QuickLinks language={language} copy={copy} />
+      <QuickLinks language={language} copy={copy} marquee={marquee} />
       <FeaturedNews copy={copy} language={language} posts={featuredPosts} featuredSlug={featuredSlug} />
       <Statement copy={copy} language={language} />
       <StudyProgrammes copy={copy} language={language} />

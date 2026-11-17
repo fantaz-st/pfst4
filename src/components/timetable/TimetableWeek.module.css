@@ -1,0 +1,125 @@
+.week {
+  display: grid;
+  grid-template-columns: repeat(var(--days), minmax(0, 1fr));
+  gap: var(--space-3);
+  align-items: start;
+}
+
+.day {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.dayHead {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: var(--space-2);
+  padding: var(--space-3) var(--space-4);
+  border-radius: var(--r-field);
+  background: var(--color-surface);
+  font-size: var(--fs-small);
+  font-weight: 600;
+}
+
+.dayHead.today {
+  background: var(--color-primary);
+  color: var(--color-surface);
+}
+
+.dayName {
+  display: none;
+}
+
+.dayNote {
+  padding: var(--space-4);
+  border-radius: var(--r-field);
+  background: var(--color-surface);
+  color: var(--color-text-muted);
+  font-size: var(--fs-small);
+  text-align: center;
+}
+
+.event {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: var(--space-3) var(--space-3) var(--space-4);
+  border-left: 3px solid var(--color-line-strong);
+  border-radius: var(--r-mini);
+  background: var(--color-surface);
+  font-size: var(--fs-micro);
+  line-height: 1.35;
+}
+
+.time {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--space-2);
+  color: var(--color-text-muted);
+  font-weight: 500;
+}
+
+.room {
+  color: var(--color-text);
+  font-weight: 600;
+}
+
+.subject {
+  color: var(--color-text);
+  font-size: var(--fs-small);
+  font-weight: 600;
+  line-height: 1.25;
+  overflow-wrap: break-word;
+  hyphens: auto;
+}
+
+.meta {
+  color: var(--color-text-muted);
+}
+
+.typeP {
+  border-left-color: var(--color-primary);
+  background: var(--tint-modra-1);
+}
+
+.typeA {
+  border-left-color: var(--color-accent);
+  background: var(--tint-plava-1);
+}
+
+.typeL {
+  border-left-color: var(--color-accent-hover);
+  background: var(--tint-plava-2);
+}
+
+@media (max-width: 900px) {
+  .week {
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--space-6);
+  }
+
+  .dayHead {
+    font-size: var(--fs-body);
+  }
+
+  .dayShort {
+    display: none;
+  }
+
+  .dayName {
+    display: inline;
+    margin-right: auto;
+  }
+
+  .event {
+    padding: var(--space-4);
+    font-size: var(--fs-small);
+  }
+
+  .subject {
+    font-size: var(--fs-body);
+  }
+}

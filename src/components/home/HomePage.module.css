@@ -1074,3 +1074,35 @@
     transition: none;
   }
 }
+
+.tileShot {
+  position: relative;
+  display: block;
+  flex: 1;
+  min-height: 180px;
+  margin-block: var(--space-6);
+  overflow: hidden;
+  border: 1px solid color-mix(in srgb, var(--color-surface) 18%, transparent);
+  border-radius: var(--r-field);
+}
+
+.tileShot img {
+  object-fit: cover;
+  object-position: top left;
+}
+
+/* "Raspored nastave" tile with the live timetable wall (TimetableMarquee) */
+.tileTimetable {
+  isolation: isolate;
+  background: var(--color-surface);
+  color: var(--color-primary);
+}
+
+.tileTimetable .tileIcon {
+  background: var(--color-bg);
+  color: var(--color-primary);
+}
+
+.tileTimetable .tileDescription {
+  color: var(--color-text-muted);
+}

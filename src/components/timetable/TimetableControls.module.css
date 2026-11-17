@@ -1,0 +1,92 @@
+.controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.tabs {
+  display: flex;
+  padding: 4px;
+  border-radius: var(--r-pill);
+  background: var(--color-surface);
+}
+
+.tab {
+  height: 40px;
+  padding: 0 var(--space-4);
+  border: 0;
+  border-radius: var(--r-pill);
+  background: transparent;
+  color: var(--color-text-muted);
+  font: inherit;
+  font-size: var(--fs-small);
+  font-weight: 500;
+  cursor: pointer;
+  transition:
+    background-color var(--dur-hover) var(--ease-out),
+    color var(--dur-hover) var(--ease-out);
+}
+
+.tab[aria-selected="true"] {
+  background: var(--color-primary);
+  color: var(--color-surface);
+}
+
+.select {
+  position: relative;
+  display: block;
+  width: 340px;
+  max-width: 100%;
+}
+
+.yearSelect {
+  width: 160px;
+}
+
+.select select {
+  width: 100%;
+  height: 48px;
+  padding: 0 44px 0 var(--space-4);
+  border: 1px solid var(--color-input-border);
+  border-radius: var(--r-pill);
+  background: var(--color-surface);
+  color: var(--color-text);
+  font: inherit;
+  font-size: var(--fs-small);
+  appearance: none;
+  cursor: pointer;
+}
+
+.select select:hover {
+  border-color: var(--color-input-border-hover);
+}
+
+.select select:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 0;
+}
+
+.chevron {
+  position: absolute;
+  top: 50%;
+  right: 16px;
+  color: var(--color-text-muted);
+  transform: translateY(-50%);
+  pointer-events: none;
+}
+
+@media (max-width: 720px) {
+  .controls,
+  .select {
+    width: 100%;
+  }
+
+  .tabs {
+    width: 100%;
+  }
+
+  .tab {
+    flex: 1;
+  }
+}
