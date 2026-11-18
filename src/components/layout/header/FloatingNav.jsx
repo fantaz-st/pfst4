@@ -20,8 +20,13 @@ import styles from "./FloatingNav.module.css";
  * scrolling back up (0.5s power3.in). Showing/hiding is navigation, not
  * decoration, so it also works under reduced motion — just without the
  * slide. While hidden it is `inert`, so it's never tabbable off-screen.
+ *
+ * Below 1080px it splits into two pills: the modra brand pill (sign + PFST +
+ * faculty name) and a white actions pill with search and the plava menu
+ * button. While the search layer is open the menu button's three dots turn
+ * into an X that closes it.
  */
-export default function FloatingNav({ menu, language, frequent, openItem, onToggleMega, onCloseMega, onTriggerRef, onBeforeShow, onBeforeHide, onOpenMenu, menuOpen }) {
+export default function FloatingNav({ menu, language, frequent, openItem, onToggleMega, onCloseMega, onTriggerRef, onBeforeShow, onBeforeHide, onOpenMenu, menuOpen, onOpenSearch, onCloseSearch, searchOpen }) {
   const copy = getChromeCopy(language);
   const pathname = usePathname();
   const ref = useRef(null);
@@ -81,6 +86,15 @@ export default function FloatingNav({ menu, language, frequent, openItem, onTogg
       <nav className={styles.inner} aria-label={copy.mainNavLabel}>
         <Link href={localizedHomeUri(language)} className={styles.logo} aria-label={copy.siteNameHome}>
           <BrandMark className={styles.mark} />
+          <span className={styles.wordmark} aria-hidden="true">
+            {copy.brandShort}
+          </span>
+          <span className={styles.divider} aria-hidden="true" />
+          <span className={styles.tagline} aria-hidden="true">
+            {copy.brandTagline[0]}
+            <br />
+            {copy.brandTagline[1]}
+          </span>
         </Link>
         <span className={styles.links}>
           {menu.map((item) => {
@@ -117,9 +131,33 @@ export default function FloatingNav({ menu, language, frequent, openItem, onTogg
         {/* <Button href={ENROLL_URL} variant="accent" size="s" className={styles.enroll}>
           {copy.enroll}
         </Button> */}
-        <button type="button" className={styles.menuButton} aria-label={copy.menu} aria-expanded={menuOpen} aria-controls="site-menu" onClick={onOpenMenu}>
-          <Icon name="menu" size={18} />
-        </button>
+        <span className={styles.actions}>
+          <button
+            type="button"
+            className={styles.searchButton}
+            aria-label={searchOpen ? copy.closeSearch : copy.search}
+            aria-expanded={searchOpen}
+            aria-controls="site-search"
+            onClick={searchOpen ? onCloseSearch : onOpenSearch}
+          >
+            <Icon name="search" size={20} />
+          </button>
+          <button
+            type="button"
+            className={styles.menuButton}
+            data-close={searchOpen}
+            aria-label={searchOpen ? copy.closeSearch : copy.menu}
+            aria-expanded={searchOpen ? undefined : menuOpen}
+            aria-controls={searchOpen ? "site-search" : "site-menu"}
+            onClick={searchOpen ? onCloseSearch : onOpenMenu}
+          >
+            <span className={styles.dots} aria-hidden="true">
+              <span />
+              <span />
+              <span />
+            </span>
+          </button>
+        </span>
       </nav>
       {openItem && <MegaPanel key={openItem.databaseId} item={openItem} language={language} frequent={frequent} floating onClose={onCloseMega} />}
     </div>

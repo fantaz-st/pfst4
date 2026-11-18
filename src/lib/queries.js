@@ -349,6 +349,46 @@ export const SITE_SEARCH = /* GraphQL */ `
   }
 `;
 
+// Live results in the header search layer: a few pages (with up to two
+// parent titles for the section path) and posts.
+export const SEARCH_PREVIEW = /* GraphQL */ `
+  query SearchPreview(
+    $first: Int!
+    $pageWhere: RootQueryToPageConnectionWhereArgs
+    $postWhere: RootQueryToPostConnectionWhereArgs
+  ) {
+    pages(first: $first, where: $pageWhere) {
+      nodes {
+        id
+        title
+        uri
+        parent {
+          node {
+            ... on Page {
+              title
+              parent {
+                node {
+                  ... on Page {
+                    title
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+    posts(first: $first, where: $postWhere) {
+      nodes {
+        id
+        title
+        uri
+        date
+      }
+    }
+  }
+`;
+
 // Run twice in parallel by getRelatedPosts: once for posts sharing a tag,
 // once for posts sharing a category. tags carry `count` so shared tags can
 // be weighted by rarity without a separate all-tags query.

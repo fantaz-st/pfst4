@@ -101,7 +101,7 @@ const COPY = {
     fewer: "Prikaži manje",
     ctaLabel: "Upisi",
     ctaTitle: "Upiši Pomorski!",
-    ctaLead: "[OPIS UPISA — DOPUNITI]",
+    ctaLead: "Zanima te more, brodovi ili tehnologija koja ih pokreće? Ovdje su studijski programi, uvjeti upisa, važni datumi i upute za prijavu, bez traženja po cijelom webu.",
     allAdmissions: "Sve o upisima",
     trainingLead: "Osposobljavanje i obnova svjedodžbi pomoraca.",
     trainingHeadline: "Edukacija pomoraca",

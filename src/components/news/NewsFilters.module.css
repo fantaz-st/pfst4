@@ -296,10 +296,270 @@
   transform: rotate(-45deg);
 }
 
+/* ---- Mobile drawer (≤1080px) --------------------------------------------
+   Above 1080px the wrappers disappear and the panel sits in the sidebar as
+   before; below it the panel lives in a sheet from the left, opened by the
+   "Filtriraj novosti" trigger. */
+
+.trigger,
+.backdrop,
+.drawerTop,
+.drawerFoot {
+  display: none;
+}
+
+.layer,
+.drawer,
+.drawerBody {
+  display: contents;
+}
+
+@media (max-width: 1080px) {
+  .trigger {
+    display: flex;
+    align-items: center;
+    gap: var(--space-4);
+    width: 100%;
+    min-height: 76px;
+    padding: var(--space-4);
+    border: 0;
+    border-radius: var(--r-card);
+    background: var(--color-surface);
+    color: var(--color-text);
+    font: inherit;
+    text-align: left;
+    cursor: pointer;
+  }
+
+  .trigger:focus-visible {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 2px;
+  }
+
+  .triggerIcon {
+    position: relative;
+    display: grid;
+    flex: none;
+    width: 44px;
+    height: 44px;
+    place-items: center;
+    border-radius: var(--r-pill);
+    background: var(--color-primary);
+    color: var(--color-surface);
+  }
+
+  /* Sonar: two plava rings ripple out from the icon a few times after load,
+     only while no filter is active. */
+  .triggerIcon[data-sonar="true"]::before,
+  .triggerIcon[data-sonar="true"]::after {
+    position: absolute;
+    inset: 0;
+    border: 2px solid var(--color-accent);
+    border-radius: inherit;
+    content: "";
+    opacity: 0;
+    pointer-events: none;
+    animation: sonar var(--dur-reveal) var(--ease-out) var(--dur-hover) 3 both;
+  }
+
+  .triggerIcon[data-sonar="true"]::after {
+    animation-delay: calc(var(--dur-hover) * 1.6);
+  }
+
+  .triggerText {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    gap: 2px;
+    min-width: 0;
+  }
+
+  .triggerTitle {
+    font-size: var(--fs-body);
+    font-weight: 600;
+  }
+
+  .triggerHint {
+    color: var(--color-text-muted);
+    font-size: var(--fs-meta);
+  }
+
+  .triggerBadge {
+    display: grid;
+    flex: none;
+    min-width: 28px;
+    height: 28px;
+    padding: 0 var(--space-2);
+    place-items: center;
+    border-radius: var(--r-pill);
+    background: var(--color-accent);
+    color: var(--color-text);
+    font-size: var(--fs-meta);
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .triggerArrow {
+    display: grid;
+    flex: none;
+    width: 44px;
+    height: 44px;
+    place-items: center;
+    border-radius: var(--r-pill);
+    background: var(--color-bg);
+    color: var(--color-text);
+    transition: transform var(--dur-hover) var(--ease-out);
+  }
+
+  .trigger:hover .triggerArrow {
+    transform: rotate(-45deg);
+  }
+
+  .layer {
+    position: fixed;
+    inset: 0;
+    z-index: 100;
+    display: block;
+    visibility: hidden;
+    pointer-events: none;
+    transition: visibility 0s linear var(--dur-hover);
+  }
+
+  .layer[data-open="true"] {
+    visibility: visible;
+    pointer-events: auto;
+    transition-delay: 0s;
+  }
+
+  .backdrop {
+    position: absolute;
+    inset: 0;
+    display: block;
+    padding: 0;
+    border: 0;
+    background: color-mix(in srgb, var(--color-deep) 50%, transparent);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    opacity: 0;
+    cursor: default;
+    transition: opacity var(--dur-hover) var(--ease-out);
+  }
+
+  .layer[data-open="true"] .backdrop {
+    opacity: 1;
+  }
+
+  .drawer {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    display: flex;
+    flex-direction: column;
+    width: min(400px, calc(100% - var(--space-12)));
+    height: 100dvh;
+    overflow: hidden;
+    border-radius: 0 var(--r-card) var(--r-card) 0;
+    background: var(--color-surface);
+    color: var(--color-text);
+    transform: translateX(-100%);
+    transition: transform var(--dur-hover) var(--ease-out);
+  }
+
+  .layer[data-open="true"] .drawer {
+    transform: none;
+  }
+
+  .drawerTop {
+    display: flex;
+    flex: none;
+    align-items: center;
+    justify-content: space-between;
+    height: 72px;
+    padding: 0 var(--space-3) 0 var(--space-6);
+  }
+
+  .drawerTitle {
+    display: flex;
+    align-items: baseline;
+    gap: var(--space-3);
+    font-size: var(--fs-title-s);
+    font-weight: 600;
+    letter-spacing: -0.02em;
+  }
+
+  .close {
+    display: grid;
+    width: 48px;
+    height: 48px;
+    place-items: center;
+    border: 0;
+    border-radius: var(--r-pill);
+    background: var(--color-primary);
+    color: var(--color-surface);
+    cursor: pointer;
+  }
+
+  .close:focus-visible {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 2px;
+  }
+
+  .drawerBody {
+    display: block;
+    flex: 1;
+    min-height: 0;
+    padding: 0 var(--space-6) var(--space-6);
+    overflow-y: auto;
+    overscroll-behavior: contain;
+  }
+
+  .drawerBody .panel {
+    padding: 0;
+    border-radius: 0;
+  }
+
+  .drawerBody .panelHeading {
+    display: none;
+  }
+
+  .drawerFoot {
+    display: block;
+    flex: none;
+    padding: var(--space-3) var(--space-6) calc(var(--space-4) + env(safe-area-inset-bottom));
+    border-top: 1px solid var(--color-line);
+  }
+
+  .apply {
+    width: 100%;
+    justify-content: space-between;
+  }
+}
+
+@keyframes sonar {
+  0% {
+    opacity: 0.9;
+    transform: scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(2.4);
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .categoryOption,
   .period,
-  .archiveArrow {
+  .archiveArrow,
+  .triggerArrow,
+  .layer,
+  .backdrop,
+  .drawer {
     transition: none;
+  }
+
+  .triggerIcon[data-sonar="true"]::before,
+  .triggerIcon[data-sonar="true"]::after {
+    animation: none;
   }
 }

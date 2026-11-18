@@ -12,6 +12,7 @@ import { isCurrentSection } from "./navUtils";
 import MegaPanel from "./MegaPanel";
 import FloatingNav from "./FloatingNav";
 import MobileMenu from "./MobileMenu";
+import SearchOverlay from "./SearchOverlay";
 import styles from "./SiteHeader.module.css";
 
 /**
@@ -22,6 +23,7 @@ import styles from "./SiteHeader.module.css";
  *   mega panel, the current section is a white pill
  * - the floating dark pill nav that slides in once the hero has scrolled by
  * - the menu sheet (accordion of the whole WordPress menu)
+ * - the full-screen search layer, opened from the floating nav
  *
  * `menu` is the WordPress menu tree (lib/menu.js); `frequent` and
  * `languages` are plain data prepared on the server.
@@ -31,6 +33,8 @@ export default function SiteHeader({ menu, language, frequent, languages, utilit
   const pathname = usePathname();
   const [openMenu, setOpenMenu] = useState(null);
   const [sheetOpen, setSheetOpen] = useState(false);
+  const [searchOpen, setSearchOpen] = useState(false);
+  const searchRef = useRef(null);
   const triggerRefs = useRef(new Map());
   const lastPathname = useRef(pathname);
 
@@ -55,7 +59,15 @@ export default function SiteHeader({ menu, language, frequent, languages, utilit
 
   function openMobileMenu() {
     closeMega({ restoreFocus: false });
+    setSearchOpen(false);
     setSheetOpen(true);
+  }
+
+  // Focus goes into the search input inside the tap itself (iOS keyboard).
+  function openSearch() {
+    closeMega({ restoreFocus: false });
+    searchRef.current?.prepare();
+    setSearchOpen(true);
   }
 
   // Navigating closes every menu.
@@ -64,6 +76,7 @@ export default function SiteHeader({ menu, language, frequent, languages, utilit
     lastPathname.current = pathname;
     setOpenMenu(null);
     setSheetOpen(false);
+    setSearchOpen(false);
   }, [pathname]);
 
   return (
@@ -140,7 +153,12 @@ export default function SiteHeader({ menu, language, frequent, languages, utilit
         }}
         onOpenMenu={openMobileMenu}
         menuOpen={sheetOpen}
+        onOpenSearch={openSearch}
+        onCloseSearch={() => setSearchOpen(false)}
+        searchOpen={searchOpen}
       />
+
+      <SearchOverlay ref={searchRef} open={searchOpen} onClose={() => setSearchOpen(false)} language={language} frequent={frequent} />
 
       <MobileMenu key={pathname} open={sheetOpen} onClose={() => setSheetOpen(false)} menu={menu} language={language} languages={languages} utility={utility} />
     </>
