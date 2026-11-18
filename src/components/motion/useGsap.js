@@ -10,7 +10,7 @@ import { gsap, ScrollTrigger, SplitText, MOTION_OK } from "./gsap";
  *   reverted automatically on unmount or when the media query stops
  *   matching,
  * - it starts only after document.fonts.ready, so SplitText measures lines
- *   in Montserrat, not in the fallback face.
+ *   in Poppins, not in the fallback face.
  *
  * const ref = useRef(null);
  * useGsap(({ gsap, SplitText }) => {
@@ -26,10 +26,15 @@ import { gsap, ScrollTrigger, SplitText, MOTION_OK } from "./gsap";
 // trigger made before another component changes the layout (PageMotion
 // sizing the homepage news section) keeps stale positions. One debounced
 // refresh after the last setup of a render measures them all together.
+// The same moment ends the first-paint hiding (.motion-ready, globals.css):
+// every intro tween has set its start values by now, so nothing flashes.
 let refreshTimer;
 function queueRefresh() {
   clearTimeout(refreshTimer);
-  refreshTimer = setTimeout(() => ScrollTrigger.refresh(), 100);
+  refreshTimer = setTimeout(() => {
+    ScrollTrigger.refresh();
+    document.documentElement.classList.add("motion-ready");
+  }, 100);
 }
 
 export function useGsap(setup, { scope, media, deps = [] } = {}) {

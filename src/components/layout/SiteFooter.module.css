@@ -66,19 +66,19 @@
 
 /* Wordmark (STYLEGUIDE §3): 800, .74, -.045em. Decorative.
    Fills the footer box edge to edge at every width. Measured from
-   Montserrat 800 (1000 upm), kerning off, letter-spacing -.045em:
-     advances of "POMORSKI"           5.8610em
+   Poppins 800 (1000 upm), kerning off, letter-spacing -.045em:
+     advances of "POMORSKI"           5.4600em
      + 7 gaps × -0.045em             -0.3150em
-     − left side bearing of "P"      -0.0703em
-     − right side bearing of "I"     -0.0705em
-     = ink width                      5.4051em
-   so font-size = box width / 5.4051, and the box is pulled left by the
-   P's side bearing so the ink starts exactly at the edge. If the word
-   changes, these numbers must be re-measured. */
+     − left side bearing of "P"      -0.0560em
+     − right side bearing of "I"     -0.0560em
+     = ink width                      5.0330em
+   so font-size = box width / 5.0330, and the box is pulled left by the
+   P's side bearing so the ink starts exactly at the edge. If the word or
+   the font changes, these numbers must be re-measured. */
 .wordmark {
   /* Fallback for browsers without container units (pre-2023). */
-  font-size: calc((100vw - 2 * var(--frame-inset)) / 5.4051);
-  font-size: calc(100cqw / 5.4051);
+  font-size: calc((100vw - 2 * var(--frame-inset)) / 5.033);
+  font-size: calc(100cqw / 5.033);
   font-weight: 800;
   font-kerning: none; /* SplitText splits into chars (no kerning) — keep both states identical. */
   line-height: 0.74;
@@ -87,7 +87,7 @@
   /* max-content so the SplitText line mask spans the whole word, not just
      the box width (the trailing side bearing would otherwise be clipped). */
   width: max-content;
-  margin-left: -0.0703em;
+  margin-left: -0.056em;
   margin-bottom: -0.02em;
 }
 

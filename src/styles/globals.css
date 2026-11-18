@@ -170,6 +170,38 @@ html.lenis body {
   border: 0;
 }
 
+/* First paint before the hero intro: until useGsap marks <html> with
+   .motion-ready, the parts PageMotion animates in stay hidden and the
+   photo sits at its intro scale, so the server-rendered text never flashes
+   before GSAP takes over. Only when motion is allowed (otherwise nothing
+   animates); the delayed animation reveals everything if JS never runs. */
+@media (prefers-reduced-motion: no-preference) {
+  html:not(.motion-ready) [data-hero-nav],
+  html:not(.motion-ready) [data-hero] h1,
+  html:not(.motion-ready) [data-hero] [data-split],
+  html:not(.motion-ready) [data-hero] [data-hero-fade] {
+    visibility: hidden;
+    animation: intro-failsafe-show 0s 3s forwards;
+  }
+
+  html:not(.motion-ready) [data-hero-media] {
+    transform: scale(1.25);
+    animation: intro-failsafe-scale 0s 3s forwards;
+  }
+}
+
+@keyframes intro-failsafe-show {
+  to {
+    visibility: visible;
+  }
+}
+
+@keyframes intro-failsafe-scale {
+  to {
+    transform: none;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;

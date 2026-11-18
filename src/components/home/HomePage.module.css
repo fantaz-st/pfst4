@@ -493,7 +493,7 @@
   max-width: 1180px;
   font-size: var(--fs-statement);
   font-weight: 600;
-  line-height: 1.04;
+  line-height: 1.25;
   letter-spacing: var(--ls-display);
 }
 
@@ -505,8 +505,8 @@
 .pill {
   position: relative;
   display: inline-block;
-  width: 2.4em;
-  height: 0.82em;
+  width: 4em;
+  height: 1.2em;
   margin-inline: 0.06em;
   overflow: hidden;
   border-radius: var(--r-pill);

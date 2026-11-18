@@ -1,4 +1,4 @@
-import { montserrat } from "@/lib/fonts";
+import { poppins } from "@/lib/fonts";
 import SmoothScroll from "@/components/motion/SmoothScroll";
 import JsonLd from "@/components/seo/JsonLd";
 import { buildRootMetadata, organizationJsonLd, rootViewport } from "@/lib/seo";
@@ -11,7 +11,7 @@ export const viewport = rootViewport;
 
 export default function EnRootLayout({ children }) {
   return (
-    <html lang="en" className={montserrat.variable}>
+    <html lang="en" className={poppins.variable}>
       <body>
         <JsonLd data={organizationJsonLd("en")} />
         <SmoothScroll />

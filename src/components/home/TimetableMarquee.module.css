@@ -30,11 +30,6 @@
   width: 220px;
   flex: none;
   flex-direction: column;
-  animation: drift var(--duration) linear infinite;
-}
-
-.reverse {
-  animation-direction: reverse;
 }
 
 /* The gap lives on the track's end too, so the two copies join seamlessly. */
@@ -94,16 +89,4 @@
 .typeL {
   border-left-color: var(--color-accent-hover);
   background: var(--tint-plava-2);
-}
-
-@keyframes drift {
-  to {
-    transform: translateY(-50%);
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .column {
-    animation: none;
-  }
 }

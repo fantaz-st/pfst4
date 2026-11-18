@@ -2,7 +2,7 @@
    PFST — design tokens
    Source of truth for colours, type, spacing, radii and motion.
    Import once (e.g. app/globals.css) and use the variables — no raw hex in components.
-   Font: load Montserrat with next/font/google (subsets latin + latin-ext) and
+   Font: load Poppins with next/font/google (subsets latin + latin-ext) and
    point --font-sans at its CSS variable.
    ========================================================================= */
 
@@ -51,9 +51,9 @@
   --photo-tag: rgba(0, 24, 74, 0.72);
 
   /* ---- Typography ---- */
-  /* --font-montserrat is set by next/font (lib/fonts.js) on <html>; it
+  /* --font-poppins is set by next/font (lib/fonts.js) on <html>; it
      includes next/font's size-adjusted fallback face. */
-  --font-sans: var(--font-montserrat, "Montserrat"), system-ui, sans-serif;
+  --font-sans: var(--font-poppins, "Poppins"), system-ui, sans-serif;
 
   --fs-hero: clamp(48px, 7.4vw, 120px); /* lh .90 · ls -.04em · 600 */
   --fs-page-title: clamp(44px, 6.4vw, 96px); /* inner page H1 · lh .92 · ls -.04em · 600 */
