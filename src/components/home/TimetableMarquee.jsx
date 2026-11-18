@@ -4,12 +4,15 @@ import styles from "./TimetableMarquee.module.css";
 const COLUMNS = 5;
 const TYPE_CLASS = { P: styles.typeP, A: styles.typeA, L: styles.typeL };
 
-// Background of the "Raspored nastave" tile: a tilted wall of real
-// timetable cards (same look as /nastava/studiranje/raspored). Each column
+// Background of the "Raspored nastave" tile: a tilted wall of timetable
+// cards (same look as /nastava/studiranje/raspored), sample data from
+// timetableSample.js. Each column
 // holds its cards twice and drifts by half its height — alternate columns
 // up and down, pure CSS. Decorative, so aria-hidden.
 export default function TimetableMarquee({ entries }) {
-  const columns = Array.from({ length: COLUMNS }, (_, column) => entries.filter((_, index) => index % COLUMNS === column));
+  const columns = Array.from({ length: COLUMNS }, (_, column) =>
+    entries.map((entry, index) => ({ ...entry, key: index })).filter((entry) => entry.key % COLUMNS === column),
+  );
 
   return (
     <span className={styles.marquee} aria-hidden="true">

@@ -5,8 +5,6 @@ import { getFeaturedCategorySlug } from "@/lib/news";
 import { NEWS_ARCHIVE_URI, getPostCategories } from "@/lib/posts";
 import { toLanguageCodeEnum } from "@/lib/language";
 import { formatDate } from "@/lib/format";
-import { getTimetableData } from "@/lib/sceduly";
-import { pickMarqueeEntries, todayInZagreb } from "@/lib/timetable";
 import SiteChrome from "@/components/layout/SiteChrome";
 import Hero from "@/components/layout/Hero";
 import Image from "next/image";
@@ -20,6 +18,7 @@ import styles from "./HomePage.module.css";
 import AdmissionsCard from "./AdmissionsCard";
 import NewsSlider, { NewsSliderControls, NewsSliderViewport } from "./NewsSlider";
 import TimetableMarquee from "./TimetableMarquee";
+import { TIMETABLE_SAMPLE } from "./timetableSample";
 
 const EMPTY_POSTS = { nodes: [] };
 
@@ -201,7 +200,7 @@ const QUICK_LINKS = {
       description: "Izmijenjeno: 14. 11. 2026.",
       imageSrc: "/images/sceduly-timetable.webp",
     },
-    { title: "Upisi", href: "/nastava/upisi", icon: "cap", style: "accent" },
+    { title: "Upisi", href: "/nastava/upisi", icon: "cap", style: "accent", description: "Sve informacije o upisima — upisni rokovi, potrebni dokumenti i ostalo." },
     { title: "Ispitni rokovi", href: "/nastava/studiranje/ispitni-rokovi", icon: "exam", description: "Izmijenjeno: 12. 11. 2026." },
     { title: "Konzultacije", href: "/nastava/studiranje/konzultacije", icon: "chat", description: "Izmijenjeno: 10. 11. 2026." },
     { title: "Trening centar", href: "/edukacija-pomoraca/trening-centar", icon: "building", style: "image" },
@@ -210,7 +209,7 @@ const QUICK_LINKS = {
   ],
   en: [
     { title: "Timetable", href: "/en/studies", icon: "clock", style: "large" },
-    { title: "Admissions", href: "/en/studies", icon: "cap", style: "accent" },
+    { title: "Admissions", href: "/en/studies", icon: "cap", style: "accent", description: "Everything about admissions — deadlines, required documents and more." },
     { title: "Student services", href: "/en/faculty/student-services", icon: "exam" },
     { title: "Teachers and associates", href: "/en/faculty/general-information/structure/teachers-and-associates", icon: "users" },
     { title: "Training centre", href: "/en/seafarer-education/training-center", icon: "building", style: "image" },
@@ -248,7 +247,7 @@ function QuickLinks({ language, copy, marquee }) {
 
         <div className={styles.bento} data-stagger>
           {links.map((link, index) => {
-            // The first tile shows the live timetable wall when Sceduly data is in.
+            // The first tile shows the timetable wall (sample data).
             const wall = index === 0 && marquee.length > 0;
             return (
               <Link
@@ -600,14 +599,10 @@ export default async function HomePage({ language }) {
   const languageCode = toLanguageCodeEnum(language);
   const featuredSlugPromise = getFeaturedCategorySlug(language);
   const recentPromise = wpFetch(NEWS_POSTS, { first: 24, after: null, where: { language: languageCode } }, { tags: ["wp"] });
-  // The timetable tile's marquee uses the same daily-cached Sceduly data as
-  // /nastava/studiranje/raspored (hr only — subject names are Croatian).
-  const timetablePromise = language === "hr" ? getTimetableData() : null;
-  const [featuredSlug, recentData, timetable] = await Promise.all([featuredSlugPromise, recentPromise, timetablePromise]);
-  // Below 12 entries the rows would be too short to loop — the tile falls
-  // back to the screenshot / drawn timetable.
-  const marqueeEntries = timetable ? pickMarqueeEntries(timetable.events, timetable.holidays, todayInZagreb()) : [];
-  const marquee = marqueeEntries.length >= 12 ? marqueeEntries : [];
+  const [featuredSlug, recentData] = await Promise.all([featuredSlugPromise, recentPromise]);
+  // Timetable wall in the "Raspored nastave" tile — hr only (Croatian
+  // subject names); the English tile keeps the drawn timetable.
+  const marquee = language === "hr" ? TIMETABLE_SAMPLE : [];
   const featuredData = featuredSlug
     ? await wpFetch(
         NEWS_POSTS,
