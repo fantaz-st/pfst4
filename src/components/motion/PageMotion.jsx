@@ -197,7 +197,7 @@ export default function PageMotion() {
       homeMotion.add("(min-width: 0px)", () => {
         const wall = document.querySelector("[data-timetable-wall]");
         if (!wall) return;
-        const START_SPEED = 400;
+        const START_SPEED = 60;
         // One loop = one copy of the cards (TimetableMarquee renders COPIES).
         const step = -100 / (Number(wall.dataset.copies) || 2);
         const loops = gsap.utils.toArray("[data-wall-column]", wall).map((column) => {
@@ -220,7 +220,7 @@ export default function PageMotion() {
           onEnter: () =>
             loops.forEach((loop) => {
               loop.play();
-              gsap.fromTo(loop, { timeScale: START_SPEED }, { timeScale: 1, duration: 2, ease: EASE.fade });
+              gsap.fromTo(loop, { timeScale: START_SPEED }, { timeScale: 1, duration: 4, ease: EASE.fade });
             }),
         });
       });
@@ -260,6 +260,42 @@ export default function PageMotion() {
             splits.delete(split);
           });
         };
+      });
+
+      // Homepage "Ostale novosti": the lead card wipes open from the top while
+      // its photo settles from a zoom; the rows rise in a stagger and each
+      // date tile's day number rolls up inside its tile.
+      const newsLead = document.querySelector("[data-news-lead]");
+      if (newsLead) {
+        const scrollTrigger = { trigger: newsLead, start: "top 88%", once: true };
+        gsap.fromTo(
+          newsLead,
+          { clipPath: "inset(0% 0% 100% 0% round 28px)" },
+          { clipPath: "inset(0% 0% 0% 0% round 28px)", duration: 1.4, ease: EASE.wipe, clearProps: "clipPath", scrollTrigger },
+        );
+        const leadMedia = newsLead.querySelector("[data-news-lead-media]");
+        if (leadMedia?.firstElementChild) gsap.from(leadMedia.firstElementChild, { scale: 1.3, duration: 1.8, ease: EASE.out, clearProps: "transform", scrollTrigger });
+      }
+      document.querySelectorAll("[data-news-rows]").forEach((list) => {
+        const scrollTrigger = { trigger: list, start: "top 90%", once: true };
+        gsap.from(list.children, {
+          y: 40,
+          opacity: 0,
+          duration: 1,
+          ease: EASE.out,
+          stagger: 0.06,
+          clearProps: "transform,opacity",
+          scrollTrigger,
+        });
+        gsap.from(list.querySelectorAll("[data-news-day]"), {
+          yPercent: 130,
+          duration: 0.9,
+          ease: EASE.out,
+          stagger: 0.06,
+          delay: 0.2,
+          clearProps: "transform",
+          scrollTrigger,
+        });
       });
 
       document.querySelectorAll("[data-home-clip]").forEach((el) => {

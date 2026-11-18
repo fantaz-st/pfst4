@@ -1,14 +1,13 @@
-import { Poppins } from "next/font/google";
+import { Plus_Jakarta_Sans } from "next/font/google";
 
-// Poppins isn't a variable font, so every weight the design uses is listed
-// (400–800) — one static file per weight and subset. next/font downloads
-// them at build time and self-hosts them — no runtime request to Google —
-// preloads them, and generates a size-adjusted fallback so the swap causes
-// no layout shift.
+// Plus Jakarta Sans is a variable font (weights 200–800), so leaving
+// `weight` out ships one file per subset covering every weight the design
+// uses (400–800). next/font downloads it at build time and self-hosts it —
+// no runtime request to Google — preloads it, and generates a size-adjusted
+// fallback so the swap causes no layout shift.
 // latin-ext is required: without it č ć ž š đ fall back to another face.
-export const poppins = Poppins({
-  weight: ["400", "500", "600", "700", "800"],
+export const plusJakartaSans = Plus_Jakarta_Sans({
   subsets: ["latin", "latin-ext"],
   display: "swap",
-  variable: "--font-poppins",
+  variable: "--font-plus-jakarta-sans",
 });

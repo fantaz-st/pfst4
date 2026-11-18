@@ -21,3 +21,21 @@ export function getPostCategories(post, featuredSlug = FEATURED_CATEGORY_SLUG) {
 
 // The news archive per language (static routes, not WordPress pages).
 export const NEWS_ARCHIVE_URI = { hr: "/novosti/", en: "/en/news/" };
+
+const ENTITIES = { amp: "&", lt: "<", gt: ">", quot: '"', apos: "'", nbsp: " ", hellip: "…", ndash: "–", mdash: "—" };
+
+// WordPress excerpt (HTML, "[…]" read-more marker) → plain text.
+export function excerptText(html) {
+  return (html ?? "")
+    .replace(/<[^>]*>/g, " ")
+    .replace(/&#(\d+);/g, (_, code) => String.fromCharCode(Number(code)))
+    .replace(/&([a-z]+);/gi, (match, name) => ENTITIES[name.toLowerCase()] ?? match)
+    .replace(/\[\s*…\s*\]|\[\s*\.\.\.\s*\]/g, "")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+// "Novo" label: published within the last `days` days.
+export function isRecentPost(date, days = 14) {
+  return Date.now() - new Date(date).getTime() < days * 24 * 60 * 60 * 1000;
+}

@@ -40,9 +40,10 @@ The rules:
 - The old visual system (Archivo, `#0f385c` / `#058cc4`, square corners,
   shadows, per-category colours) is retired. Don't reintroduce any of it,
   and don't keep aliases for old token names.
-- Poppins only, via `next/font/google` (self-hosted at build time, no
-  runtime request to Google), static weights 400–800, subsets `latin` +
-  `latin-ext` — without `latin-ext` č ć ž š đ fall back to another face.
+- Plus Jakarta Sans only, via `next/font/google` (self-hosted at build
+  time, no runtime request to Google), one variable font file (200–800),
+  subsets `latin` + `latin-ext` — without `latin-ext` č ć ž š đ fall back
+  to another face.
 - Accessibility is part of the design: real `<a>` / `<button>` /
   `<input>`; visible focus (2px modra ring); 44px minimum touch targets;
   text on plava is always modra — never white on plava.
@@ -318,7 +319,7 @@ Data fetching, routing and the block → component mapping stay; the
 presentation is rebuilt from `design/`. Stop after each phase for review.
 
 0. Inventory (done)
-1. Foundation — tokens, Poppins, globals, typography + `.prose`,
+1. Foundation — tokens, Plus Jakarta Sans, globals, typography + `.prose`,
    Lenis provider + `useGsap` helper
 2. Primitives in `components/ui/` — Button, ArrowCircle, Chip, Eyebrow,
    PhotoTag, Image wrapper, Icon

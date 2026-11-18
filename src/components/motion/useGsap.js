@@ -10,7 +10,7 @@ import { gsap, ScrollTrigger, SplitText, MOTION_OK } from "./gsap";
  *   reverted automatically on unmount or when the media query stops
  *   matching,
  * - it starts only after document.fonts.ready, so SplitText measures lines
- *   in Poppins, not in the fallback face.
+ *   in Plus Jakarta Sans, not in the fallback face.
  *
  * const ref = useRef(null);
  * useGsap(({ gsap, SplitText }) => {

@@ -2,7 +2,7 @@ import Link from "next/link";
 import { wpFetch } from "@/lib/wp";
 import { NEWS_POSTS } from "@/lib/queries";
 import { getFeaturedCategorySlug } from "@/lib/news";
-import { NEWS_ARCHIVE_URI, getPostCategories } from "@/lib/posts";
+import { NEWS_ARCHIVE_URI, getPostCategories, isRecentPost } from "@/lib/posts";
 import { toLanguageCodeEnum } from "@/lib/language";
 import { formatDate } from "@/lib/format";
 import SiteChrome from "@/components/layout/SiteChrome";
@@ -546,7 +546,7 @@ function HomeNews({ copy, language, posts, featuredSlug }) {
           <p className={styles.sectionLead}>{copy.otherLead}</p>
         </div>
         <HomeNewsRows
-          posts={posts}
+          posts={posts.map((post) => ({ ...post, isNew: isRecentPost(post.date) }))}
           featuredSlug={featuredSlug}
           language={language}
           labels={{
@@ -557,6 +557,9 @@ function HomeNews({ copy, language, posts, featuredSlug }) {
             showMore: copy.showMore,
             fewer: copy.fewer,
             categoryFallback: copy.categoryFallback,
+            new: copy.newLabel,
+            allNews: copy.allNews,
+            archiveHref: NEWS_ARCHIVE_URI[language],
           }}
         />
       </div>
