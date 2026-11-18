@@ -158,16 +158,17 @@ export default function HomeNewsRows({ posts, featuredSlug, language, labels }) 
             <span className={styles.leadTitle}>{lead.title}</span>
             {excerptText(lead.excerpt) && <span className={styles.leadExcerpt}>{excerptText(lead.excerpt)}</span>}
           </span>
-          {lead.featuredImage?.node?.sourceUrl && (
-            <span className={styles.leadMedia} data-news-lead-media>
-              <Photo
-                src={lead.featuredImage.node.sourceUrl}
-                alt={lead.featuredImage.node.altText ?? ""}
-                sizes="(max-width: 720px) 100vw, 340px"
-                zoom
-              />
-            </span>
-          )}
+          {/* No featured image: the light flag field (on the modra card). */}
+          <span className={styles.leadMedia} data-news-lead-media>
+            <Photo
+              src={lead.featuredImage?.node?.sourceUrl}
+              alt={lead.featuredImage?.node?.altText ?? ""}
+              sizes="(max-width: 720px) 100vw, 340px"
+              tone="light"
+              fallback="flags"
+              zoom
+            />
+          </span>
         </Link>
       )}
 

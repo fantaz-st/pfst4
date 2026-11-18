@@ -1,0 +1,78 @@
+/* Fills its Photo frame. Container units size the tiles: 10cqw = one of
+   the 10 grid columns, so tiles stay square at any card size. */
+.field {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  container-type: size;
+  background: var(--flag-field);
+}
+
+.dark {
+  --flag-field: var(--pfst-modra);
+  /* Flag backgrounds a step lighter than the field so they read on it. */
+  --flag-base: color-mix(in srgb, var(--pfst-modra) 82%, var(--pfst-bijela));
+}
+
+.light {
+  --flag-field: var(--tint-plava-3);
+  --flag-base: var(--pfst-modra);
+}
+
+.static,
+.layer {
+  position: absolute;
+  inset: 0;
+}
+
+/* JS took over: the fixed arrangement hands off to the live one. */
+.field[data-live] .static {
+  display: none;
+}
+
+.tile {
+  position: absolute;
+  top: calc(var(--r) * 10cqw);
+  left: calc(var(--c) * 10cqw);
+  width: 10cqw;
+  height: 10cqw;
+  perspective: 400px;
+}
+
+.tile svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  transform: rotateY(90deg);
+  transition:
+    transform 0.4s var(--ease-out),
+    opacity 0.3s ease;
+}
+
+.tile.on svg {
+  opacity: 1;
+  transform: none;
+}
+
+.p {
+  fill: var(--pfst-plava);
+}
+
+.m {
+  fill: var(--pfst-modra);
+}
+
+.w {
+  fill: var(--pfst-bijela);
+}
+
+.b {
+  fill: var(--flag-base);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tile svg {
+    transition: none;
+  }
+}
