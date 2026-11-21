@@ -7,6 +7,7 @@ import { getTimetableData } from "@/lib/sceduly";
 import { addDays, buildWeek, filterEvents, formatDay, isIsoDate, mondayOf, todayInZagreb } from "@/lib/timetable";
 import TimetableControls from "./TimetableControls";
 import TimetableWeek from "./TimetableWeek";
+import TimetableExport from "./TimetableExport";
 import styles from "./TimetablePage.module.css";
 
 export const TIMETABLE_URI = "/nastava/studiranje/raspored";
@@ -22,7 +23,21 @@ const COPY = {
   next: "Sljedeći tjedan",
   thisWeek: "Ovaj tjedan",
   updated: "Podaci iz sustava Sceduly, osvježeno",
+  faculty: "Pomorski fakultet u Splitu",
 };
+
+const SHEET_ID = "raspored-ispis";
+
+// "Pomorska nautika · 1. godina" → "pomorska-nautika-1-godina" (file names).
+const slug = (text) =>
+  text
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/đ/g, "d")
+    .replace(/Đ/g, "D")
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-|-$/g, "");
 
 const single = (value) => (typeof value === "string" && value ? value : undefined);
 
@@ -87,6 +102,17 @@ export default async function TimetablePage({ searchParams }) {
   const days = hasSelection ? buildWeek(filtered, week, data.holidays) : [];
   const show = { program: !program, lecturer: !selection.lecturer, room: !selection.room };
   const friday = addDays(week, 4);
+  const hasEvents = days.some((day) => day.events.length || day.holiday);
+
+  // What the printout / image is of, e.g. "Pomorska nautika · 1. godina".
+  const selectionLabel = program
+    ? [program.graduate ? `${program.name} (diplomski)` : program.name, year ? `${year}. godina` : "sve godine"].join(" · ")
+    : selection.lecturer
+      ? lecturers.find((item) => item.id === selection.lecturer)?.name ?? ""
+      : selection.room
+        ? `Dvorana ${selection.room}`
+        : "";
+  const weekLabel = `${formatDay(week)} – ${formatDay(friday)} ${friday.slice(0, 4)}.`;
 
   return (
     <>
@@ -121,12 +147,29 @@ export default async function TimetablePage({ searchParams }) {
           </nav>
         </div>
 
+        {hasEvents && (
+          <div className={styles.exportBar}>
+            <TimetableExport targetId={SHEET_ID} filename={`raspored-${slug(selectionLabel)}-${week}`} />
+          </div>
+        )}
+
         {!hasSelection ? (
           <p className={styles.message}>{COPY.pick}</p>
-        ) : days.every((day) => !day.events.length && !day.holiday) ? (
+        ) : !hasEvents ? (
           <p className={styles.message}>{COPY.empty}</p>
         ) : (
-          <TimetableWeek days={days} today={today} show={show} />
+          // The sheet is what prints and what the image captures; its header
+          // only shows there (print / [data-exporting]).
+          <div id={SHEET_ID} className={styles.sheet}>
+            <div className={styles.sheetHead}>
+              <span className={styles.sheetFaculty}>
+                {COPY.faculty} · {COPY.title}
+              </span>
+              <span className={styles.sheetTitle}>{selectionLabel}</span>
+              <span className={`${styles.sheetWeek} num`}>{weekLabel}</span>
+            </div>
+            <TimetableWeek days={days} today={today} show={show} />
+          </div>
         )}
 
         <p className={styles.updated}>

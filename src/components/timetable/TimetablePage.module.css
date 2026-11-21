@@ -81,3 +81,104 @@
     display: none;
   }
 }
+
+/* ---- Export: print / PDF and image ---- */
+
+.exportBar {
+  display: flex;
+  justify-content: flex-end;
+  margin: calc(-1 * var(--space-4)) 0 var(--space-6);
+}
+
+/* Faculty · selection · week — only on the printout and the saved image. */
+.sheetHead {
+  display: none;
+}
+
+.sheet[data-exporting] {
+  padding: var(--space-8);
+  background: var(--color-bg);
+}
+
+.sheet[data-exporting] .sheetHead {
+  display: flex;
+}
+
+.sheetHead {
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-2) var(--space-6);
+  margin-bottom: var(--space-6);
+}
+
+.sheetFaculty {
+  flex-basis: 100%;
+  color: var(--color-text-muted);
+  font-size: var(--fs-label);
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.sheetTitle {
+  font-size: var(--fs-title-l);
+  font-weight: 700;
+  line-height: 1.05;
+  letter-spacing: -0.035em;
+}
+
+.sheetWeek {
+  font-size: var(--fs-title-s);
+  font-weight: 600;
+}
+
+@media print {
+  @page {
+    size: A4 landscape;
+    margin: 10mm;
+  }
+
+  /* Only the sheet prints: the shell around <main> (utility row, header,
+     footer) and everything in <main> but this page's content go. */
+  :global(div:has(> #main-content) > :not(#main-content)),
+  :global(#main-content) > :not(.wrap),
+  .toolbar,
+  .exportBar,
+  .message {
+    display: none !important;
+  }
+
+  :global(body) {
+    background: var(--pfst-bijela) !important;
+  }
+
+  .wrap {
+    max-width: none;
+    padding: 0;
+  }
+
+  .sheetHead {
+    display: flex;
+    margin-bottom: 6mm;
+  }
+
+  .sheetTitle {
+    font-size: 22pt;
+  }
+
+  .sheetWeek {
+    font-size: 13pt;
+  }
+
+  /* Keep the tinted cards and the navy "today" head. */
+  .sheet {
+    print-color-adjust: exact;
+    -webkit-print-color-adjust: exact;
+  }
+
+  .updated {
+    margin-top: 4mm;
+    font-size: 8pt;
+  }
+}

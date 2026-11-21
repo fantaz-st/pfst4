@@ -123,3 +123,69 @@
     font-size: var(--fs-body);
   }
 }
+
+/* Saved image: TimetableExport lays a copy out at desktop width with
+   [data-exporting] — undo the ≤900px list rules so phones get the columns. */
+:global([data-exporting]) .week {
+  grid-template-columns: repeat(var(--days), minmax(0, 1fr));
+  gap: var(--space-3);
+}
+
+:global([data-exporting]) .dayHead {
+  font-size: var(--fs-small);
+}
+
+:global([data-exporting]) .dayShort {
+  display: inline;
+}
+
+:global([data-exporting]) .dayName {
+  display: none;
+}
+
+:global([data-exporting]) .event {
+  padding: var(--space-3) var(--space-3) var(--space-4);
+  font-size: var(--fs-micro);
+}
+
+:global([data-exporting]) .subject {
+  font-size: var(--fs-small);
+}
+
+/* Print / PDF: always the day columns (the ≤900px list rules above can
+   match the printed page width), compact enough for one A4 landscape. */
+@media print {
+  .week {
+    grid-template-columns: repeat(var(--days), minmax(0, 1fr)) !important;
+    gap: 2mm !important;
+  }
+
+  .dayHead {
+    padding: 1.5mm 2.5mm !important;
+    font-size: 9pt !important;
+  }
+
+  .dayShort {
+    display: inline !important;
+  }
+
+  .dayName {
+    display: none !important;
+  }
+
+  .event {
+    gap: 0.6mm !important;
+    padding: 2mm 2.5mm !important;
+    font-size: 7pt !important;
+    break-inside: avoid;
+  }
+
+  .subject {
+    font-size: 8.5pt !important;
+  }
+
+  .dayNote {
+    padding: 2mm !important;
+    font-size: 8pt !important;
+  }
+}

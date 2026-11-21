@@ -4,12 +4,11 @@ import Link from "next/link";
 import { useState, useTransition } from "react";
 import ArrowCircle from "@/components/ui/ArrowCircle";
 import Button from "@/components/ui/Button";
-import Chip from "@/components/ui/Chip";
 import Icon from "@/components/ui/Icon";
 import Photo from "@/components/ui/Photo";
 import { loadMoreNews, loadMoreSearch } from "@/lib/actions";
-import { formatDate } from "@/lib/format";
 import {
+  excerptText,
   getFallbackCategoryLabel,
   getPostCategories,
 } from "@/lib/posts";
@@ -17,50 +16,136 @@ import { getNewsCopy } from "@/lib/newsCopy";
 import NewsRow from "./NewsRow";
 import styles from "./NewsList.module.css";
 
-function ArchiveCard({ post, language, featuredSlug, featured }) {
+const MONTHS_SHORT = {
+  hr: [
+    "SIJ",
+    "VELJ",
+    "OŽU",
+    "TRA",
+    "SVI",
+    "LIP",
+    "SRP",
+    "KOL",
+    "RUJ",
+    "LIS",
+    "STU",
+    "PRO",
+  ],
+  en: [
+    "JAN",
+    "FEB",
+    "MAR",
+    "APR",
+    "MAY",
+    "JUN",
+    "JUL",
+    "AUG",
+    "SEP",
+    "OCT",
+    "NOV",
+    "DEC",
+  ],
+};
+
+const MONTHS_LONG = {
+  hr: [
+    "Siječanj",
+    "Veljača",
+    "Ožujak",
+    "Travanj",
+    "Svibanj",
+    "Lipanj",
+    "Srpanj",
+    "Kolovoz",
+    "Rujan",
+    "Listopad",
+    "Studeni",
+    "Prosinac",
+  ],
+  en: [
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December",
+  ],
+};
+
+// Consecutive posts from the same month share a group, so "oldest first"
+// and "load more" both keep working. Read straight from the ISO string so
+// the server's timezone can never shift the day.
+function groupByMonth(posts, language) {
+  const groups = [];
+  posts.forEach((post) => {
+    const key = post.date?.slice(0, 7) ?? "";
+    const last = groups[groups.length - 1];
+    if (last?.key === key) {
+      last.posts.push(post);
+      return;
+    }
+    const month = (MONTHS_LONG[language] ?? MONTHS_LONG.hr)[
+      Number(key.slice(5, 7)) - 1
+    ];
+    groups.push({
+      key,
+      label: `${month} ${key.slice(0, 4)}${language === "hr" ? "." : ""}`,
+      posts: [post],
+    });
+  });
+  return groups;
+}
+
+function ArchiveRow({ post, language, featuredSlug }) {
   const category = getPostCategories(post, featuredSlug)[0];
   const image = post.featuredImage?.node;
+  const excerpt = excerptText(post.excerpt);
 
   return (
-    <Link
-      href={post.uri}
-      className={styles.card}
-      data-featured={featured}
-      data-has-image={Boolean(image?.sourceUrl)}
-    >
-      {image?.sourceUrl && (
-        <span className={styles.imageWrap}>
-          <Photo
-            src={image.sourceUrl}
-            alt=""
-            sizes={
-              featured
-                ? "(max-width: 720px) 100vw, (max-width: 1080px) 100vw, 66vw"
-                : "(max-width: 720px) 100vw, (max-width: 1080px) 50vw, 33vw"
-            }
-            ratio="4/3"
-            radius="card"
-            zoom
-          />
+    <Link href={post.uri} className={styles.row}>
+      <time dateTime={post.date} className={styles.date}>
+        <span className={styles.day}>{Number(post.date.slice(8, 10))}</span>
+        <span className={styles.month}>
+          {
+            (MONTHS_SHORT[language] ?? MONTHS_SHORT.hr)[
+              Number(post.date.slice(5, 7)) - 1
+            ]
+          }
         </span>
-      )}
-      <span className={styles.body}>
-        <span className={styles.meta}>
-          <time dateTime={post.date} className={styles.date}>
-            {formatDate(post.date, language)}
-          </time>
-          <Chip>{category?.name ?? getFallbackCategoryLabel(language)}</Chip>
-        </span>
-        <span className={styles.title}>{post.title}</span>
+      </time>
+      <span className={styles.category}>
+        {category?.name ?? getFallbackCategoryLabel(language)}
       </span>
-      <ArrowCircle className={styles.cardArrow} />
+      <span className={styles.title}>{post.title}</span>
+      {excerpt && <span className={styles.excerpt}>{excerpt}</span>}
+      <span className={styles.end}>
+        {image?.sourceUrl ? (
+          <span className={styles.thumb}>
+            <Photo
+              src={image.sourceUrl}
+              alt=""
+              sizes="(max-width: 720px) 84px, 168px"
+              zoom
+            />
+          </span>
+        ) : (
+          <ArrowCircle tone="white" />
+        )}
+      </span>
     </Link>
   );
 }
 
 /**
- * News archive cards with grid/list controls and cursor pagination.
- * Site search keeps the compact news-row presentation.
+ * News archive: rows grouped by month (big date, category, title, one-line
+ * excerpt), a thumbnail only when the post has a featured image.
+ * Cursor pagination. Site search keeps the compact news-row presentation.
  */
 export default function NewsList({
   initialPosts = [],
@@ -77,7 +162,6 @@ export default function NewsList({
   const copy = getNewsCopy(language);
   const [posts, setPosts] = useState(initialPosts);
   const [pageInfo, setPageInfo] = useState(initialPageInfo);
-  const [view, setView] = useState("grid");
   const [sort, setSort] = useState("new");
   const [isPending, startTransition] = useTransition();
 
@@ -85,8 +169,18 @@ export default function NewsList({
     startTransition(async () => {
       const page =
         mode === "search"
-          ? await loadMoreSearch({ after: pageInfo.endCursor, query, type: "posts", language })
-            : await loadMoreNews({ after: pageInfo.endCursor, ...filters, sort, language });
+          ? await loadMoreSearch({
+              after: pageInfo.endCursor,
+              query,
+              type: "posts",
+              language,
+            })
+          : await loadMoreNews({
+              after: pageInfo.endCursor,
+              ...filters,
+              sort,
+              language,
+            });
       setPosts((current) => [...current, ...page.nodes]);
       setPageInfo(page.pageInfo);
     });
@@ -95,16 +189,23 @@ export default function NewsList({
   function changeSort(nextSort) {
     if (sort === nextSort) return;
     startTransition(async () => {
-        const page = await loadMoreNews({ after: null, ...filters, sort: nextSort, language });
-        setPosts(page.nodes);
-        setPageInfo(page.pageInfo);
-        setSort(nextSort);
+      const page = await loadMoreNews({
+        after: null,
+        ...filters,
+        sort: nextSort,
+        language,
+      });
+      setPosts(page.nodes);
+      setPageInfo(page.pageInfo);
+      setSort(nextSort);
     });
   }
 
   if (mode === "search") {
     if (posts.length === 0) {
-      return <p className={styles.emptySearch}>{emptyLabel ?? copy.emptyList}</p>;
+      return (
+        <p className={styles.emptySearch}>{emptyLabel ?? copy.emptyList}</p>
+      );
     }
 
     return (
@@ -112,13 +213,22 @@ export default function NewsList({
         <ul className={styles.searchPanel} role="list">
           {posts.map((post) => (
             <li key={post.id}>
-              <NewsRow post={post} language={language} featuredSlug={featuredSlug} />
+              <NewsRow
+                post={post}
+                language={language}
+                featuredSlug={featuredSlug}
+              />
             </li>
           ))}
         </ul>
         {pageInfo.hasNextPage && (
           <div className={styles.more}>
-            <Button variant="outline" onClick={loadMore} disabled={isPending} aria-busy={isPending}>
+            <Button
+              variant="outline"
+              onClick={loadMore}
+              disabled={isPending}
+              aria-busy={isPending}
+            >
               {isPending ? copy.loading : copy.loadMore}
             </Button>
           </div>
@@ -126,11 +236,6 @@ export default function NewsList({
       </div>
     );
   }
-
-  const showFeatured = activeChips.length === 0 && sort === "new";
-  const firstPost = posts[0];
-  const featureFirst =
-    showFeatured && Boolean(firstPost?.featuredImage?.node?.sourceUrl);
 
   return (
     <section className={styles.results} aria-label={copy.archiveTitle}>
@@ -159,7 +264,11 @@ export default function NewsList({
         </div>
 
         <div className={styles.controls}>
-          <div className={styles.segment} role="group" aria-label={copy.sortLabel}>
+          <div
+            className={styles.segment}
+            role="group"
+            aria-label={copy.sortLabel}
+          >
             <button
               type="button"
               aria-pressed={sort === "new"}
@@ -179,26 +288,6 @@ export default function NewsList({
               {copy.oldest}
             </button>
           </div>
-          <div className={styles.segment} role="group" aria-label={copy.viewLabel}>
-            <button
-              type="button"
-              aria-label={copy.gridView}
-              aria-pressed={view === "grid"}
-              data-active={view === "grid"}
-              onClick={() => setView("grid")}
-            >
-              <Icon name="grid" size={18} />
-            </button>
-            <button
-              type="button"
-              aria-label={copy.listView}
-              aria-pressed={view === "list"}
-              data-active={view === "list"}
-              onClick={() => setView("list")}
-            >
-              <Icon name="list" size={18} />
-            </button>
-          </div>
         </div>
       </div>
 
@@ -213,18 +302,24 @@ export default function NewsList({
           )}
         </div>
       ) : (
-        <ul className={styles.feed} data-view={view} role="list" aria-busy={isPending}>
-          {posts.map((post, index) => (
-            <li key={post.id}>
-              <ArchiveCard
-                post={post}
-                language={language}
-                featuredSlug={featuredSlug}
-                featured={featureFirst && index === 0}
-              />
-            </li>
+        <div aria-busy={isPending}>
+          {groupByMonth(posts, language).map((group) => (
+            <section className={styles.group} key={group.key}>
+              <h2 className={styles.groupTitle}>{group.label}</h2>
+              <ul className={styles.rows} role="list">
+                {group.posts.map((post) => (
+                  <li key={post.id}>
+                    <ArchiveRow
+                      post={post}
+                      language={language}
+                      featuredSlug={featuredSlug}
+                    />
+                  </li>
+                ))}
+              </ul>
+            </section>
           ))}
-        </ul>
+        </div>
       )}
 
       {pageInfo.hasNextPage && (
