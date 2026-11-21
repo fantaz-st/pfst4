@@ -6,18 +6,29 @@ import { usePathname } from "next/navigation";
 import { BrandMark } from "@/components/layout/Brand";
 import Button from "@/components/ui/Button";
 import Icon from "@/components/ui/Icon";
-import { gsap, ScrollTrigger, MOTION_OK, EASE } from "@/components/motion/gsap";
+import {
+  gsap,
+  ScrollTrigger,
+  MOTION_OK,
+  MEDIA,
+  EASE,
+} from "@/components/motion/gsap";
 import { getChromeCopy } from "@/lib/chromeCopy";
 import { localizedHomeUri } from "@/lib/language";
 import { ENROLL_URL } from "@/lib/siteLinks";
+import { NAV_BEHAVIOUR, NAV_REVEAL_TOLERANCE } from "@/lib/navSettings";
 import { isCurrentSection } from "./navUtils";
 import MegaPanel from "./MegaPanel";
 import styles from "./FloatingNav.module.css";
 
 /**
- * Floating dark pill nav (STYLEGUIDE §6/§8): slides in once the bottom of
- * the page's Hero passes 90px from the top (0.8s expo.out) and leaves when
- * scrolling back up (0.5s power3.in). Showing/hiding is navigation, not
+ * Floating dark pill nav (STYLEGUIDE §6/§8). When it shows is set per
+ * desktop / mobile in lib/navSettings.js:
+ * - "pinned": slides in once the bottom of the page's Hero passes 90px from
+ *   the top and leaves when scrolling back up to it.
+ * - "reveal": hides on scroll down, slides in on any scroll up once the
+ *   header bar over the hero is out of view.
+ * In: 0.8s expo.out, out: 0.5s power3.in. Showing/hiding is navigation, not
  * decoration, so it also works under reduced motion — just without the
  * slide. While hidden it is `inert`, so it's never tabbable off-screen.
  *
@@ -26,7 +37,22 @@ import styles from "./FloatingNav.module.css";
  * button. While the search layer is open the menu button's three dots turn
  * into an X that closes it.
  */
-export default function FloatingNav({ menu, language, frequent, openItem, onToggleMega, onCloseMega, onTriggerRef, onBeforeShow, onBeforeHide, onOpenMenu, menuOpen, onOpenSearch, onCloseSearch, searchOpen }) {
+export default function FloatingNav({
+  menu,
+  language,
+  frequent,
+  openItem,
+  onToggleMega,
+  onCloseMega,
+  onTriggerRef,
+  onBeforeShow,
+  onBeforeHide,
+  onOpenMenu,
+  menuOpen,
+  onOpenSearch,
+  onCloseSearch,
+  searchOpen,
+}) {
   const copy = getChromeCopy(language);
   const pathname = usePathname();
   const ref = useRef(null);
@@ -44,8 +70,13 @@ export default function FloatingNav({ menu, language, frequent, openItem, onTogg
     const el = ref.current;
     if (!el) return undefined;
     const animate = () => window.matchMedia(MOTION_OK).matches;
+    const behaviour = () =>
+      window.matchMedia(MEDIA.aboveTablet).matches
+        ? NAV_BEHAVIOUR.desktop
+        : NAV_BEHAVIOUR.mobile;
 
     function show(on, { instant = false } = {}) {
+      if (on === wasVisible.current && !instant) return;
       if (on && !wasVisible.current) onBeforeShowRef.current?.();
       if (!on && wasVisible.current) onBeforeHideRef.current?.();
       wasVisible.current = on;
@@ -61,30 +92,92 @@ export default function FloatingNav({ menu, language, frequent, openItem, onTogg
       });
     }
 
+    let pastHero = false; // "pinned" zone
+    let pastBar = false; // "reveal" zone
+    let scrollingUp = false;
+    let anchor = 0; // scroll position of the last direction change
+
+    function update(options) {
+      show(
+        behaviour() === "reveal" ? pastBar && scrollingUp : pastHero,
+        options,
+      );
+    }
+
     const hero = document.querySelector("[data-hero]");
-    const trigger = ScrollTrigger.create({
+    const bar = document.querySelector("[data-hero-nav]");
+    const heroTrigger = ScrollTrigger.create({
       // Without a hero, show it once the header has scrolled away.
       trigger: hero ?? document.body,
       start: hero ? "bottom 90" : "top -200",
       // Only crossing the start matters; an `end` would hide the nav again
       // at the bottom of short pages.
-      onEnter: () => show(true),
-      onLeaveBack: () => show(false),
+      onEnter: () => {
+        pastHero = true;
+        update();
+      },
+      onLeaveBack: () => {
+        pastHero = false;
+        update();
+      },
     });
+    const barTrigger = ScrollTrigger.create({
+      trigger: bar ?? document.body,
+      start: bar ? "bottom top" : "top -200",
+      onEnter: () => {
+        pastBar = true;
+        update();
+      },
+      onLeaveBack: () => {
+        pastBar = false;
+        scrollingUp = false;
+        update();
+      },
+    });
+    const directionTrigger = ScrollTrigger.create({
+      start: 0,
+      end: "max",
+      onUpdate: (self) => {
+        const y = self.scroll();
+        if (Math.abs(y - anchor) < NAV_REVEAL_TOLERANCE) return;
+        scrollingUp = y < anchor;
+        anchor = y;
+        update();
+      },
+    });
+
     // Sync with the page we landed on (e.g. after navigation or a reload
-    // mid-page), without animating.
-    const frame = requestAnimationFrame(() => show(trigger.scroll() >= trigger.start, { instant: true }));
+    // mid-page), without animating. Mid-page in "reveal" it starts shown;
+    // the first scroll down hides it.
+    const frame = requestAnimationFrame(() => {
+      pastHero = heroTrigger.scroll() >= heroTrigger.start;
+      pastBar = barTrigger.scroll() >= barTrigger.start;
+      scrollingUp = pastBar;
+      anchor = directionTrigger.scroll();
+      update({ instant: true });
+    });
     return () => {
       cancelAnimationFrame(frame);
-      trigger.kill();
+      heroTrigger.kill();
+      barTrigger.kill();
+      directionTrigger.kill();
     };
     // Each page has its own hero: re-measure after navigation.
   }, [pathname]);
 
   return (
-    <div ref={ref} className={styles.wrap} data-float-nav inert={!visible || menuOpen}>
+    <div
+      ref={ref}
+      className={styles.wrap}
+      data-float-nav
+      inert={!visible || menuOpen}
+    >
       <nav className={styles.inner} aria-label={copy.mainNavLabel}>
-        <Link href={localizedHomeUri(language)} className={styles.logo} aria-label={copy.siteNameHome}>
+        <Link
+          href={localizedHomeUri(language)}
+          className={styles.logo}
+          aria-label={copy.siteNameHome}
+        >
           <BrandMark className={styles.mark} />
           <span className={styles.wordmark} aria-hidden="true">
             {copy.brandShort}
@@ -122,7 +215,12 @@ export default function FloatingNav({ menu, language, frequent, openItem, onTogg
                 </span>
               </button>
             ) : (
-              <Link key={item.databaseId} href={item.uri} className={className} aria-current={current ? "page" : undefined}>
+              <Link
+                key={item.databaseId}
+                href={item.uri}
+                className={className}
+                aria-current={current ? "page" : undefined}
+              >
                 {item.label}
               </Link>
             );
@@ -159,7 +257,16 @@ export default function FloatingNav({ menu, language, frequent, openItem, onTogg
           </button>
         </span>
       </nav>
-      {openItem && <MegaPanel key={openItem.databaseId} item={openItem} language={language} frequent={frequent} floating onClose={onCloseMega} />}
+      {openItem && (
+        <MegaPanel
+          key={openItem.databaseId}
+          item={openItem}
+          language={language}
+          frequent={frequent}
+          floating
+          onClose={onCloseMega}
+        />
+      )}
     </div>
   );
 }

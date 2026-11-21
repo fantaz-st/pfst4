@@ -15,9 +15,11 @@
   max-width: 100%;
 }
 
-/* Glass eyebrow (on the photo): white 14%, plava dot, Label. */
+/* Glass eyebrow (on the photo): white 14%, plava dot, Label.
+   Hidden for now (kept in the markup) — set display back to inline-flex
+   to bring it back. */
 .eyebrow {
-  display: inline-flex;
+  display: none;
   align-items: center;
   gap: var(--space-2);
   height: 32px;

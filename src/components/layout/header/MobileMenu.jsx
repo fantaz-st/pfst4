@@ -9,7 +9,7 @@ import Icon from "@/components/ui/Icon";
 import { gsap, MOTION_OK, EASE } from "@/components/motion/gsap";
 import { getLenis } from "@/components/motion/lenisStore";
 import { getChromeCopy } from "@/lib/chromeCopy";
-import { ENROLL_URL } from "@/lib/siteLinks";
+// import { ENROLL_URL } from "@/lib/siteLinks";
 import { isCurrentPage, isCurrentSection } from "./navUtils";
 import styles from "./MobileMenu.module.css";
 
@@ -23,7 +23,14 @@ import styles from "./MobileMenu.module.css";
  * A modal dialog: focus moves in and is trapped, Escape closes, focus
  * returns to the button that opened it, page scroll pauses.
  */
-export default function MobileMenu({ open, onClose, menu, language, languages, utility }) {
+export default function MobileMenu({
+  open,
+  onClose,
+  menu,
+  language,
+  languages,
+  utility,
+}) {
   const copy = getChromeCopy(language);
   const pathname = usePathname();
   const sheetRef = useRef(null);
@@ -31,7 +38,9 @@ export default function MobileMenu({ open, onClose, menu, language, languages, u
 
   // Start with the current page's section and group expanded.
   const currentTop = menu.find((item) => isCurrentSection(item, pathname));
-  const currentGroup = currentTop?.children.find((group) => isCurrentSection(group, pathname));
+  const currentGroup = currentTop?.children.find((group) =>
+    isCurrentSection(group, pathname),
+  );
   const [openTop, setOpenTop] = useState(currentTop?.databaseId ?? null);
   const [openGroup, setOpenGroup] = useState(currentGroup?.databaseId ?? null);
 
@@ -162,7 +171,9 @@ export default function MobileMenu({ open, onClose, menu, language, languages, u
                   key={item.databaseId}
                   href={item.uri}
                   className={styles.m1}
-                  aria-current={isCurrentPage(item, pathname) ? "page" : undefined}
+                  aria-current={
+                    isCurrentPage(item, pathname) ? "page" : undefined
+                  }
                 >
                   {item.label}
                 </Link>
@@ -195,7 +206,9 @@ export default function MobileMenu({ open, onClose, menu, language, languages, u
                           key={group.databaseId}
                           href={group.uri}
                           className={styles.m2}
-                          aria-current={isCurrentPage(group, pathname) ? "page" : undefined}
+                          aria-current={
+                            isCurrentPage(group, pathname) ? "page" : undefined
+                          }
                         >
                           {group.label}
                         </Link>
@@ -220,7 +233,10 @@ export default function MobileMenu({ open, onClose, menu, language, languages, u
                           className={styles.level3}
                           hidden={!groupOpen}
                         >
-                          <Link href={group.uri} className={`${styles.m3} ${styles.overview}`}>
+                          <Link
+                            href={group.uri}
+                            className={`${styles.m3} ${styles.overview}`}
+                          >
                             {copy.groupOverview(group.label)}
                           </Link>
                           {group.children.map((link) => (
@@ -228,7 +244,11 @@ export default function MobileMenu({ open, onClose, menu, language, languages, u
                               key={link.databaseId}
                               href={link.uri}
                               className={styles.m3}
-                              aria-current={isCurrentPage(link, pathname) ? "page" : undefined}
+                              aria-current={
+                                isCurrentPage(link, pathname)
+                                  ? "page"
+                                  : undefined
+                              }
                             >
                               {link.label}
                             </Link>
@@ -244,9 +264,9 @@ export default function MobileMenu({ open, onClose, menu, language, languages, u
         </nav>
 
         <div className={styles.bottom}>
-          <Button href={ENROLL_URL} variant="accent" className={styles.enroll}>
+          {/* <Button href={ENROLL_URL} variant="accent" className={styles.enroll}>
             {copy.enroll}
-          </Button>
+          </Button> */}
           <div className={styles.utility}>
             <span className={styles.utilityLinks}>
               {utility.map((link) => (
@@ -255,16 +275,28 @@ export default function MobileMenu({ open, onClose, menu, language, languages, u
                 </Link>
               ))}
             </span>
-            <span className={styles.languages} role="group" aria-label={copy.languageLabel}>
+            <span
+              className={styles.languages}
+              role="group"
+              aria-label={copy.languageLabel}
+            >
               {languages.map((item, index) => (
                 <span key={item.code}>
                   {index > 0 && <span aria-hidden="true"> / </span>}
                   {item.current ? (
-                    <span className={styles.currentLanguage} aria-current="true">
+                    <span
+                      className={styles.currentLanguage}
+                      aria-current="true"
+                    >
                       {item.code.toUpperCase()}
                     </span>
                   ) : (
-                    <Link href={item.href} hrefLang={item.code} lang={item.code} aria-label={item.label}>
+                    <Link
+                      href={item.href}
+                      hrefLang={item.code}
+                      lang={item.code}
+                      aria-label={item.label}
+                    >
                       {item.code.toUpperCase()}
                     </Link>
                   )}

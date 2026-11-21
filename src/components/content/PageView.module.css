@@ -1,5 +1,6 @@
 /* Inner-page body (design/reference/page.html): container, sidebar +
-   content; the sidebar stacks above the content below 1080px. */
+   content. Below 1080px the sidebar is hidden so the content comes first
+   (the header menu still reaches every page of the section). */
 .wrap {
   max-width: var(--container);
   margin: 0 auto;
@@ -48,7 +49,6 @@
 
 @media (max-width: 1080px) {
   .side {
-    flex-basis: 100%;
-    max-width: none;
+    display: none;
   }
 }
