@@ -152,13 +152,68 @@
   }
 }
 
+/* Phones: the child pages become one white list — title (+ description)
+   and the arrow per row, dividers between, no icon boxes. */
 @media (max-width: 720px) {
   .grid {
     grid-template-columns: minmax(0, 1fr);
+    gap: 0;
+  }
+
+  .card {
+    flex-direction: row;
+    align-items: center;
+    gap: var(--space-4);
+    min-height: 0;
+    padding: 18px var(--space-4) 18px var(--space-6);
+    border-top: 1px solid var(--color-line);
+    border-radius: 0;
+  }
+
+  .card:first-child {
+    border-top: 0;
+    border-top-left-radius: var(--r-card);
+    border-top-right-radius: var(--r-card);
+  }
+
+  .card:has(+ .help) {
+    border-bottom-left-radius: var(--r-card);
+    border-bottom-right-radius: var(--r-card);
+  }
+
+  .card:hover {
+    transform: none;
+  }
+
+  .top {
+    order: 2;
+    flex: none;
+  }
+
+  .icon {
+    display: none;
+  }
+
+  .text {
+    flex: 1;
+    min-width: 0;
+    gap: var(--space-1);
+  }
+
+  .cardTitle {
+    font-size: var(--fs-body-l);
+  }
+
+  .description {
+    display: -webkit-box;
+    overflow: hidden;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
   }
 
   .help {
     grid-column: span 1;
+    margin-top: var(--grid-gap);
     padding-right: 92px;
   }
 
