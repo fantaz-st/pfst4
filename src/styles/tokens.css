@@ -56,7 +56,7 @@
   --font-sans: var(--font-plus-jakarta-sans, "Plus Jakarta Sans"), system-ui, sans-serif;
 
   --fs-hero: clamp(48px, 7.4vw, 120px); /* lh .90 · ls -.04em · 600 */
-  --fs-page-title: clamp(44px, 6.4vw, 96px); /* inner page H1 · lh .92 · ls -.04em · 600 */
+  --fs-page-title: clamp(36px, 6.4vw, 96px); /* inner page H1 · lh .92 · ls -.04em · 600 · 36px min so long words (Brodostrojarstvo) fit a phone */
   --fs-h2: clamp(40px, 5vw, 76px); /* lh .95 · ls -.035em · 600 */
   --fs-statement: clamp(32px, 4vw, 62px); /* lh 1.04 · ls -.035em · 600 */
   --fs-h3: clamp(32px, 3.5vw, 52px); /* lh .98 · ls -.035em · 600 */

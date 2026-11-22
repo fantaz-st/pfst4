@@ -28,7 +28,9 @@ export default function SplitReveal({
     if (!el) return;
     const chars = mode === "chars";
     const split = SplitText.create(el, {
-      type: chars ? "lines,chars" : "lines",
+      // Chars sit inside word wrappers so a line can only break between
+      // words — bare chars let the browser break mid-word while split.
+      type: chars ? "lines,words,chars" : "lines",
       mask: "lines",
       linesClass: "split-line",
     });
