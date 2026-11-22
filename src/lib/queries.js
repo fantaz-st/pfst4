@@ -325,6 +325,9 @@ export const SITE_SEARCH = /* GraphQL */ `
         id
         title
         uri
+        seo {
+          metaDesc
+        }
       }
     }
     posts(first: $postFirst, after: $postAfter, where: $postWhere) {
@@ -338,6 +341,12 @@ export const SITE_SEARCH = /* GraphQL */ `
         uri
         excerpt
         date
+        featuredImage {
+          node {
+            sourceUrl
+            altText
+          }
+        }
         categories(first: 10) {
           nodes {
             name

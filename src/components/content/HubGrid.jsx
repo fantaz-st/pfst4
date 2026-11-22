@@ -1,16 +1,14 @@
-import Link from "next/link";
-import ArrowCircle from "@/components/ui/ArrowCircle";
 import Button from "@/components/ui/Button";
 import Icon from "@/components/ui/Icon";
 import { getChromeCopy } from "@/lib/chromeCopy";
 import { getSiteLinks } from "@/lib/siteLinks";
+import PageCards from "./PageCards";
 import styles from "./HubGrid.module.css";
 
 /**
  * Section overview (design/reference/opcenito.html): "U ovoj cjelini" — a
- * card per child page (icon box, arrow circle, title, the child's Yoast
- * meta description when an editor wrote one), then the dark help card with
- * the signal-flag band.
+ * card per child page (PageCards), then the dark help card with the
+ * signal-flag band.
  */
 export default function HubGrid({ pages, language = "hr" }) {
   const copy = getChromeCopy(language);
@@ -24,23 +22,7 @@ export default function HubGrid({ pages, language = "hr" }) {
         </h2>
         <span className={styles.count}>{copy.pageCount(pages.length)}</span>
       </div>
-      <div className={styles.grid} data-stagger>
-        {pages.map((page) => (
-          <Link key={page.id} href={page.uri} className={styles.card}>
-            <span className={styles.top}>
-              <span className={styles.icon}>
-                <Icon name="doc" />
-              </span>
-              <ArrowCircle />
-            </span>
-            <span className={styles.text}>
-              <span className={styles.cardTitle}>{page.title}</span>
-              {page.seo?.metaDesc && (
-                <span className={styles.description}>{page.seo.metaDesc}</span>
-              )}
-            </span>
-          </Link>
-        ))}
+      <PageCards pages={pages}>
         <div className={styles.help}>
           <div className={styles.flags} aria-hidden="true" />
           <div className={styles.helpText}>
@@ -59,7 +41,7 @@ export default function HubGrid({ pages, language = "hr" }) {
             </Button>
           </div>
         </div>
-      </div>
+      </PageCards>
     </section>
   );
 }

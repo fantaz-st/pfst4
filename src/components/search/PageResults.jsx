@@ -1,14 +1,13 @@
 "use client";
 
 import { useState, useTransition } from "react";
-import Link from "next/link";
-import ArrowCircle from "@/components/ui/ArrowCircle";
 import Button from "@/components/ui/Button";
 import { loadMoreSearch } from "@/lib/actions";
 import { getChromeCopy } from "@/lib/chromeCopy";
+import PageCards from "@/components/content/PageCards";
 import styles from "./PageResults.module.css";
 
-// Matching pages: title + arrow rows in a white r28 panel, with "load more".
+// Matching pages: the same cards as a section's child pages, with "load more".
 export default function PageResults({ initialPages, initialPageInfo, query, language = "hr" }) {
   const copy = getChromeCopy(language);
   const [pages, setPages] = useState(initialPages);
@@ -34,16 +33,7 @@ export default function PageResults({ initialPages, initialPageInfo, query, lang
 
   return (
     <div>
-      <ul className={styles.panel} role="list">
-        {pages.map((page) => (
-          <li key={page.id}>
-            <Link href={page.uri} className={styles.row}>
-              <span className={styles.title}>{page.title}</span>
-              <ArrowCircle />
-            </Link>
-          </li>
-        ))}
-      </ul>
+      <PageCards pages={pages} />
       {pageInfo.hasNextPage && (
         <div className={styles.more}>
           <Button variant="outline" onClick={loadMore} disabled={isPending} aria-busy={isPending}>

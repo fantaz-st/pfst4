@@ -176,7 +176,8 @@
     border-top-right-radius: var(--r-card);
   }
 
-  .card:has(+ .help) {
+  .card:has(+ .help),
+  .card:last-child {
     border-bottom-left-radius: var(--r-card);
     border-bottom-right-radius: var(--r-card);
   }

@@ -13,7 +13,6 @@ import {
   getPostCategories,
 } from "@/lib/posts";
 import { getNewsCopy } from "@/lib/newsCopy";
-import NewsRow from "./NewsRow";
 import styles from "./NewsList.module.css";
 
 const MONTHS_SHORT = {
@@ -145,7 +144,8 @@ function ArchiveRow({ post, language, featuredSlug }) {
 /**
  * News archive: rows grouped by month (big date, category, title, one-line
  * excerpt), a thumbnail only when the post has a featured image.
- * Cursor pagination. Site search keeps the compact news-row presentation.
+ * Cursor pagination. Site search uses the same rows, ungrouped (results
+ * come in relevance order).
  */
 export default function NewsList({
   initialPosts = [],
@@ -210,10 +210,10 @@ export default function NewsList({
 
     return (
       <div>
-        <ul className={styles.searchPanel} role="list">
+        <ul className={styles.rows} role="list">
           {posts.map((post) => (
             <li key={post.id}>
-              <NewsRow
+              <ArchiveRow
                 post={post}
                 language={language}
                 featuredSlug={featuredSlug}

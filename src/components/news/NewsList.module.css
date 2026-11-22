@@ -281,14 +281,6 @@
   margin-top: var(--space-6);
 }
 
-.searchPanel {
-  margin: 0;
-  padding: var(--space-2) var(--space-6);
-  border-radius: var(--r-feature);
-  background: var(--color-surface);
-  list-style: none;
-}
-
 .emptySearch {
   color: var(--color-text-muted);
   text-align: left;
@@ -346,11 +338,6 @@
     width: 84px;
     aspect-ratio: 1;
     border-radius: var(--r-mini);
-  }
-
-  .searchPanel {
-    padding-right: var(--space-4);
-    padding-left: var(--space-4);
   }
 }
 
