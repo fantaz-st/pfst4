@@ -150,7 +150,8 @@
   text-align: left;
 }
 
-.m2[aria-expanded="true"] {
+.m2[aria-expanded="true"],
+.m2[data-open="true"] {
   background: var(--color-bg);
 }
 
@@ -158,6 +159,48 @@
   width: 30px;
   height: 30px;
   background: transparent;
+}
+
+/* Split row: the label is a link to the page, the chevron a separate
+   button (min 48px wide) that expands the children. */
+.split {
+  padding-right: 0;
+}
+
+.rowLink {
+  display: flex;
+  flex: 1;
+  align-items: center;
+  align-self: stretch;
+  min-width: 0;
+  color: inherit;
+}
+
+.expand {
+  display: flex;
+  flex: none;
+  align-items: center;
+  justify-content: flex-end;
+  align-self: stretch;
+  width: 56px;
+  padding: 0 var(--space-1) 0 0;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+}
+
+.m2 .expand {
+  width: 48px;
+}
+
+/* On a split row the chevron is the only control, so it stays visible. */
+.split .chevron {
+  background: var(--color-bg);
+}
+
+.split [aria-expanded="true"] > .chevron {
+  background: var(--color-primary);
 }
 
 .level3 {
@@ -184,10 +227,10 @@
   color: var(--color-text);
 }
 
-.overview,
 .m3[aria-current="page"],
 .m2[aria-current="page"],
-.m1[aria-current="page"] {
+.m1[aria-current="page"],
+.rowLink[aria-current="page"] {
   font-weight: 600;
   color: var(--color-text);
 }

@@ -13,6 +13,58 @@ import { getChromeCopy } from "@/lib/chromeCopy";
 import { isCurrentPage, isCurrentSection } from "./navUtils";
 import styles from "./MobileMenu.module.css";
 
+// A menu item with its own page is a split row: the label opens the page,
+// the chevron button expands its children. Items whose menu entry has no
+// real link ("#") stay one expanding button.
+function hasPage(item) {
+  return Boolean(item.uri) && !item.uri.startsWith("#");
+}
+
+function ExpandRow({ item, open, onToggle, className, iconSize, pathname, copy }) {
+  const chevron = (
+    <span className={styles.chevron} aria-hidden="true">
+      <Icon name="chevronDown" size={iconSize} />
+    </span>
+  );
+
+  if (!hasPage(item)) {
+    return (
+      <button
+        type="button"
+        className={className}
+        aria-expanded={open}
+        aria-controls={`m-${item.databaseId}`}
+        onClick={onToggle}
+      >
+        {item.label}
+        {chevron}
+      </button>
+    );
+  }
+
+  return (
+    <div className={`${className} ${styles.split}`} data-open={open}>
+      <Link
+        href={item.uri}
+        className={styles.rowLink}
+        aria-current={isCurrentPage(item, pathname) ? "page" : undefined}
+      >
+        {item.label}
+      </Link>
+      <button
+        type="button"
+        className={styles.expand}
+        aria-expanded={open}
+        aria-controls={`m-${item.databaseId}`}
+        aria-label={copy.showSubpages(item.label)}
+        onClick={onToggle}
+      >
+        {chevron}
+      </button>
+    </div>
+  );
+}
+
 /**
  * The menu sheet (design/mobile-menu.html): the whole WordPress menu as a
  * two-level accordion (one open item per level), search, "Upiši se", the
@@ -181,18 +233,15 @@ export default function MobileMenu({
             }
             return (
               <div key={item.databaseId}>
-                <button
-                  type="button"
+                <ExpandRow
+                  item={item}
+                  open={topOpen}
+                  onToggle={() => toggleTop(item.databaseId)}
                   className={styles.m1}
-                  aria-expanded={topOpen}
-                  aria-controls={`m-${item.databaseId}`}
-                  onClick={() => toggleTop(item.databaseId)}
-                >
-                  {item.label}
-                  <span className={styles.chevron} aria-hidden="true">
-                    <Icon name="chevronDown" size={16} />
-                  </span>
-                </button>
+                  iconSize={16}
+                  pathname={pathname}
+                  copy={copy}
+                />
                 <div
                   id={`m-${item.databaseId}`}
                   className={styles.level2}
@@ -216,29 +265,20 @@ export default function MobileMenu({
                     }
                     return (
                       <div key={group.databaseId}>
-                        <button
-                          type="button"
+                        <ExpandRow
+                          item={group}
+                          open={groupOpen}
+                          onToggle={() => toggleGroup(group.databaseId)}
                           className={styles.m2}
-                          aria-expanded={groupOpen}
-                          aria-controls={`m-${group.databaseId}`}
-                          onClick={() => toggleGroup(group.databaseId)}
-                        >
-                          {group.label}
-                          <span className={styles.chevron} aria-hidden="true">
-                            <Icon name="chevronDown" size={14} />
-                          </span>
-                        </button>
+                          iconSize={14}
+                          pathname={pathname}
+                          copy={copy}
+                        />
                         <div
                           id={`m-${group.databaseId}`}
                           className={styles.level3}
                           hidden={!groupOpen}
                         >
-                          <Link
-                            href={group.uri}
-                            className={`${styles.m3} ${styles.overview}`}
-                          >
-                            {copy.groupOverview(group.label)}
-                          </Link>
                           {group.children.map((link) => (
                             <Link
                               key={link.databaseId}
