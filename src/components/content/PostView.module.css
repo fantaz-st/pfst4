@@ -183,31 +183,8 @@
   min-width: 0;
 }
 
-.prose {
-  color: var(--color-text-muted-2);
-}
-
-.prose > :global(p:first-of-type) {
-  margin-bottom: var(--space-8);
-  color: var(--color-text);
-  font-size: var(--fs-post-lead);
-  font-weight: 500;
-  line-height: 1.5;
-  letter-spacing: -0.01em;
-}
-
-.prose :global(p) {
-  margin-bottom: var(--space-6);
-  font-size: var(--fs-body-l);
-  line-height: 1.7;
-}
-
-.prose :global(h2) {
-  margin-top: var(--space-16);
-  margin-bottom: var(--space-4);
-  font-size: var(--fs-post-heading);
-  line-height: 1.1;
-}
+/* Body text, headings and colour come from the shared .prose
+   (styles/typography.css), so posts read like inner pages. */
 
 .prose :global(ul) {
   display: flex;
@@ -221,8 +198,6 @@
 .prose :global(li) {
   position: relative;
   padding-left: var(--space-6);
-  font-size: var(--fs-body-l);
-  line-height: 1.6;
 }
 
 .prose :global(li::before) {
