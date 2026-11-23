@@ -31,8 +31,43 @@
   flex-direction: column;
 }
 
-.label {
+.labelRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
   margin-bottom: var(--space-2);
+}
+
+.close {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-height: 44px;
+  padding: 0 var(--space-4);
+  border: 0;
+  border-radius: var(--r-pill);
+  background: color-mix(in srgb, var(--pfst-bijela) 12%, transparent);
+  color: var(--color-surface);
+  font: inherit;
+  font-size: var(--fs-meta);
+  font-weight: 500;
+  cursor: pointer;
+  transition: background var(--dur-hover) var(--ease-out);
+}
+
+.close:hover {
+  background: color-mix(in srgb, var(--pfst-bijela) 20%, transparent);
+}
+
+/* Below 1080px the floating nav's menu button closes the layer. */
+@media (max-width: 1080px) {
+  .close {
+    display: none;
+  }
+}
+
+.label {
   color: var(--color-accent);
   font-size: var(--fs-label);
   font-weight: 500;

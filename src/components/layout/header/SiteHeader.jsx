@@ -13,6 +13,7 @@ import MegaPanel from "./MegaPanel";
 import FloatingNav from "./FloatingNav";
 import MobileMenu from "./MobileMenu";
 import SearchOverlay from "./SearchOverlay";
+import { OPEN_SEARCH_EVENT } from "./openSiteSearch";
 import styles from "./SiteHeader.module.css";
 
 /**
@@ -23,7 +24,8 @@ import styles from "./SiteHeader.module.css";
  *   mega panel, the current section is a white pill
  * - the floating dark pill nav that slides in once the hero has scrolled by
  * - the menu sheet (accordion of the whole WordPress menu)
- * - the full-screen search layer, opened from the floating nav
+ * - the full-screen search layer, opened by every search control on the
+ *   site (floating nav, utility row, menu sheet, mega panel)
  *
  * `menu` is the WordPress menu tree (lib/menu.js); `frequent` and
  * `languages` are plain data prepared on the server.
@@ -67,8 +69,21 @@ export default function SiteHeader({ menu, language, frequent, languages, utilit
   function openSearch() {
     closeMega({ restoreFocus: false });
     searchRef.current?.prepare();
+    setSheetOpen(false);
     setSearchOpen(true);
   }
+
+  // Search controls elsewhere (utility row, menu sheet, mega panel) open
+  // the same layer through openSiteSearch().
+  const openSearchRef = useRef(openSearch);
+  useEffect(() => {
+    openSearchRef.current = openSearch;
+  });
+  useEffect(() => {
+    const onOpen = () => openSearchRef.current();
+    window.addEventListener(OPEN_SEARCH_EVENT, onOpen);
+    return () => window.removeEventListener(OPEN_SEARCH_EVENT, onOpen);
+  }, []);
 
   // Navigating closes every menu.
   useEffect(() => {

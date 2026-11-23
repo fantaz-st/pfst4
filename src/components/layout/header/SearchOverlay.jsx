@@ -37,9 +37,10 @@ function Highlight({ text, term }) {
 }
 
 /**
- * Full-screen search layer opened from the floating nav's search button.
- * Modra sheet under the floating nav (which stays on top and turns its menu
- * button into the close button): a large input, "Često traženo" links while
+ * Full-screen search layer, opened by every search control on the site
+ * (openSiteSearch). Modra sheet under the floating nav; below 1080px the
+ * nav stays on top and its menu button is the close button, above that the
+ * layer has its own close button. A large input, "Često traženo" links while
  * empty, live pages + news from /api/search as you type, and a link to the
  * full results on /pretraga (Enter does the same).
  *
@@ -185,9 +186,15 @@ export default function SearchOverlay({ ref, open, onClose, language, frequent }
     >
       <div className={styles.inner}>
         <form className={styles.form} action={action} role="search" onSubmit={submit} data-search-item>
-          <label htmlFor="site-search-input" className={styles.label}>
-            {copy.search}
-          </label>
+          <div className={styles.labelRow}>
+            <label htmlFor="site-search-input" className={styles.label}>
+              {copy.search}
+            </label>
+            <button type="button" className={styles.close} onClick={onClose}>
+              {copy.closeSearch}
+              <Icon name="close" size={14} />
+            </button>
+          </div>
           <div className={styles.field}>
             <input
               ref={inputRef}

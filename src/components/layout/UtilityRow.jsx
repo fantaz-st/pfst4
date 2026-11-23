@@ -3,6 +3,7 @@ import Icon from "@/components/ui/Icon";
 import { getChromeCopy } from "@/lib/chromeCopy";
 import { getSiteLinks } from "@/lib/siteLinks";
 import { getLanguageLinks } from "@/lib/languageLinks";
+import SearchLink from "./SearchLink";
 import styles from "./UtilityRow.module.css";
 
 // The 40px row above the hero (STYLEGUIDE §6): tagline, utility links,
@@ -21,13 +22,13 @@ export default function UtilityRow({ language, translations }) {
             {link.label}
           </Link>
         ))}
-        <Link
+        <SearchLink
           href={language === "en" ? "/en/search" : "/pretraga"}
           className={`${styles.link} ${styles.search}`}
           aria-label={copy.search}
         >
           <Icon name="search" size={15} />
-        </Link>
+        </SearchLink>
         <span className={styles.languages} aria-label={copy.languageLabel} role="group">
           {languages.map((item, index) => (
             <span key={item.code} className={styles.language}>

@@ -60,6 +60,10 @@ export default function FloatingNav({
   const onBeforeHideRef = useRef(onBeforeHide);
   const wasVisible = useRef(false);
   const [visible, setVisible] = useState(false);
+  // Below 1080px the nav's menu button is the search layer's close button,
+  // so the nav stays shown while search is open, wherever it was opened.
+  const searchOpenRef = useRef(searchOpen);
+  const updateRef = useRef(null);
 
   useEffect(() => {
     onBeforeShowRef.current = onBeforeShow;
@@ -98,11 +102,15 @@ export default function FloatingNav({
     let anchor = 0; // scroll position of the last direction change
 
     function update(options) {
+      const keepForSearch =
+        searchOpenRef.current && !window.matchMedia(MEDIA.aboveTablet).matches;
       show(
-        behaviour() === "reveal" ? pastBar && scrollingUp : pastHero,
+        keepForSearch ||
+          (behaviour() === "reveal" ? pastBar && scrollingUp : pastHero),
         options,
       );
     }
+    updateRef.current = update;
 
     const hero = document.querySelector("[data-hero]");
     const bar = document.querySelector("[data-hero-nav]");
@@ -157,6 +165,7 @@ export default function FloatingNav({
       update({ instant: true });
     });
     return () => {
+      updateRef.current = null;
       cancelAnimationFrame(frame);
       heroTrigger.kill();
       barTrigger.kill();
@@ -164,6 +173,11 @@ export default function FloatingNav({
     };
     // Each page has its own hero: re-measure after navigation.
   }, [pathname]);
+
+  useEffect(() => {
+    searchOpenRef.current = searchOpen;
+    updateRef.current?.();
+  }, [searchOpen]);
 
   return (
     <div

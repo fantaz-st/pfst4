@@ -50,36 +50,24 @@
   color: var(--color-surface);
 }
 
+/* Opens the search layer; drawn as the search field it replaces. */
 .search {
   display: flex;
   flex: none;
   align-items: center;
   gap: 10px;
+  width: calc(100% - 36px);
   height: 48px;
   margin: var(--space-1) 18px 10px;
   padding: 0 var(--space-4);
+  border: 0;
   border-radius: var(--r-pill);
   background: var(--color-bg);
   color: var(--color-text-muted);
-}
-
-.search:focus-within {
-  box-shadow: inset 0 0 0 2px var(--color-primary);
-}
-
-.search input {
-  flex: 1;
-  min-width: 0;
-  height: 100%;
-  border: 0;
-  background: transparent;
-  color: var(--color-text);
+  font: inherit;
   font-size: var(--fs-body);
-  outline: none;
-}
-
-.search input::placeholder {
-  color: var(--color-text-muted);
+  text-align: left;
+  cursor: pointer;
 }
 
 /* ---- Accordion ---- */

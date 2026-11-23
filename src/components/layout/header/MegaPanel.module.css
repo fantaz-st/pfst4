@@ -179,6 +179,7 @@
   background: color-mix(in srgb, var(--color-bg) 50%, var(--color-surface));
 }
 
+/* Opens the search layer; drawn as the search field it replaces. */
 .search {
   display: flex;
   align-items: center;
@@ -186,28 +187,19 @@
   min-width: 380px;
   height: 52px;
   padding: 0 var(--space-2) 0 20px;
+  border: 0;
   border-radius: var(--r-pill);
   background: var(--color-bg);
   color: var(--color-text-muted);
-}
-
-.search:focus-within {
-  box-shadow: inset 0 0 0 2px var(--color-primary);
-}
-
-.search input {
-  flex: 1;
-  min-width: 0;
-  height: 100%;
-  border: 0;
-  background: transparent;
-  color: var(--color-text);
+  font: inherit;
   font-size: var(--fs-body);
-  outline: none;
+  text-align: left;
+  cursor: pointer;
+  transition: background var(--dur-hover) var(--ease-out);
 }
 
-.search input::placeholder {
-  color: var(--color-text-muted);
+.search:hover {
+  background: var(--color-bg-hover);
 }
 
 .quick {

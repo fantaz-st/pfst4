@@ -7,6 +7,7 @@ import { useGsap } from "@/components/motion/useGsap";
 import { EASE } from "@/components/motion/gsap";
 import { getChromeCopy } from "@/lib/chromeCopy";
 import { toColumns } from "./navUtils";
+import { openSiteSearch } from "./openSiteSearch";
 import styles from "./MegaPanel.module.css";
 
 /**
@@ -114,19 +115,15 @@ export default function MegaPanel({ item, language, frequent, onClose, floating 
       </div>
 
       <div className={styles.footer} data-mm-item>
-        <form
+        <button
+          type="button"
           className={styles.search}
-          action={language === "en" ? "/en/search" : "/pretraga"}
-          role="search"
+          aria-haspopup="dialog"
+          onClick={openSiteSearch}
         >
           <Icon name="search" size={18} />
-          <input
-            type="search"
-            name="q"
-            placeholder={copy.searchPlaceholder}
-            aria-label={copy.searchPlaceholder}
-          />
-        </form>
+          {copy.searchPlaceholder}
+        </button>
         <div className={styles.quick}>
           <span className={styles.quickLabel}>{copy.frequent}</span>
           {frequent.map((link) => (

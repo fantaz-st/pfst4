@@ -11,6 +11,7 @@ import { getLenis } from "@/components/motion/lenisStore";
 import { getChromeCopy } from "@/lib/chromeCopy";
 // import { ENROLL_URL } from "@/lib/siteLinks";
 import { isCurrentPage, isCurrentSection } from "./navUtils";
+import { openSiteSearch } from "./openSiteSearch";
 import styles from "./MobileMenu.module.css";
 
 // A menu item with its own page is a split row: the label opens the page,
@@ -134,7 +135,9 @@ export default function MobileMenu({
     return () => {
       document.removeEventListener("keydown", onKey);
       lenis?.start();
-      if (opener instanceof HTMLElement) opener.focus({ preventScroll: true });
+      // Closed to open the search layer: its input keeps the focus.
+      const searchOpen = document.getElementById("site-search")?.dataset.open === "true";
+      if (!searchOpen && opener instanceof HTMLElement) opener.focus({ preventScroll: true });
     };
   }, [open]);
 
@@ -200,19 +203,15 @@ export default function MobileMenu({
           </button>
         </div>
 
-        <form
+        <button
+          type="button"
           className={styles.search}
-          action={language === "en" ? "/en/search" : "/pretraga"}
-          role="search"
+          aria-haspopup="dialog"
+          onClick={openSiteSearch}
         >
           <Icon name="search" size={18} />
-          <input
-            type="search"
-            name="q"
-            placeholder={copy.searchShort}
-            aria-label={copy.searchShort}
-          />
-        </form>
+          {copy.searchShort}
+        </button>
 
         <nav className={styles.nav} aria-label={copy.mainNavLabel}>
           {menu.map((item) => {
