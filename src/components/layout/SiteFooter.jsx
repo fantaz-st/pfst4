@@ -4,6 +4,7 @@ import Button from "@/components/ui/Button";
 import SplitReveal from "@/components/motion/SplitReveal";
 import { getChromeCopy } from "@/lib/chromeCopy";
 import { ENROLL_URL, getSiteLinks } from "@/lib/siteLinks";
+import CookieSettingsButton from "@/components/consent/CookieSettingsButton";
 import styles from "./SiteFooter.module.css";
 
 function LinkList({ links }) {
@@ -52,7 +53,10 @@ export default function SiteFooter({ language = "hr" }) {
         </SplitReveal>
         <div className={styles.bottom}>
           <span className="num">{copy.copyright(new Date().getFullYear())}</span>
-          <span>{copy.universityName}</span>
+          <span className={styles.bottomEnd}>
+            <CookieSettingsButton className={styles.bottomLink}>{copy.cookieSettings}</CookieSettingsButton>
+            <span>{copy.universityName}</span>
+          </span>
         </div>
       </div>
     </footer>

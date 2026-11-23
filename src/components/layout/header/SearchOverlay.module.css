@@ -140,6 +140,82 @@
   text-transform: uppercase;
 }
 
+/* ---- Recent searches: removable chips ---- */
+.groupRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+  margin-top: var(--space-8);
+}
+
+.groupRow .group {
+  margin: 0;
+}
+
+.clearHistory {
+  min-height: 44px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--color-text-on-dark);
+  font: inherit;
+  font-size: var(--fs-meta);
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.clearHistory:hover {
+  color: var(--color-surface);
+}
+
+.recentSearches {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  margin: var(--space-2) 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.recentSearch {
+  display: flex;
+  align-items: center;
+  border-radius: var(--r-pill);
+  background: color-mix(in srgb, var(--pfst-bijela) 10%, transparent);
+}
+
+.recentTerm,
+.recentRemove {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  border: 0;
+  background: transparent;
+  color: var(--color-surface);
+  font: inherit;
+  cursor: pointer;
+}
+
+.recentTerm {
+  padding: 0 var(--space-2) 0 var(--space-4);
+  font-size: var(--fs-small);
+  font-weight: 500;
+}
+
+.recentRemove {
+  justify-content: center;
+  width: 40px;
+  padding: 0;
+  border-radius: var(--r-pill);
+  color: var(--color-text-on-dark);
+}
+
+.recentTerm:hover,
+.recentRemove:hover {
+  color: var(--color-accent);
+}
+
 .list {
   margin: 0;
   padding: 0;

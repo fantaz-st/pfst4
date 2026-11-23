@@ -17,6 +17,7 @@ import HomeNewsRows from "./HomeNewsRows";
 import styles from "./HomePage.module.css";
 import AdmissionsCard from "./AdmissionsCard";
 import NewsSlider, { NewsSliderControls, NewsSliderViewport } from "./NewsSlider";
+import MyTimetableNote from "@/components/personal/MyTimetableNote";
 import TimetableMarquee from "./TimetableMarquee";
 import { TIMETABLE_SAMPLE } from "./timetableSample";
 
@@ -287,6 +288,7 @@ function QuickLinks({ language, copy, marquee }) {
                     <span className={styles.tileBody}>
                       <span className={styles.tileTitle}>{link.title}</span>
                       {link.description && <span className={styles.tileDescription}>{link.description}</span>}
+                      {index === 0 && language === "hr" && <MyTimetableNote className={styles.tileDescription} prefix="Tvoj raspored:" />}
                     </span>
                   </>
                 )}

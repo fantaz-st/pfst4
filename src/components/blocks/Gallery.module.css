@@ -1,10 +1,363 @@
-/* core/gallery — card-grid gap; figures are r24 via .prose. */
+/* core/gallery — mosaic + PhotoSwipe viewer (design: "PFST — Galerija"). */
+
 .gallery {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr));
-  gap: var(--grid-gap);
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  grid-auto-rows: 150px;
+  gap: var(--space-2);
+  margin-block: var(--space-10);
 }
 
-.gallery :global(figure) {
+.gallery[data-count="1"] {
+  grid-auto-rows: 200px;
+}
+
+.tile {
+  position: relative;
+  display: block;
+  grid-column: span var(--dc);
+  grid-row: span var(--dr);
+  overflow: hidden;
+  border-radius: var(--r-field);
+  background: var(--color-deep);
+  cursor: zoom-in;
+}
+
+.tile:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 3px;
+}
+
+.image {
+  object-fit: cover;
+  transition: transform 0.7s var(--ease-out);
+}
+
+.veil {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  background: color-mix(in srgb, var(--color-deep) 0%, transparent);
+  transition: background var(--dur-hover) var(--ease-out);
+}
+
+.expand {
+  display: grid;
+  width: 48px;
+  height: 48px;
+  place-items: center;
+  border-radius: var(--r-pill);
+  background: var(--color-surface);
+  color: var(--color-text);
+  opacity: 0;
+  transform: scale(0.8);
+  transition:
+    opacity var(--dur-hover) var(--ease-out),
+    transform var(--dur-hover) var(--ease-out);
+}
+
+@media (hover: hover) {
+  .tile:hover .image {
+    transform: scale(1.06);
+  }
+
+  .tile:hover .veil {
+    background: color-mix(in srgb, var(--color-deep) 28%, transparent);
+  }
+
+  .tile:hover .expand {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* "12 fotografija →" on the first tile. */
+.count {
+  position: absolute;
+  bottom: 14px;
+  left: 14px;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  height: 44px;
+  padding: 0 var(--space-2) 0 var(--space-4);
+  border-radius: var(--r-pill);
+  background: var(--glass);
+  color: var(--color-surface);
+  font-size: var(--fs-small);
+  font-weight: 600;
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+}
+
+.countArrow {
+  display: grid;
+  width: 30px;
+  height: 30px;
+  place-items: center;
+  border-radius: var(--r-pill);
+  background: var(--color-surface);
+  color: var(--color-text);
+}
+
+/* "+7 · Prikaži sve" on the last tile. */
+.more {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  background: color-mix(in srgb, var(--color-primary) 74%, transparent);
+  color: var(--color-text-on-dark-strong);
+  font-size: var(--fs-meta);
+  font-weight: 600;
+}
+
+.more b {
+  color: var(--color-surface);
+  font-size: 30px;
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: -0.03em;
+}
+
+.moreMobile {
+  display: none;
+}
+
+@media (max-width: 720px) {
+  .gallery {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-auto-rows: 110px;
+    gap: 6px;
+  }
+
+  .tile {
+    grid-column: span var(--mc);
+    grid-row: span var(--mr);
+  }
+
+  .tile[data-hide-mobile] {
+    display: none;
+  }
+
+  .moreDesktop {
+    display: none;
+  }
+
+  .moreMobile {
+    display: flex;
+  }
+
+  .count {
+    bottom: 12px;
+    left: 12px;
+    height: 40px;
+    font-size: var(--fs-meta);
+  }
+}
+
+/* ---- Viewer: PhotoSwipe, restyled ------------------------------------ */
+
+.viewer {
+  --pswp-bg: var(--color-deep);
+  --pswp-placeholder-bg: color-mix(in srgb, var(--pfst-bijela) 6%, transparent);
+  --pswp-icon-color: var(--color-surface);
+  --pswp-icon-color-secondary: transparent;
+  --pswp-preloader-color: color-mix(in srgb, var(--pfst-bijela) 20%, transparent);
+  --pswp-preloader-color-secondary: var(--color-accent);
+  font-family: var(--font-sans);
+}
+
+.viewer :global(.pswp__top-bar) {
+  top: var(--space-6);
+  right: var(--space-8);
+  left: var(--space-8);
+  width: auto;
+  height: 52px;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.viewer :global(.pswp__button) {
+  display: grid;
+  width: 52px;
+  height: 52px;
   margin: 0;
+  padding: 0;
+  place-items: center;
+  border-radius: var(--r-pill);
+  background: color-mix(in srgb, var(--pfst-bijela) 10%, transparent);
+  color: var(--color-surface);
+  opacity: 1;
+  transition: background var(--dur-hover) var(--ease-out);
+}
+
+.viewer :global(.pswp__button:hover) {
+  background: color-mix(in srgb, var(--pfst-bijela) 20%, transparent);
+}
+
+.viewer :global(.pswp__button--close) {
+  background: var(--color-surface);
+  color: var(--color-text);
+}
+
+.viewer :global(.pswp__button--close:hover) {
+  background: var(--color-surface);
+}
+
+.viewer :global(.pswp__button--arrow) {
+  top: 50%;
+  width: 60px;
+  height: 60px;
+  margin-top: -60px;
+}
+
+.viewer :global(.pswp__button--arrow--prev) {
+  left: var(--space-8);
+}
+
+.viewer :global(.pswp__button--arrow--next) {
+  right: var(--space-8);
+}
+
+.viewer :global(.pswp__button--arrow:disabled) {
+  opacity: 0.3;
+}
+
+.counter {
+  margin-right: auto;
+  color: var(--color-surface);
+  font-size: 40px;
+  font-weight: 700;
+  letter-spacing: -0.04em;
+  font-variant-numeric: tabular-nums;
+}
+
+.counter span {
+  color: var(--color-label-on-dark);
+}
+
+.download {
+  color: var(--color-surface);
+}
+
+.caption {
+  position: absolute;
+  right: var(--space-8);
+  bottom: 104px;
+  left: var(--space-8);
+  margin: 0 auto;
+  max-width: 760px;
+  color: var(--color-text-on-dark-strong);
+  font-size: var(--fs-body);
+  line-height: 1.5;
+  text-align: center;
+}
+
+.thumbs {
+  position: absolute;
+  right: 0;
+  bottom: var(--space-6);
+  left: 0;
+  display: flex;
+  justify-content: safe center;
+  gap: 10px;
+  padding: 4px var(--space-8);
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.thumbs::-webkit-scrollbar {
+  display: none;
+}
+
+.thumb {
+  flex: none;
+  width: 76px;
+  height: 56px;
+  padding: 0;
+  overflow: hidden;
+  border: 0;
+  border-radius: var(--r-mini);
+  background: transparent;
+  opacity: 0.45;
+  outline: 2px solid transparent;
+  outline-offset: 2px;
+  cursor: pointer;
+  transition:
+    opacity var(--dur-hover) var(--ease-out),
+    outline-color var(--dur-hover) var(--ease-out);
+}
+
+.thumb img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.thumb:hover {
+  opacity: 0.8;
+}
+
+.thumb[data-current] {
+  opacity: 1;
+  outline-color: var(--color-accent);
+}
+
+@media (max-width: 720px) {
+  .viewer :global(.pswp__top-bar) {
+    top: var(--space-4);
+    right: var(--space-4);
+    left: var(--space-4);
+    height: 48px;
+  }
+
+  .viewer :global(.pswp__button) {
+    width: 48px;
+    height: 48px;
+  }
+
+  .viewer :global(.pswp__button--zoom),
+  .viewer .download {
+    display: none;
+  }
+
+  .counter {
+    font-size: 26px;
+  }
+
+  .caption {
+    right: var(--space-4);
+    bottom: 92px;
+    left: var(--space-4);
+    font-size: var(--fs-small);
+    text-align: left;
+  }
+
+  .thumbs {
+    bottom: var(--space-6);
+    justify-content: flex-start;
+    gap: var(--space-2);
+    padding: 3px var(--space-4);
+  }
+
+  .thumb {
+    width: 52px;
+    height: 40px;
+    border-radius: var(--r-mini);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .image,
+  .veil,
+  .expand,
+  .thumb {
+    transition: none;
+  }
 }

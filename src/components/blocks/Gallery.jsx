@@ -1,19 +1,26 @@
-import styles from "./Gallery.module.css";
-import ImageBlock from "./Image";
+import GalleryMosaic from "./GalleryMosaic";
 
-// Gallery tiles are minmax(12rem, 1fr) inside a ~45rem column, so each image
-// renders at roughly a third of the column on desktop, half on phones.
-const GALLERY_IMAGE_SIZES = "(min-width: 48rem) 15rem, 50vw";
+const toText = (html) =>
+  String(html ?? "")
+    .replace(/<[^>]*>/g, " ")
+    .replace(/&nbsp;/g, " ")
+    .replace(/&amp;/g, "&")
+    .replace(/\s+/g, " ")
+    .trim();
 
-export default function Gallery({ block }) {
-  const images = block.innerBlocks ?? [];
+// core/gallery → the mosaic + PhotoSwipe viewer (GalleryMosaic).
+export default function Gallery({ block, language = "hr" }) {
+  const images = (block.innerBlocks ?? [])
+    .map((image) => image.attributes ?? {})
+    .filter((image) => image.url && image.width && image.height)
+    .map((image) => ({
+      src: image.url,
+      width: image.width,
+      height: image.height,
+      alt: image.alt ?? "",
+      caption: toText(image.caption),
+    }));
   if (images.length === 0) return null;
 
-  return (
-    <div className={styles.gallery}>
-      {images.map((image, index) => (
-        <ImageBlock key={index} block={image} sizes={GALLERY_IMAGE_SIZES} />
-      ))}
-    </div>
-  );
+  return <GalleryMosaic images={images} language={language} />;
 }

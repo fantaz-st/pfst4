@@ -7,6 +7,7 @@ import Button from "@/components/ui/Button";
 import Icon from "@/components/ui/Icon";
 import NewsList from "@/components/news/NewsList";
 import PageResults from "./PageResults";
+import RecordSearch from "@/components/personal/RecordSearch";
 import styles from "./SearchResults.module.css";
 
 const FIRST = 10;
@@ -50,6 +51,7 @@ export default async function SearchResults({ query, language }) {
         lead={term ? copy.searchResultsFor(term) : undefined}
       />
       <div className={styles.wrap}>
+        {term && <RecordSearch term={term} />}
         <form className={styles.form} action={action} role="search" data-fade>
           <label className={styles.field}>
             <span className="visually-hidden">{copy.searchLabel}</span>

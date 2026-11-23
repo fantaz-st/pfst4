@@ -10,6 +10,7 @@ import Toc from "./Toc";
 import PageTools from "./PageTools";
 import HubGrid from "./HubGrid";
 import PrevNext from "./PrevNext";
+import RecordVisit from "@/components/personal/RecordVisit";
 import styles from "./PageView.module.css";
 
 /**
@@ -32,6 +33,7 @@ export default async function PageView({ node }) {
 
   return (
     <>
+      <RecordVisit uri={node.uri} title={node.title} />
       <PageHero
         language={language}
         title={node.title}

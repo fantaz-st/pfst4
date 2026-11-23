@@ -9,6 +9,7 @@ import { gsap, MOTION_OK, EASE } from "@/components/motion/gsap";
 import { getLenis } from "@/components/motion/lenisStore";
 import { getChromeCopy } from "@/lib/chromeCopy";
 import { formatDate } from "@/lib/format";
+import { EMPTY_LIST, KEYS, clearHistory, forgetSearch, rememberSearch, useStored } from "@/lib/personal";
 import styles from "./SearchOverlay.module.css";
 
 const MIN_LENGTH = 2;
@@ -58,6 +59,14 @@ export default function SearchOverlay({ ref, open, onClose, language, frequent }
   const [query, setQuery] = useState("");
   const [results, setResults] = useState({ term: "", pages: [], posts: [] });
   const term = query.trim();
+  const recentSearches = useStored(KEYS.searches, EMPTY_LIST);
+  const recentPages = useStored(KEYS.recent, EMPTY_LIST);
+
+  // Following a result or the full-results link counts as a search.
+  function closeAndRemember() {
+    rememberSearch(term);
+    onClose();
+  }
   const active = term.length >= MIN_LENGTH;
   const loading = active && results.term !== term;
 
@@ -165,6 +174,7 @@ export default function SearchOverlay({ ref, open, onClose, language, frequent }
   function submit(event) {
     event.preventDefault();
     if (!term) return;
+    rememberSearch(term);
     onClose();
     router.push(`${action}?q=${encodeURIComponent(term)}`);
   }
@@ -225,6 +235,54 @@ export default function SearchOverlay({ ref, open, onClose, language, frequent }
         </form>
 
         <div className={styles.body} aria-live="polite" data-search-item>
+          {!active && recentSearches.length > 0 && (
+            <>
+              <div className={styles.groupRow}>
+                <span className={styles.group}>{copy.recentSearches}</span>
+                <button type="button" className={styles.clearHistory} onClick={clearHistory}>
+                  {copy.clearHistory}
+                </button>
+              </div>
+              <ul className={styles.recentSearches}>
+                {recentSearches.map((item) => (
+                  <li key={item} className={styles.recentSearch}>
+                    <button
+                      type="button"
+                      className={styles.recentTerm}
+                      onClick={() => {
+                        setQuery(item);
+                        inputRef.current?.focus();
+                      }}
+                    >
+                      {item}
+                    </button>
+                    <button type="button" className={styles.recentRemove} aria-label={copy.removeSearch(item)} onClick={() => forgetSearch(item)}>
+                      <Icon name="close" size={14} />
+                    </button>
+                  </li>
+                ))}
+              </ul>
+            </>
+          )}
+
+          {!active && recentPages.length > 0 && (
+            <>
+              <span className={styles.group}>{copy.recentPages}</span>
+              <ul className={styles.list}>
+                {recentPages.slice(0, 4).map((page) => (
+                  <li key={page.uri}>
+                    <Link href={page.uri} className={styles.quick} onClick={onClose}>
+                      <span className={styles.quickIcon} aria-hidden="true">
+                        <Icon name="clock" size={16} />
+                      </span>
+                      <span className={styles.quickLabel}>{page.title}</span>
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </>
+          )}
+
           {!active && frequent?.length > 0 && (
             <>
               <span className={styles.group}>{copy.frequent}</span>
@@ -253,7 +311,7 @@ export default function SearchOverlay({ ref, open, onClose, language, frequent }
                   <ul className={styles.list}>
                     {results.pages.map((page) => (
                       <li key={page.uri}>
-                        <Link href={page.uri} className={styles.result} onClick={onClose}>
+                        <Link href={page.uri} className={styles.result} onClick={closeAndRemember}>
                           <span className={styles.text}>
                             <span className={styles.title}>
                               <Highlight text={page.title} term={term} />
@@ -276,7 +334,7 @@ export default function SearchOverlay({ ref, open, onClose, language, frequent }
                   <ul className={styles.list}>
                     {results.posts.map((post) => (
                       <li key={post.uri}>
-                        <Link href={post.uri} className={styles.result} onClick={onClose}>
+                        <Link href={post.uri} className={styles.result} onClick={closeAndRemember}>
                           <span className={styles.text}>
                             <span className={styles.postTitle}>
                               <Highlight text={post.title} term={term} />
@@ -294,7 +352,7 @@ export default function SearchOverlay({ ref, open, onClose, language, frequent }
               )}
 
               <div className={styles.spacer} />
-              <Button href={fullHref} variant="accent" size="l" className={styles.all} onClick={onClose}>
+              <Button href={fullHref} variant="accent" size="l" className={styles.all} onClick={closeAndRemember}>
                 {copy.searchAll(term)}
               </Button>
             </>
@@ -303,7 +361,7 @@ export default function SearchOverlay({ ref, open, onClose, language, frequent }
           {active && !loading && !hasResults && (
             <div className={styles.empty}>
               <span className={styles.emptyTitle}>{copy.searchEmpty}</span>
-              <Link href={fullHref} className={styles.emptyLink} onClick={onClose}>
+              <Link href={fullHref} className={styles.emptyLink} onClick={closeAndRemember}>
                 {copy.searchOpenFull}
               </Link>
             </div>

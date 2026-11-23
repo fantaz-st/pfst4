@@ -1,6 +1,7 @@
 import { useId } from "react";
 import { renderWpHtml } from "@/lib/html";
 import { getChromeCopy } from "@/lib/chromeCopy";
+import ConsultationsBlock from "@/components/consultations/ConsultationsBlock";
 import styles from "./Table.module.css";
 
 // Staff tables run to five columns, so the table scrolls sideways on narrow
@@ -10,8 +11,14 @@ import styles from "./Table.module.css";
 // is a named region so screen readers say what that focus stop is.
 export default function Table({ block, language }) {
   const captionId = useId();
-  const { headers = [], rows = [], caption, fixed } = block.attributes ?? {};
+  const { headers = [], rows = [], caption, fixed, className = "" } = block.attributes ?? {};
   if (rows.length === 0) return null;
+
+  // The consultations schedule (class "konzultacije" on the block) becomes
+  // a searchable list instead of a plain table.
+  if (className.split(/\s+/).includes("konzultacije")) {
+    return <ConsultationsBlock block={block} language={language} />;
+  }
 
   const labelProps = caption
     ? { "aria-labelledby": captionId }

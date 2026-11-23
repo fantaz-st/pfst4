@@ -8,6 +8,7 @@ import { addDays, buildWeek, filterEvents, formatDay, isIsoDate, mondayOf, today
 import TimetableControls from "./TimetableControls";
 import TimetableWeek from "./TimetableWeek";
 import TimetableExport from "./TimetableExport";
+import TimetableMemory from "@/components/personal/TimetableMemory";
 import styles from "./TimetablePage.module.css";
 
 export const TIMETABLE_URI = "/nastava/studiranje/raspored";
@@ -117,6 +118,7 @@ export default async function TimetablePage({ searchParams }) {
   return (
     <>
       {hero}
+      <TimetableMemory query={new URLSearchParams(selectionParams).toString()} label={selectionLabel} basePath={TIMETABLE_URI} />
       <div className={styles.wrap}>
         <div className={styles.toolbar}>
           <Suspense>

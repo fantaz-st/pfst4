@@ -7,6 +7,7 @@ import Button from "@/components/ui/Button";
 import Chip from "@/components/ui/Chip";
 import Icon from "@/components/ui/Icon";
 import NewsCard from "@/components/news/NewsCard";
+import RecordVisit from "@/components/personal/RecordVisit";
 import { getGoalIcon, sortByGoalNumber } from "@/lib/ciljevi";
 import { formatDate } from "@/lib/format";
 import { getNodeLanguage } from "@/lib/language";
@@ -96,6 +97,7 @@ export default async function PostView({ node }) {
   return (
     <>
       <div className={styles.progress} data-post-progress aria-hidden="true" />
+      <RecordVisit uri={node.uri} title={node.title} />
       <Hero size="post" solid>
         <Breadcrumbs items={categories[0] ? [{ label: copy.archiveTitle, uri: archiveUri }] : []} current={categories[0]?.name ?? copy.archiveTitle} language={language} />
       </Hero>

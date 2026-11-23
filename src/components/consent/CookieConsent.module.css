@@ -1,0 +1,375 @@
+/* Cookie consent (design: "PFST — Kolačići" canvas). */
+
+/* ---- Notice: bottom-left card; full width on phones ---- */
+.notice {
+  position: fixed;
+  bottom: var(--space-6);
+  left: var(--space-6);
+  z-index: 85;
+  display: flex;
+  width: min(470px, calc(100% - 2 * var(--space-6)));
+  box-sizing: border-box;
+  padding: 28px;
+  flex-direction: column;
+  gap: 18px;
+  border-radius: var(--r-feature);
+  background: var(--color-surface);
+  color: var(--color-text);
+  box-shadow: 0 30px 80px -30px color-mix(in srgb, var(--color-deep) 60%, transparent);
+}
+
+.head {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.badge {
+  display: grid;
+  flex: none;
+  width: 44px;
+  height: 44px;
+  place-items: center;
+  border-radius: var(--r-icon);
+  background: var(--tint-plava-3);
+}
+
+.title {
+  margin: 0;
+  font-size: var(--fs-title-s);
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+}
+
+.text {
+  margin: 0;
+  color: var(--color-text-muted);
+  font-size: var(--fs-body);
+  line-height: 1.55;
+}
+
+.link {
+  color: var(--color-text);
+  font-weight: 600;
+  text-decoration: underline;
+  text-decoration-color: var(--color-accent);
+  text-underline-offset: 3px;
+}
+
+.actions {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-2);
+}
+
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 48px;
+  padding: 0 22px;
+  border: 1px solid transparent;
+  border-radius: var(--r-pill);
+  font: inherit;
+  font-size: var(--fs-body);
+  font-weight: 600;
+  white-space: nowrap;
+  cursor: pointer;
+  transition:
+    background var(--dur-hover) var(--ease-out),
+    border-color var(--dur-hover) var(--ease-out);
+}
+
+.primary {
+  background: var(--color-primary);
+  color: var(--color-surface);
+}
+
+.primary:hover {
+  background: var(--color-primary-hover);
+}
+
+.outline {
+  border-color: var(--color-line-strong);
+  background: var(--color-surface);
+  color: var(--color-text);
+}
+
+.outline:hover {
+  border-color: var(--color-text);
+}
+
+.customize {
+  display: inline-flex;
+  align-self: flex-start;
+  align-items: center;
+  gap: var(--space-2);
+  min-height: 44px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--color-text);
+  font: inherit;
+  font-size: var(--fs-small);
+  font-weight: 600;
+  cursor: pointer;
+}
+
+/* ---- Settings dialog: centred; a bottom sheet on phones ---- */
+.layer {
+  position: fixed;
+  inset: 0;
+  z-index: 110;
+  display: grid;
+  place-items: center;
+  padding: var(--space-6);
+}
+
+.backdrop {
+  position: absolute;
+  inset: 0;
+  padding: 0;
+  border: 0;
+  background: color-mix(in srgb, var(--color-deep) 50%, transparent);
+  cursor: default;
+}
+
+.dialog {
+  position: relative;
+  display: flex;
+  width: min(620px, 100%);
+  max-height: calc(100dvh - 2 * var(--space-6));
+  box-sizing: border-box;
+  padding: var(--space-8);
+  flex-direction: column;
+  gap: 20px;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  border-radius: var(--r-feature);
+  background: var(--color-surface);
+  color: var(--color-text);
+}
+
+.handle {
+  display: none;
+}
+
+.dialogHead {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-4);
+}
+
+.dialogIntro {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.dialogTitle {
+  margin: 0;
+  font-size: var(--fs-title-l);
+  font-weight: 700;
+  line-height: 1.05;
+  letter-spacing: -0.03em;
+}
+
+.close {
+  display: grid;
+  flex: none;
+  width: 44px;
+  height: 44px;
+  place-items: center;
+  padding: 0;
+  border: 0;
+  border-radius: var(--r-pill);
+  background: var(--color-bg);
+  color: var(--color-text);
+  cursor: pointer;
+}
+
+.categories {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.category {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  padding: 20px 22px;
+  border-radius: var(--r-panel);
+  background: var(--color-bg);
+}
+
+.categoryHead {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+}
+
+.categoryTitle {
+  font-size: var(--fs-body-l);
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+
+.categoryText {
+  margin: 0;
+  color: var(--color-text-muted);
+  font-size: var(--fs-small);
+  line-height: 1.5;
+}
+
+.example {
+  color: var(--color-text-muted);
+  font-size: var(--fs-meta);
+  font-weight: 500;
+}
+
+.always {
+  display: inline-flex;
+  align-items: center;
+  height: 28px;
+  padding: 0 var(--space-3);
+  border-radius: var(--r-pill);
+  background: var(--color-surface);
+  font-size: var(--fs-meta);
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.switch {
+  position: relative;
+  flex: none;
+  width: 52px;
+  height: 30px;
+  padding: 0;
+  border: 0;
+  border-radius: var(--r-pill);
+  background: var(--color-input-border-hover);
+  cursor: pointer;
+  transition: background var(--dur-hover) var(--ease-out);
+}
+
+.switch::after {
+  position: absolute;
+  top: 4px;
+  left: 4px;
+  width: 22px;
+  height: 22px;
+  border-radius: var(--r-pill);
+  background: var(--color-surface);
+  content: "";
+  transition: transform var(--dur-hover) var(--ease-out);
+}
+
+.switch[aria-checked="true"] {
+  background: var(--color-primary);
+}
+
+.switch[aria-checked="true"]::after {
+  transform: translateX(22px);
+}
+
+.dialogFoot {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+}
+
+.dialogActions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+@media (max-width: 720px) {
+  .notice {
+    right: var(--space-3);
+    bottom: var(--space-3);
+    left: var(--space-3);
+    width: auto;
+    padding: 22px 20px 16px;
+    gap: 14px;
+    border-radius: var(--r-card);
+  }
+
+  .notice .text {
+    font-size: var(--fs-small);
+  }
+
+  .actions {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  /* "Prihvati sve" first under the thumb; both stay equally prominent. */
+  .actions .primary {
+    order: -1;
+  }
+
+  .customize {
+    align-self: center;
+  }
+
+  .layer {
+    align-items: end;
+    padding: 0;
+  }
+
+  .dialog {
+    width: 100%;
+    max-height: calc(100dvh - var(--space-12));
+    padding: 10px 20px calc(var(--space-6) + env(safe-area-inset-bottom));
+    gap: var(--space-4);
+    border-radius: var(--r-feature) var(--r-feature) 0 0;
+  }
+
+  .handle {
+    display: block;
+    width: 40px;
+    height: 5px;
+    margin: 0 auto 4px;
+    border-radius: var(--r-pill);
+    background: var(--color-line-strong);
+  }
+
+  .dialogTitle {
+    font-size: var(--fs-title-m);
+  }
+
+  .dialogFoot {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .dialogActions {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .hideMobile {
+    display: none;
+  }
+}
+
+@media print {
+  .notice,
+  .layer {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .button,
+  .switch,
+  .switch::after {
+    transition: none;
+  }
+}

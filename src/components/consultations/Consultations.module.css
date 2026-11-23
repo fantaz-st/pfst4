@@ -1,0 +1,496 @@
+/* Konzultacije. Everything is scoped under .root so it beats the .prose
+   rules (lists, headings) of the page it sits in. */
+
+.root {
+  margin-top: var(--space-6);
+}
+
+/* ---- Toolbar: search + day filter on a white bar ---- */
+.root .toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-2);
+  border-radius: var(--r-card);
+  background: var(--color-surface);
+}
+
+.root .field {
+  display: flex;
+  flex: 1 1 260px;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+  height: 48px;
+  padding: 0 18px;
+  border-radius: var(--r-pill);
+  background: var(--color-bg);
+  color: var(--color-text-muted);
+}
+
+.root .field:focus-within {
+  box-shadow: inset 0 0 0 2px var(--color-primary);
+}
+
+.root .field input {
+  flex: 1;
+  min-width: 0;
+  height: 100%;
+  border: 0;
+  background: transparent;
+  color: var(--color-text);
+  font: inherit;
+  font-size: var(--fs-body);
+  font-weight: 500;
+  outline: none;
+}
+
+.root .field input::placeholder {
+  color: var(--color-text-muted);
+}
+
+.root .days {
+  display: flex;
+  gap: 2px;
+}
+
+.root .day {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  height: 48px;
+  padding: 0 var(--space-4);
+  border: 0;
+  border-radius: var(--r-pill);
+  background: transparent;
+  color: var(--color-text);
+  font: inherit;
+  font-size: var(--fs-small);
+  font-weight: 600;
+  white-space: nowrap;
+  cursor: pointer;
+  transition:
+    background var(--dur-hover) var(--ease-out),
+    color var(--dur-hover) var(--ease-out);
+}
+
+.root .day:hover {
+  background: var(--color-bg-hover);
+}
+
+.root .day[aria-pressed="true"] {
+  background: var(--color-primary);
+  color: var(--color-surface);
+}
+
+/* Today: a plava dot under the day. */
+.root .day[data-today]::after {
+  position: absolute;
+  bottom: 7px;
+  left: 50%;
+  width: 5px;
+  height: 5px;
+  margin-left: -2.5px;
+  border-radius: var(--r-pill);
+  background: var(--color-accent);
+  content: "";
+}
+
+.root .count {
+  margin: var(--space-4) 0 0 var(--space-1);
+  color: var(--color-text-muted);
+  font-size: var(--fs-meta);
+  font-weight: 600;
+}
+
+/* ---- All days: A–Ž index + letter groups ---- */
+.root .layout {
+  display: grid;
+  grid-template-columns: 36px minmax(0, 1fr);
+  gap: var(--space-6);
+  margin-top: var(--space-4);
+}
+
+.root .index {
+  position: sticky;
+  top: 96px;
+  display: flex;
+  align-self: start;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.root .letterLink,
+.root .letterOff {
+  display: grid;
+  width: 36px;
+  height: 28px;
+  place-items: center;
+  border-radius: var(--r-mini);
+  font-size: var(--fs-meta);
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.root .letterLink {
+  color: var(--color-text);
+  transition: background var(--dur-hover) var(--ease-out);
+}
+
+.root .letterLink:hover {
+  background: var(--color-surface);
+}
+
+.root .letterOff {
+  color: var(--color-line-strong);
+}
+
+.root .list {
+  min-width: 0;
+}
+
+.root .cols {
+  display: grid;
+  grid-template-columns: minmax(0, 1.2fr) 120px minmax(0, 1.8fr) 40px;
+  grid-template-areas: "who room slots cal";
+  align-items: center;
+  column-gap: var(--space-6);
+}
+
+.root .head {
+  padding: 0 var(--space-6) var(--space-2);
+  color: var(--color-text-muted);
+  font-size: var(--fs-micro);
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.root .headSlots,
+.root .slots {
+  display: grid;
+  grid-area: slots;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-4);
+}
+
+.root .group {
+  scroll-margin-top: 96px;
+}
+
+.root .letter {
+  margin: var(--space-6) 0 10px var(--space-1);
+  font-size: var(--fs-title-m);
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: -0.03em;
+  scroll-margin-top: 96px;
+}
+
+.root .panel {
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  border-radius: var(--r-card);
+  background: var(--color-surface);
+  list-style: none;
+}
+
+.root .row {
+  min-height: 64px;
+  margin: 0;
+  padding: var(--space-3) var(--space-6);
+  border-top: 1px solid var(--color-line);
+}
+
+.root .row:first-child {
+  border-top: 0;
+}
+
+.root .who {
+  display: flex;
+  grid-area: who;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px var(--space-3);
+  min-width: 0;
+}
+
+.root .star {
+  display: grid;
+  flex: none;
+  width: 36px;
+  height: 36px;
+  margin: -4px 0 -4px -10px;
+  padding: 0;
+  place-items: center;
+  border: 0;
+  border-radius: var(--r-pill);
+  background: transparent;
+  color: var(--color-input-border-hover);
+  cursor: pointer;
+  transition: color var(--dur-hover) var(--ease-out);
+}
+
+.root .star:hover {
+  color: var(--color-text);
+}
+
+.root .star[aria-pressed="true"] {
+  color: var(--color-primary);
+}
+
+.root .name {
+  font-size: var(--fs-body);
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+.root .room,
+.root .roomInline,
+.root .muted {
+  color: var(--color-text-muted);
+  font-size: var(--fs-small);
+}
+
+.root .room {
+  grid-area: room;
+}
+
+.root .roomInline {
+  display: none;
+  flex-basis: 100%;
+  padding-left: 26px;
+}
+
+.root .slot {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.root .chip {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 40px;
+  height: 26px;
+  padding: 0 var(--space-2);
+  border-radius: var(--r-mini);
+  background: var(--tint-plava-3);
+  font-size: var(--fs-micro);
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.root .time {
+  font-size: var(--fs-body);
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+.root .agreed {
+  display: flex;
+  grid-area: slots;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2) var(--space-4);
+}
+
+.root .mail {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  color: var(--color-text);
+  font-size: var(--fs-small);
+  font-weight: 600;
+  text-decoration: underline;
+  text-decoration-color: var(--color-accent);
+  text-underline-offset: 3px;
+  overflow-wrap: anywhere;
+}
+
+.root .cal {
+  display: grid;
+  grid-area: cal;
+  width: 40px;
+  height: 40px;
+  place-items: center;
+  border-radius: var(--r-pill);
+  background: var(--color-bg);
+  color: var(--color-text);
+  transition:
+    background var(--dur-hover) var(--ease-out),
+    color var(--dur-hover) var(--ease-out);
+}
+
+.root .cal:hover,
+.root .cal:focus-visible {
+  background: var(--color-primary);
+  color: var(--color-surface);
+}
+
+/* ---- One day: slots by time ---- */
+.root .partHead {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-3);
+}
+
+.root .dayCols {
+  display: grid;
+  grid-template-columns: 140px minmax(0, 1fr) 160px 40px;
+  grid-template-areas: "when who room cal";
+  align-items: center;
+  column-gap: var(--space-6);
+}
+
+.root .when {
+  grid-area: when;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.root .from {
+  font-size: var(--fs-title-s);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+.root .to {
+  margin-left: 6px;
+  color: var(--color-text-muted);
+  font-size: var(--fs-small);
+  font-weight: 500;
+}
+
+.root .row[data-live] {
+  background: var(--tint-plava-3);
+}
+
+.root .live {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 26px;
+  padding: 0 10px;
+  border-radius: var(--r-pill);
+  background: var(--color-primary);
+  color: var(--color-surface);
+  font-size: var(--fs-micro);
+  font-weight: 700;
+}
+
+.root .live::before {
+  width: 6px;
+  height: 6px;
+  border-radius: var(--r-pill);
+  background: var(--color-accent);
+  content: "";
+}
+
+/* ---- Empty ---- */
+.root .empty {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+  margin-top: var(--space-4);
+  padding: var(--space-6);
+  border-radius: var(--r-card);
+  background: var(--color-surface);
+  color: var(--color-text-muted);
+}
+
+.root .empty p {
+  margin: 0;
+}
+
+.root .clear {
+  min-height: 44px;
+  padding: 0 18px;
+  border: 1px solid var(--color-line-strong);
+  border-radius: var(--r-pill);
+  background: transparent;
+  color: var(--color-text);
+  font: inherit;
+  font-size: var(--fs-small);
+  font-weight: 600;
+  cursor: pointer;
+}
+
+/* ---- Below 900px: stacked rows, no index ---- */
+@media (max-width: 900px) {
+  .root .days {
+    flex: 1 1 100%;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+
+  .root .days::-webkit-scrollbar {
+    display: none;
+  }
+
+  .root .day {
+    height: 44px;
+  }
+
+  .root .layout {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .root .index,
+  .root .head,
+  .root .room {
+    display: none;
+  }
+
+  .root .roomInline {
+    display: block;
+  }
+
+  .root .row {
+    padding: var(--space-4) var(--space-4) var(--space-4) 20px;
+  }
+
+  .root .cols {
+    grid-template-columns: minmax(0, 1fr) 40px;
+    grid-template-areas:
+      "who cal"
+      "slots slots";
+    row-gap: 10px;
+  }
+
+  .root .slots {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 6px;
+  }
+
+  .root .dayCols {
+    grid-template-columns: 64px minmax(0, 1fr) 40px;
+    grid-template-areas: "when who cal";
+    column-gap: var(--space-4);
+  }
+
+  .root .from {
+    font-size: var(--fs-body-l);
+  }
+
+  .root .to {
+    display: block;
+    margin-left: 0;
+    font-size: var(--fs-meta);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .root .day,
+  .root .letterLink,
+  .root .cal,
+  .root .star {
+    transition: none;
+  }
+}

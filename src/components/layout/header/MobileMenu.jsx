@@ -12,6 +12,7 @@ import { getChromeCopy } from "@/lib/chromeCopy";
 // import { ENROLL_URL } from "@/lib/siteLinks";
 import { isCurrentPage, isCurrentSection } from "./navUtils";
 import { openSiteSearch } from "./openSiteSearch";
+import { EMPTY_LIST, KEYS, useStored } from "@/lib/personal";
 import styles from "./MobileMenu.module.css";
 
 // A menu item with its own page is a split row: the label opens the page,
@@ -86,6 +87,7 @@ export default function MobileMenu({
 }) {
   const copy = getChromeCopy(language);
   const pathname = usePathname();
+  const recentPages = useStored(KEYS.recent, EMPTY_LIST);
   const sheetRef = useRef(null);
   const closeRef = useRef(null);
 
@@ -212,6 +214,19 @@ export default function MobileMenu({
           <Icon name="search" size={18} />
           {copy.searchShort}
         </button>
+
+        {recentPages.length > 0 && (
+          <div className={styles.recent}>
+            <span className={styles.recentLabel}>{copy.recent}</span>
+            <div className={styles.recentLinks}>
+              {recentPages.slice(0, 3).map((page) => (
+                <Link key={page.uri} href={page.uri} className={styles.recentLink}>
+                  {page.title}
+                </Link>
+              ))}
+            </div>
+          </div>
+        )}
 
         <nav className={styles.nav} aria-label={copy.mainNavLabel}>
           {menu.map((item) => {
