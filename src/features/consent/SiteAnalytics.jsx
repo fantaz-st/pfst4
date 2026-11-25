@@ -14,7 +14,7 @@ function beforeSend(event) {
 /**
  * Vercel Web Analytics: anonymised page views without cookies. Loads only
  * once the visitor allowed "Analitika" in the cookie settings
- * (components/consent); editor-only pages aren't counted.
+ * (features/consent); editor-only pages aren't counted.
  */
 export default function SiteAnalytics() {
   const consent = useConsent();

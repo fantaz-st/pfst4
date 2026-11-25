@@ -6,9 +6,9 @@ they're done.
 
 ## Bugs
 
-- [ ] `src/lib/siteLinks.js:36` — `href: "tel+:38521619399"` is not a valid
+- [ ] `src/lib/i18n/siteLinks.js:36` — `href: "tel+:38521619399"` is not a valid
       phone link; should be `tel:+38521619399`.
-- [ ] `src/lib/siteLinks.js:37` — `href: "info@pfst.hr"` is missing `mailto:`,
+- [ ] `src/lib/i18n/siteLinks.js:37` — `href: "info@pfst.hr"` is missing `mailto:`,
       so it links to a relative page.
 
 ## WordPress (editors)
@@ -21,13 +21,13 @@ they're done.
       no redirects are needed.
 - [ ] Reassign the 11 posts in "Bez kategorije" to a real category.
 - [ ] Fix the typo in the goal term `odgovornja-potrosnja-i-proizvodnja`
-      (name and slug), then remove the workaround in `src/lib/ciljevi.js:63`.
+      (name and slug), then remove the workaround in `src/features/news/ciljevi.js`.
 - [ ] Replace "- Katedra za…" leading dashes in accordion summaries with
       nested `details` blocks.
 - [ ] Fill in Yoast titles and meta descriptions, at least for the main
       sections (hub-card descriptions come from them).
 - [ ] Create the privacy policy page (HR + EN), then set `PRIVACY_HREF` in
-      `src/components/consent/CookieConsent.jsx`.
+      `src/features/consent/CookieConsent.jsx`.
 - [ ] Konzultacije: the page's table block needs the CSS class
       `konzultacije` to render as the searchable list.
 
@@ -45,7 +45,7 @@ they're done.
 
 ## Information needed from the faculty
 
-All marked `TODO` in `src/lib/siteLinks.js` (and mirrored in
+All marked `TODO` in `src/lib/i18n/siteLinks.js` (and mirrored in
 `src/lib/seo.js:275`):
 
 - [ ] Webmail URL
@@ -54,8 +54,8 @@ All marked `TODO` in `src/lib/siteLinks.js` (and mirrored in
 - [ ] Facebook page URL (then sync the JSON-LD in `seo.js`)
 - [ ] What teaching type "T" means in Sceduly (`src/lib/timetable.js:11`,
       currently guessed as "Terenska nastava")
-- [ ] Homepage photos for `public/images/` (`HomePage.jsx:48`,
-      `HomePage.module.css:527`)
+- [ ] Homepage photos for `public/images/` (`features/home/HomePage.jsx:39`,
+      `features/home/Statement.module.css:52`)
 
 ## Design
 

@@ -1,5 +1,5 @@
 // Konzultacije: a WordPress table block with the class "konzultacije" →
-// structured entries for the searchable view (components/consultations).
+// structured entries for the searchable view (features/consultations).
 //
 // Two column layouts are read:
 // - the clean one: Nastavnik · Kabinet · Dan · Vrijeme · Dan · Vrijeme · Napomena

@@ -88,7 +88,7 @@ The rules:
   filters and "load more", the Lenis provider, and components that exist
   to animate something; also the gallery viewer, the Konzultacije filter,
   the Raspored controls and export, cookie consent, and the
-  `components/personal/` recorders. Nothing else without a reason. Block
+  `features/personal/` recorders. Nothing else without a reason. Block
   renderers are Server Components — a block that needs interaction hands
   its parsed data to one client child (Gallery → GalleryMosaic,
   ConsultationsBlock → Consultations).
@@ -202,7 +202,7 @@ Each block has `name`, `attributes`, `dynamicContent` (rendered HTML) and
 
 - **`core/table` with the class `konzultacije`** (Advanced → Additional
   CSS class) renders as the searchable Konzultacije list instead of a table
-  (`lib/consultations.js` parses both the clean and the Excel-export column
+  (`features/consultations/consultations.js` parses both the clean and the Excel-export column
   layouts).
 - **`core/gallery`** — the image inner blocks become a mosaic that opens
   PhotoSwipe; images without width/height are skipped.
@@ -228,7 +228,7 @@ is nested `details`, not a leading dash.
   link to that page plus a separate chevron button, so every page stays
   reachable. Child order is Page Attributes → Order, then title.
 - "Na ovoj stranici" lists the page's top-level h2 blocks
-  (`lib/headings.js` assigns the ids; shown from two headings up).
+  (`features/pages/headings.js` assigns the ids; shown from two headings up).
 - Hub-card descriptions are the child page's Yoast meta description —
   WordPress pages have no excerpt.
 
@@ -280,7 +280,7 @@ linking to that filter, nothing more — no goal pages.
 
 - No colours and no colour palette — use the official icon images in
   `public/ciljevi/` (`hr/` for Croatian, `E-WEB-Goal-*` for English).
-- The goal number is not stored in WordPress; `lib/ciljevi.js` maps
+- The goal number is not stored in WordPress; `features/news/ciljevi.js` maps
   slug → number + icon.
 - Five terms return `count: null` (zero posts) — hide empty terms from the
   filter.
@@ -342,7 +342,7 @@ Sceduly REST API (`lib/sceduly.js`, server only; pure helpers and
 - Konzultacije rows link to the lecturer's Raspored view by matching
   names (`nameKey`: Sceduly is "First Last", the table "Last First").
 - The homepage timetable tile is decorative: hardcoded entries in
-  `home/timetableSample.js`, on purpose — it doesn't call Sceduly.
+  `features/home/timetableSample.js`, on purpose — it doesn't call Sceduly.
 - No English timetable yet.
 
 ## Consent and personal storage

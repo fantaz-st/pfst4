@@ -175,7 +175,7 @@
 }
 
 /* ---- News hover / focus: frame pulls in, arrow after the title, chip
-   turns modra (same as components/news/NewsCard) ---- */
+   turns modra (same as features/news/NewsCard) ---- */
 .featuredPhoto {
   clip-path: inset(0 round var(--r-feature));
   transition: clip-path 0.8s var(--ease-out);

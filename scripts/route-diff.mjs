@@ -11,8 +11,8 @@ import path from "node:path";
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 loadEnv(path.join(__dirname, "..", ".env"));
 
-const { wpFetch } = await import("../src/lib/wp.js");
-const { ALL_CONTENT_URIS } = await import("../src/lib/queries.js");
+const { wpFetch } = await import("../src/lib/wp/wp.js");
+const { ALL_CONTENT_URIS } = await import("../src/lib/wp/queries.js");
 
 const OLD_ROUTES_FILE = path.join(__dirname, "..", "old-routes.txt");
 

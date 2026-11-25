@@ -27,7 +27,7 @@ import styles from "./SiteHeader.module.css";
  * - the full-screen search layer, opened by every search control on the
  *   site (floating nav, utility row, menu sheet, mega panel)
  *
- * `menu` is the WordPress menu tree (lib/menu.js); `frequent` and
+ * `menu` is the WordPress menu tree (lib/wp/menu.js); `frequent` and
  * `languages` are plain data prepared on the server.
  */
 export default function SiteHeader({ menu, language, frequent, languages, utility }) {

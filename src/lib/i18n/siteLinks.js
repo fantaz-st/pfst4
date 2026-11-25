@@ -1,6 +1,6 @@
 // Hardcoded links in the site shell (utility row, mega menu "Često
 // traženo", footer). The main navigation itself comes from the WordPress
-// menu (lib/menu.js); only what the design adds around it lives here.
+// menu (lib/wp/menu.js); only what the design adds around it lives here.
 //
 // Paths come from old-routes.txt (the editors' task list), so they resolve
 // once the pages exist in WordPress. TODO: every `TODO` entry is an unknown

@@ -11,7 +11,7 @@ import styles from "./Hero.module.css";
  * photo: props for <Photo> (src/alt, or `tag` for a placeholder)
  * solid: render the hero without a photo or scrim
  * Children fill the box below the nav: first child at the top, last at the
- * bottom (components/content/PageHero).
+ * bottom (components/layout/PageHero).
  */
 export default function Hero({ size = "page", photo, solid = false, labelledBy, children }) {
   return (

@@ -1,5 +1,5 @@
 // Pure post helpers, safe in client components (no data fetching here —
-// that lives in lib/news.js).
+// that lives in lib/wp/news.js).
 
 // "istaknuto" is a flag, not a topic (CLAUDE.md): it's never shown as a
 // post's category label.
