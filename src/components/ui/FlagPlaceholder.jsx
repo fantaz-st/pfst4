@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef } from "react";
+import { gsap, MOTION_OK } from "@/components/motion/gsap";
 import styles from "./FlagPlaceholder.module.css";
 
 /**
@@ -88,105 +89,12 @@ export default function FlagPlaceholder({ tone = "dark", className }) {
     const root = rootRef.current;
     const layer = layerRef.current;
     if (!root || !layer) return undefined;
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return undefined;
 
-    const timers = new Set();
-    const taken = new Set();
-    let clusters = 0;
-    let loners = 0;
-    let running = false;
-    let loop = 0;
-
-    const later = (fn, ms) => {
-      const id = setTimeout(() => {
-        timers.delete(id);
-        fn();
-      }, ms);
-      timers.add(id);
-    };
-    const pick = (list) => list[Math.floor(Math.random() * list.length)];
-    const key = (c, r) => `${c},${r}`;
-    const rowCount = () => Math.max(1, Math.floor(root.clientHeight / (root.clientWidth / COLS)));
-    // Inside the grid, and no other tile in the 8 cells around any of ours.
-    const fits = (cells, rows) =>
-      cells.every(([c, r]) => c >= 0 && r >= 0 && c < COLS && r < rows) &&
-      cells.every(([c, r]) => {
-        for (let dc = -1; dc <= 1; dc += 1) {
-          for (let dr = -1; dr <= 1; dr += 1) if (taken.has(key(c + dc, r + dr))) return false;
-        }
-        return true;
-      });
-
-    function spawn(cluster) {
-      const rows = rowCount();
-      const shape = cluster ? pick(SHAPES) : [[0, 0]];
-      for (let attempt = 0; attempt < 30; attempt += 1) {
-        const c0 = Math.floor(Math.random() * COLS);
-        const r0 = Math.floor(Math.random() * rows);
-        const cells = shape.map(([c, r]) => [c + c0, r + r0]);
-        if (!fits(cells, rows)) continue;
-
-        const tiles = cells.map(([c, r], index) => {
-          taken.add(key(c, r));
-          const tile = document.createElement("span");
-          tile.className = styles.tile;
-          tile.style.setProperty("--c", c);
-          tile.style.setProperty("--r", r);
-          tile.innerHTML = svgMarkup(Math.floor(Math.random() * DESIGNS.length));
-          layer.appendChild(tile);
-          later(() => tile.classList.add(styles.on), 40 + index * FLIP_STAGGER);
-          return tile;
-        });
-        if (cluster) clusters += 1;
-        else loners += 1;
-
-        const [min, max] = cluster ? CLUSTER_HOLD : LONER_HOLD;
-        const hold = min + Math.random() * (max - min);
-        later(() => {
-          tiles.forEach((tile, index) => later(() => tile.classList.remove(styles.on), index * FLIP_STAGGER));
-          later(() => {
-            tiles.forEach((tile) => tile.remove());
-            cells.forEach(([c, r]) => taken.delete(key(c, r)));
-            if (cluster) clusters -= 1;
-            else loners -= 1;
-          }, tiles.length * FLIP_STAGGER + 450);
-        }, hold);
-        return;
-      }
-    }
-
-    function start() {
-      if (running) return;
-      running = true;
-      root.dataset.live = "true";
-      spawn(true);
-      spawn(false);
-      later(() => spawn(true), 250);
-      later(() => spawn(false), 500);
-      loop = setInterval(() => {
-        if (clusters < MAX_CLUSTERS && Math.random() < 0.6) spawn(true);
-        else if (loners < MAX_LONERS) spawn(false);
-      }, SPAWN_EVERY);
-    }
-
-    function stop() {
-      if (!running) return;
-      running = false;
-      clearInterval(loop);
-      timers.forEach(clearTimeout);
-      timers.clear();
-      taken.clear();
-      clusters = 0;
-      loners = 0;
-      layer.replaceChildren();
-    }
-
-    const observer = new IntersectionObserver(([entry]) => (entry.isIntersecting ? start() : stop()));
-    observer.observe(root);
-    return () => {
-      observer.disconnect();
-      stop();
-    };
+    // Only while motion is allowed; turning on "reduce motion" mid-visit
+    // stops the flips and brings the fixed arrangement back.
+    const mm = gsap.matchMedia();
+    mm.add(MOTION_OK, () => animate(root, layer));
+    return () => mm.revert();
   }, []);
 
   return (
@@ -204,4 +112,106 @@ export default function FlagPlaceholder({ tone = "dark", className }) {
       <span ref={layerRef} className={styles.layer} />
     </span>
   );
+}
+
+// Runs the live field while it is on screen; returns the cleanup.
+function animate(root, layer) {
+  const timers = new Set();
+  const taken = new Set();
+  let clusters = 0;
+  let loners = 0;
+  let running = false;
+  let loop = 0;
+
+  const later = (fn, ms) => {
+    const id = setTimeout(() => {
+      timers.delete(id);
+      fn();
+    }, ms);
+    timers.add(id);
+  };
+  const pick = (list) => list[Math.floor(Math.random() * list.length)];
+  const key = (c, r) => `${c},${r}`;
+  const rowCount = () => Math.max(1, Math.floor(root.clientHeight / (root.clientWidth / COLS)));
+  // Inside the grid, and no other tile in the 8 cells around any of ours.
+  const fits = (cells, rows) =>
+    cells.every(([c, r]) => c >= 0 && r >= 0 && c < COLS && r < rows) &&
+    cells.every(([c, r]) => {
+      for (let dc = -1; dc <= 1; dc += 1) {
+        for (let dr = -1; dr <= 1; dr += 1) if (taken.has(key(c + dc, r + dr))) return false;
+      }
+      return true;
+    });
+
+  function spawn(cluster) {
+    const rows = rowCount();
+    const shape = cluster ? pick(SHAPES) : [[0, 0]];
+    for (let attempt = 0; attempt < 30; attempt += 1) {
+      const c0 = Math.floor(Math.random() * COLS);
+      const r0 = Math.floor(Math.random() * rows);
+      const cells = shape.map(([c, r]) => [c + c0, r + r0]);
+      if (!fits(cells, rows)) continue;
+
+      const tiles = cells.map(([c, r], index) => {
+        taken.add(key(c, r));
+        const tile = document.createElement("span");
+        tile.className = styles.tile;
+        tile.style.setProperty("--c", c);
+        tile.style.setProperty("--r", r);
+        tile.innerHTML = svgMarkup(Math.floor(Math.random() * DESIGNS.length));
+        layer.appendChild(tile);
+        later(() => tile.classList.add(styles.on), 40 + index * FLIP_STAGGER);
+        return tile;
+      });
+      if (cluster) clusters += 1;
+      else loners += 1;
+
+      const [min, max] = cluster ? CLUSTER_HOLD : LONER_HOLD;
+      const hold = min + Math.random() * (max - min);
+      later(() => {
+        tiles.forEach((tile, index) => later(() => tile.classList.remove(styles.on), index * FLIP_STAGGER));
+        later(() => {
+          tiles.forEach((tile) => tile.remove());
+          cells.forEach(([c, r]) => taken.delete(key(c, r)));
+          if (cluster) clusters -= 1;
+          else loners -= 1;
+        }, tiles.length * FLIP_STAGGER + 450);
+      }, hold);
+      return;
+    }
+  }
+
+  function start() {
+    if (running) return;
+    running = true;
+    root.dataset.live = "true";
+    spawn(true);
+    spawn(false);
+    later(() => spawn(true), 250);
+    later(() => spawn(false), 500);
+    loop = setInterval(() => {
+      if (clusters < MAX_CLUSTERS && Math.random() < 0.6) spawn(true);
+      else if (loners < MAX_LONERS) spawn(false);
+    }, SPAWN_EVERY);
+  }
+
+  function stop() {
+    if (!running) return;
+    running = false;
+    clearInterval(loop);
+    timers.forEach(clearTimeout);
+    timers.clear();
+    taken.clear();
+    clusters = 0;
+    loners = 0;
+    layer.replaceChildren();
+  }
+
+  const observer = new IntersectionObserver(([entry]) => (entry.isIntersecting ? start() : stop()));
+  observer.observe(root);
+  return () => {
+    observer.disconnect();
+    stop();
+    delete root.dataset.live;
+  };
 }

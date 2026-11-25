@@ -18,14 +18,44 @@ function decode(value = "") {
     .replace(/&amp;/g, "&");
 }
 
+// Per-IP limit so a script can't turn this endpoint into a WordPress search
+// flood. The overlay debounces typing (250 ms), so a person stays far below
+// it. In memory, so it holds per serverless instance — a brake, not a wall;
+// a Vercel Firewall rate-limit rule on /api/search is the hard limit.
+const WINDOW_MS = 10_000;
+const MAX_PER_WINDOW = 20;
+const MAX_TRACKED = 5000;
+const hits = new Map();
+
+function limited(request) {
+  const ip = request.headers.get("x-forwarded-for")?.split(",")[0].trim() || request.headers.get("x-real-ip") || "unknown";
+  const now = Date.now();
+  if (hits.size > MAX_TRACKED) {
+    for (const [key, entry] of hits) if (now - entry.start > WINDOW_MS) hits.delete(key);
+  }
+  const entry = hits.get(ip);
+  if (!entry || now - entry.start > WINDOW_MS) {
+    hits.set(ip, { start: now, count: 1 });
+    return false;
+  }
+  entry.count += 1;
+  return entry.count > MAX_PER_WINDOW;
+}
+
 /**
  * Live results for the header search layer (SearchOverlay):
  * GET /api/search?q=…&lang=hr|en → { pages: [{ title, uri, path }], posts: [{ title, uri, date }] }
  * The full result list stays on /pretraga and /en/search.
  */
 export async function GET(request) {
+  if (limited(request)) {
+    return Response.json(EMPTY, { status: 429, headers: { "Retry-After": String(WINDOW_MS / 1000) } });
+  }
+
   const params = new URL(request.url).searchParams;
-  const query = (params.get("q") ?? "").trim().slice(0, 80);
+  // Lowercased and single-spaced (WordPress search ignores both), so
+  // "Upisi", "upisi " and "UPISI" share one cache entry.
+  const query = (params.get("q") ?? "").toLowerCase().replace(/\s+/g, " ").trim().slice(0, 80);
   const language = params.get("lang") === "en" ? "en" : "hr";
   if (query.length < 2) return Response.json(EMPTY);
 

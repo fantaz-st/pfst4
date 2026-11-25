@@ -448,6 +448,7 @@
   overflow: hidden;
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 3;
+  line-clamp: 3;
   font-size: var(--fs-title-m);
   font-weight: 500;
   line-height: 1.25;

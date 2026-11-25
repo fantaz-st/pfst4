@@ -4,14 +4,14 @@ import PageHero from "@/components/content/PageHero";
 import Button from "@/components/ui/Button";
 import Icon from "@/components/ui/Icon";
 import { getTimetableData } from "@/lib/sceduly";
-import { addDays, buildWeek, filterEvents, formatDay, isIsoDate, mondayOf, todayInZagreb } from "@/lib/timetable";
+import { TIMETABLE_URI, addDays, buildWeek, filterEvents, formatDay, isIsoDate, mondayOf, todayInZagreb } from "@/lib/timetable";
 import TimetableControls from "./TimetableControls";
 import TimetableWeek from "./TimetableWeek";
 import TimetableExport from "./TimetableExport";
+import { fold } from "@/lib/fold";
 import TimetableMemory from "@/components/personal/TimetableMemory";
 import styles from "./TimetablePage.module.css";
 
-export const TIMETABLE_URI = "/nastava/studiranje/raspored";
 
 const COPY = {
   title: "Raspored nastave",
@@ -31,12 +31,7 @@ const SHEET_ID = "raspored-ispis";
 
 // "Pomorska nautika · 1. godina" → "pomorska-nautika-1-godina" (file names).
 const slug = (text) =>
-  text
-    .normalize("NFD")
-    .replace(/[\u0300-\u036f]/g, "")
-    .replace(/đ/g, "d")
-    .replace(/Đ/g, "D")
-    .toLowerCase()
+  fold(text)
     .replace(/[^a-z0-9]+/g, "-")
     .replace(/^-|-$/g, "");
 

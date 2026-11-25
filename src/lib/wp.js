@@ -24,20 +24,20 @@ export async function wpFetch(query, variables = {}, { tags, preview = false } =
     });
 
     if (!res.ok) {
-      console.error("wpFetch HTTP error", res.status, res.statusText);
+      console.error("wpFetch HTTP error", res.status, res.statusText, variables);
       return null;
     }
 
     const { data, errors } = await res.json();
 
     if (errors) {
-      console.error("wpFetch GraphQL error", errors);
+      console.error("wpFetch GraphQL error", JSON.stringify(variables), errors);
       return null;
     }
 
     return data;
   } catch (error) {
-    console.error("wpFetch network error", error);
+    console.error("wpFetch network error", JSON.stringify(variables), error);
     return null;
   }
 }

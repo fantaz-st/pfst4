@@ -1,6 +1,9 @@
 // Pure timetable helpers (no Sceduly access) — dates are "YYYY-MM-DD"
 // strings, handled in UTC so the server's own timezone never shifts a day.
 
+// The hardcoded Raspored route (app/(hr)/nastava/studiranje/raspored).
+export const TIMETABLE_URI = "/nastava/studiranje/raspored";
+
 export const TEACHING_TYPES = {
   P: "Predavanja",
   A: "Auditorne vježbe",
@@ -71,38 +74,4 @@ export function buildWeek(events, monday, holidays) {
 
   // Mon–Fri always; Saturday and Sunday only when something is on.
   return days.filter((day) => day.index < 5 || day.events.length);
-}
-
-// Small deterministic PRNG, seeded by a string (the date) — "random" picks
-// that stay the same all day and don't need Math.random during render.
-function seededRandom(seed) {
-  let hash = 1779033703 ^ seed.length;
-  for (const char of seed) {
-    hash = Math.imul(hash ^ char.charCodeAt(0), 3432918353);
-    hash = (hash << 13) | (hash >>> 19);
-  }
-  return () => {
-    hash = Math.imul(hash ^ (hash >>> 16), 2246822507);
-    hash = Math.imul(hash ^ (hash >>> 13), 3266489909);
-    hash ^= hash >>> 16;
-    return (hash >>> 0) / 4294967296;
-  };
-}
-
-// Homepage timetable wall: this week's classes (or any, outside term),
-// shuffled differently each day; repeated if there are fewer than `count`.
-export function pickMarqueeEntries(events, holidays, today, count = 30) {
-  let pool = buildWeek(events, mondayOf(today), holidays).flatMap((day) => day.events);
-  if (pool.length < count) pool = events;
-  const entries = [...pool];
-  const random = seededRandom(today);
-  for (let index = entries.length - 1; index > 0; index -= 1) {
-    const swap = Math.floor(random() * (index + 1));
-    [entries[index], entries[swap]] = [entries[swap], entries[index]];
-  }
-  if (!entries.length) return [];
-  return Array.from({ length: count }, (_, index) => {
-    const { id, start, end, subject, room, type, group, lecturers } = entries[index % entries.length];
-    return { key: `${id}-${index}`, start, end, subject, room, type, group, lecturer: lecturers[0] ?? "" };
-  });
 }

@@ -8,6 +8,8 @@
 // contact link. A row that can't be read keeps its name and text, so no one
 // disappears from the list.
 
+import { searchKey } from "@/lib/fold";
+
 export const DAYS = [
   { key: 0, short: "Pon", full: "Ponedjeljak", en: "Mon" },
   { key: 1, short: "Uto", full: "Utorak", en: "Tue" },
@@ -48,14 +50,7 @@ function slot(dayText, timeText) {
   return day === null || !time ? null : { day, ...time };
 }
 
-// Folds "Č" → "c" etc. so "cacic" finds "Čačić".
-export function searchKey(text) {
-  return text
-    .toLowerCase()
-    .replace(/đ/g, "dj")
-    .normalize("NFD")
-    .replace(/[̀-ͯ]/g, "");
-}
+export { searchKey };
 
 export function parseConsultations({ headers = [], rows = [] } = {}) {
   const clean = /kabinet/i.test(toText(headers[1]));

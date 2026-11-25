@@ -69,6 +69,13 @@ The rules:
   - **720px** — 1 column, gutter 20px
 - Headless WordPress via WPGraphQL + WPGraphQL Content Blocks
 - Motion: GSAP 3.15 (ScrollTrigger, SplitText) + Lenis 1.3
+- The only other runtime libraries, each for one job:
+  - `embla-carousel-react` (+ wheel gestures) — the homepage news slider
+  - `photoswipe` — the gallery viewer (`blocks/GalleryMosaic.jsx`)
+  - `html-to-image` — Raspored "save as image" (`TimetableExport`)
+  - `@vercel/analytics` — page views, only with consent (`SiteAnalytics`)
+  - `html-react-parser` + `isomorphic-dompurify` — block HTML
+- Hosted on Vercel. `vercel.json` holds the daily Sceduly cron.
 
 ## Hard rules
 
@@ -79,8 +86,12 @@ The rules:
 - **`"use client"` is the exception.** Expected client components: the
   header's menus (mega menu, mobile menu, floating nav), search, news
   filters and "load more", the Lenis provider, and components that exist
-  to animate something. Nothing else without a reason. Block renderers are
-  Server Components.
+  to animate something; also the gallery viewer, the Konzultacije filter,
+  the Raspored controls and export, cookie consent, and the
+  `components/personal/` recorders. Nothing else without a reason. Block
+  renderers are Server Components — a block that needs interaction hands
+  its parsed data to one client child (Gallery → GalleryMosaic,
+  ConsultationsBlock → Consultations).
 - **GSAP and Lenis are for motion only.** They may be imported only inside
   `"use client"` components that exist to animate or scroll something.
   Never in `BlockRenderer`, any block element, or anywhere in the content
@@ -88,7 +99,13 @@ The rules:
   component in its subtree, that is the wrong file. All motion runs inside
   `gsap.matchMedia()` so `prefers-reduced-motion: reduce` disables it (and
   Lenis), exactly as `design/STYLEGUIDE.md` §8 specifies. No other
-  animation or UI library.
+  animation or UI library beyond the ones listed under Stack; adding one
+  needs a reason written there.
+- Modal dialogs keep Tab inside with `trapTab()` (`lib/focusTrap.js`),
+  close on Escape, pause Lenis and return focus to the opener.
+- Diacritic-insensitive matching goes through `lib/fold.js`: `fold()`
+  (length-preserving, for highlighting) or `searchKey()` (also "dj" → "d",
+  for filtering lists). Don't write another normalizer.
 - Never `throw` on a GraphQL error in a page path — return `null` and let
   the route call `notFound()`. One malformed page must not 500 the site.
 - Content is Croatian. UI strings, slugs and copy stay in Croatian.
@@ -182,6 +199,18 @@ Each block has `name`, `attributes`, `dynamicContent` (rendered HTML) and
   display so assistive tech still announces it as a table.
 - **`core/paragraph`** — editors leave many empty paragraphs as spacing.
   Skip blocks whose `content` is empty or the layout gains random gaps.
+
+- **`core/table` with the class `konzultacije`** (Advanced → Additional
+  CSS class) renders as the searchable Konzultacije list instead of a table
+  (`lib/consultations.js` parses both the clean and the Excel-export column
+  layouts).
+- **`core/gallery`** — the image inner blocks become a mosaic that opens
+  PhotoSwipe; images without width/height are skipped.
+
+**Never give a post or page a purely numeric slug.** `nodeByUri` crashes
+with "Internal server error" on `/novosti/4820/` ("Ocean Hackaton 2025",
+slug = its ID), so the page 404s. Untitled-then-titled posts get their ID
+as slug — rename the slug in WordPress.
 
 Content debt to fix in WordPress eventually: some accordion summaries encode
 hierarchy as text (`"- Katedra za..."` nested under a Zavod). The right fix
@@ -292,6 +321,46 @@ What the frontend needs:
   language — never hardcode Croatian in a component English pages render.
 - **`/en`** is its own static route, like the Croatian homepage — not part
   of the catch-all.
+
+## Raspored (Sceduly)
+
+The timetable is not WordPress content: `app/(hr)/nastava/studiranje/raspored`
+is a hardcoded route (it beats the catch-all at the same uri) fed by the
+Sceduly REST API (`lib/sceduly.js`, server only; pure helpers and
+`TIMETABLE_URI` in `lib/timetable.js`). Selection is query params
+(`?studij=&godina=`, `?nastavnik=`, `?dvorana=`, `?tjedan=`).
+
+- **Sceduly allows one sync per day and 10 concurrent connections.** The
+  normalized data sits in `unstable_cache` with no time-based expiry; the
+  daily Vercel cron (`/api/cron/sceduly`, `Authorization: Bearer
+  $CRON_SECRET`) marks the `sceduly` tag stale and triggers the one
+  refresh. Programme requests run at most 8 at a time. Don't add a
+  `revalidate` timer or any other code path that calls Sceduly.
+- Env: `SCEDULY_USER`, `SCEDULY_INSTITUTION_ID`, `SCEDULY_PASSWORD`,
+  `SCEDULY_LOCATION`, `CRON_SECRET`. Without them `getTimetableData()`
+  returns `null` and the page says the timetable is unavailable.
+- Konzultacije rows link to the lecturer's Raspored view by matching
+  names (`nameKey`: Sceduly is "First Last", the table "Last First").
+- The homepage timetable tile is decorative: hardcoded entries in
+  `home/timetableSample.js`, on purpose — it doesn't call Sceduly.
+- No English timetable yet.
+
+## Consent and personal storage
+
+`lib/personal.js` is the only place that touches `localStorage` (prefix
+`pfst:`, every access wrapped, read via `useSyncExternalStore` so hydration
+never mismatches). Nothing in it leaves the browser.
+
+- Always kept (explicit choices): the consent itself, the last Raspored
+  selection ("Moj raspored" — opening Raspored without a selection goes
+  back to it), starred lecturers in Konzultacije.
+- Only with consent: recent searches and recently visited pages
+  ("Povijest pregledavanja"). Withdrawing consent clears them.
+- Vercel Analytics loads only with "Analitika" consent; `/preview` and
+  `/styleguide` are never counted.
+- `CookieConsent` shows until the visitor chooses ("Samo nužni" as easy as
+  "Prihvati sve"); the footer's "Kolačići" button reopens the settings.
+  TODO: link the privacy policy page once it exists.
 
 ## Content migration status
 

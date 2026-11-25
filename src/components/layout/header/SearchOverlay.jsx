@@ -9,21 +9,13 @@ import { gsap, MOTION_OK, EASE } from "@/components/motion/gsap";
 import { getLenis } from "@/components/motion/lenisStore";
 import { getChromeCopy } from "@/lib/chromeCopy";
 import { formatDate } from "@/lib/format";
+import { trapTab } from "@/lib/focusTrap";
+import { fold } from "@/lib/fold";
 import { EMPTY_LIST, KEYS, clearHistory, forgetSearch, rememberSearch, useStored } from "@/lib/personal";
 import styles from "./SearchOverlay.module.css";
 
 const MIN_LENGTH = 2;
 const DEBOUNCE_MS = 250;
-
-// Diacritic-insensitive and length-preserving (č → c, đ → d), so a match
-// index found in the folded title is also valid in the original.
-function fold(value) {
-  return value
-    .toLowerCase()
-    .normalize("NFD")
-    .replace(/[̀-ͯ]/g, "")
-    .replace(/đ/g, "d");
-}
 
 function Highlight({ text, term }) {
   const index = term ? fold(text).indexOf(fold(term)) : -1;
@@ -100,20 +92,7 @@ export default function SearchOverlay({ ref, open, onClose, language, frequent }
         onCloseRef.current();
         return;
       }
-      if (event.key !== "Tab" || !layer) return;
-      const focusable = Array.from(
-        layer.querySelectorAll("a[href], button:not([disabled]), input"),
-      ).filter((el) => el.offsetParent !== null);
-      if (focusable.length === 0) return;
-      const first = focusable[0];
-      const last = focusable[focusable.length - 1];
-      if (event.shiftKey && document.activeElement === first) {
-        event.preventDefault();
-        last.focus();
-      } else if (!event.shiftKey && document.activeElement === last) {
-        event.preventDefault();
-        first.focus();
-      }
+      trapTab(event, layer);
     }
 
     document.addEventListener("keydown", onKey);

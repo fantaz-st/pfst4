@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState, useSyncExternalStore } from "react";
 import Icon from "@/components/ui/Icon";
 import { getLenis } from "@/components/motion/lenisStore";
+import { trapTab } from "@/lib/focusTrap";
 import { OPEN_CONSENT_EVENT, saveConsent, useConsent } from "@/lib/personal";
 import styles from "./CookieConsent.module.css";
 
@@ -108,7 +109,8 @@ export default function CookieConsent({ language = "hr" }) {
     return () => window.removeEventListener(OPEN_CONSENT_EVENT, onOpen);
   }, []);
 
-  // Dialog: focus inside, Escape closes, page scroll pauses, focus returns.
+  // Dialog: focus inside, Tab stays inside, Escape closes, page scroll
+  // pauses, focus returns.
   useEffect(() => {
     if (!open) return undefined;
     const opener = document.activeElement;
@@ -119,6 +121,7 @@ export default function CookieConsent({ language = "hr" }) {
 
     function onKey(event) {
       if (event.key === "Escape") setOpen(false);
+      else trapTab(event, dialog);
     }
     document.addEventListener("keydown", onKey);
     return () => {

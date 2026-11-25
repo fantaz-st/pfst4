@@ -1,24 +1,20 @@
 import { getTimetableData } from "@/lib/sceduly";
 import { nameKey, parseConsultations } from "@/lib/consultations";
+import { TIMETABLE_URI } from "@/lib/timetable";
 import Consultations from "./Consultations";
 
-const TIMETABLE_PATH = "/nastava/studiranje/raspored";
-
 // Lecturer → their timetable (Raspored, lecturer view). Sceduly is cached
-// for the day; if it can't be reached the rows simply have no link.
+// for the day; if it can't be reached (null) the rows simply have no link.
 async function getTimetableLinks() {
-  try {
-    const data = await getTimetableData();
-    const links = new Map();
-    data.events.forEach((event) =>
-      event.lecturerIds.forEach((id, index) => {
-        links.set(nameKey(event.lecturers[index]), `${TIMETABLE_PATH}?nastavnik=${encodeURIComponent(id)}`);
-      }),
-    );
-    return links;
-  } catch {
-    return new Map();
-  }
+  const links = new Map();
+  const data = await getTimetableData();
+  if (!data) return links;
+  data.events.forEach((event) =>
+    event.lecturerIds.forEach((id, index) => {
+      links.set(nameKey(event.lecturers[index]), `${TIMETABLE_URI}?nastavnik=${encodeURIComponent(id)}`);
+    }),
+  );
+  return links;
 }
 
 /**

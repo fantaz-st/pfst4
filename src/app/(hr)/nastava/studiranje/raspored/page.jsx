@@ -1,4 +1,5 @@
-import TimetablePage, { TIMETABLE_URI } from "@/components/timetable/TimetablePage";
+import TimetablePage from "@/components/timetable/TimetablePage";
+import { TIMETABLE_URI } from "@/lib/timetable";
 import { buildPageMetadata } from "@/lib/seo";
 
 // Hardcoded route — takes precedence over the WordPress page at the same

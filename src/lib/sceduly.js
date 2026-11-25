@@ -9,13 +9,35 @@
 //
 // Sceduly allows ONE sync per day. The signature changes every minute, so
 // Next's fetch cache would see a new URL each time and never hit — the
-// normalized result is cached with unstable_cache instead (one sync a day:
-// 3 requests, then one /programs?programID= per study programme).
+// normalized result is cached with unstable_cache instead (one sync: 3
+// requests, then one /programs?programID= per study programme).
+//
+// The cache never expires on a timer: a time-based expiry lets every
+// serverless instance that notices it refetch. Instead the daily Vercel cron
+// (vercel.json → /api/cron/sceduly) marks the "sceduly" tag stale at night
+// and triggers the single refresh.
 import { createHmac } from "node:crypto";
 import { unstable_cache } from "next/cache";
 
 const BASE = "https://api.sceduly.com";
-const DAY = 60 * 60 * 24;
+export const SCEDULY_TAG = "sceduly";
+// Sceduly allows 10 concurrent connections; stay under it.
+const MAX_CONCURRENT = 8;
+
+// Promise.all with at most `limit` calls in flight; results keep input order.
+async function mapLimit(items, limit, fn) {
+  const results = new Array(items.length);
+  let next = 0;
+  async function worker() {
+    while (next < items.length) {
+      const index = next;
+      next += 1;
+      results[index] = await fn(items[index]);
+    }
+  }
+  await Promise.all(Array.from({ length: Math.min(limit, items.length) }, worker));
+  return results;
+}
 
 function zagrebNow(withTime) {
   return new Intl.DateTimeFormat("sv-SE", {
@@ -121,7 +143,7 @@ const newestVersion = (program) =>
 
 async function loadTimetable() {
   const range = academicYear(zagrebNow(false));
-  // Sceduly allows at most 10 concurrent connections: 3 now, then one per programme.
+  // 3 requests now, then one per programme, never more than MAX_CONCURRENT at once.
   const [overview, holidays, programs] = await Promise.all([
     scedulyGet("/timetable/overview", { location: process.env.SCEDULY_LOCATION, ...range }),
     scedulyGet("/timetable/holidays"),
@@ -131,8 +153,8 @@ async function loadTimetable() {
   const events = list(overview)
     .filter((event) => String(event.subjectID) !== "0")
     .map(normalizeEvent);
-  const details = await Promise.all(
-    programList.map((program) => scedulyGet("/programs", { programID: String(newestVersion(program).programID) })),
+  const details = await mapLimit(programList, MAX_CONCURRENT, (program) =>
+    scedulyGet("/programs", { programID: String(newestVersion(program).programID) }),
   );
 
   return {
@@ -154,7 +176,7 @@ async function loadTimetable() {
   };
 }
 
-const cachedTimetable = unstable_cache(loadTimetable, ["sceduly-timetable"], { revalidate: DAY, tags: ["sceduly"] });
+const cachedTimetable = unstable_cache(loadTimetable, ["sceduly-timetable"], { revalidate: false, tags: [SCEDULY_TAG] });
 
 /** @returns {Promise<null | { updated: string, events: object[], holidays: Record<string, string>, programs: object[] }>} */
 export async function getTimetableData() {
