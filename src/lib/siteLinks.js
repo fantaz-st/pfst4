@@ -33,8 +33,8 @@ const LINKS = {
     footer: {
       address: ["Ruđera Boškovića 37", "21000 Split, Hrvatska"],
       contact: [
-        { label: "Telefon", href: "tel+:38521619399" }, // TODO: phone number
-        { label: "E-mail", href: "info@pfst.hr" }, // TODO: student office e-mail
+        { label: "Telefon", href: "tel:+38521619399" }, // TODO: phone number
+        { label: "E-mail", href: "mailto:info@pfst.hr" }, // TODO: student office e-mail
         { label: "Facebook", href: "https://www.facebook.com/pfst.hr" }, // TODO: Facebook page URL
       ],
       faculty: [

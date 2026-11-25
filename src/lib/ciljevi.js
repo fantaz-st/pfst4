@@ -60,8 +60,7 @@ const GOAL_NUMBERS = {
   "ocuvanje-zivota-na-kopnu": 15,
   "mir-pravda-i-snazne-institucije": 16,
   "partnerstvom-do-ciljeva": 17,
-  // TODO: typo in the live WordPress term (CLAUDE.md) — remove once fixed.
-  "odgovornja-potrosnja-i-proizvodnja": 12,
+  "odgovornija-potrosnja-i-proizvodnja": 12,
 };
 
 export function getGoalNumber(slug) {
@@ -76,7 +75,5 @@ export function getGoalIcon(slug, language = "hr") {
 }
 
 export function sortByGoalNumber(terms) {
-  return [...terms].sort(
-    (a, b) => (getGoalNumber(a.slug) ?? 99) - (getGoalNumber(b.slug) ?? 99),
-  );
+  return [...terms].sort((a, b) => (getGoalNumber(a.slug) ?? 99) - (getGoalNumber(b.slug) ?? 99));
 }
