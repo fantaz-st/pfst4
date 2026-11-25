@@ -1,0 +1,97 @@
+.ctaSection {
+  padding: 0 var(--frame-inset) var(--frame-inset);
+}
+
+.ctaGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--grid-gap);
+}
+
+.trainingCard {
+  position: relative;
+  display: flex;
+  min-width: 0;
+  height: 600px;
+  overflow: hidden;
+  border-radius: var(--r-block);
+}
+
+.trainingLabel {
+  position: relative;
+  font-size: var(--fs-label);
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.trainingCard {
+  color: var(--color-text);
+}
+
+.trainingPhoto {
+  position: absolute;
+  inset: 0;
+}
+
+.trainingPanel {
+  position: absolute;
+  right: 14px;
+  bottom: 14px;
+  left: 14px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: var(--space-6);
+  padding: 26px 28px;
+  border-radius: 22px;
+  background: var(--color-surface);
+}
+
+.trainingPanel > span {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.trainingLabel {
+  color: var(--color-text-muted);
+}
+
+.trainingTitle {
+  font-size: var(--fs-title-l);
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: var(--ls-display);
+}
+
+.trainingLead {
+  color: var(--color-text-muted);
+  font-size: var(--fs-body);
+  line-height: 1.5;
+}
+
+.trainingCard:is(:hover, :focus-visible) .trainingPhoto img {
+  transform: scale(1.06);
+}
+
+@media (max-width: 1080px) {
+  .ctaGrid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+@media (max-width: 720px) {
+  .ctaSection {
+    padding-bottom: var(--frame-inset);
+  }
+
+  .trainingCard {
+    height: 540px;
+  }
+
+  .trainingPanel {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}

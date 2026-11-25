@@ -1,0 +1,324 @@
+.wrap {
+  width: min(100%, var(--container));
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+
+.quick {
+  padding-block: var(--section-y) calc(var(--section-y) - var(--space-2));
+}
+
+.sectionHead {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: var(--space-8);
+  margin-bottom: var(--space-12);
+}
+
+.sectionHeadLeft {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-6);
+}
+
+.eyebrow {
+  display: inline-flex;
+  min-height: 32px;
+  align-items: center;
+  gap: 10px;
+  padding-inline: 14px;
+  border-radius: var(--r-pill);
+  background: var(--color-surface);
+  font-size: var(--fs-label);
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.eyebrow > span {
+  width: 7px;
+  height: 7px;
+  flex: none;
+  border-radius: var(--r-pill);
+  background: var(--color-accent);
+}
+
+.sectionTitle {
+  max-width: 15ch;
+  font-size: var(--fs-h2);
+  font-weight: 600;
+  line-height: 0.95;
+  letter-spacing: var(--ls-display);
+}
+
+.sectionLead {
+  max-width: 40ch;
+  color: var(--color-text-muted);
+  font-size: var(--fs-body-l);
+  line-height: 1.55;
+}
+
+.bento {
+  display: grid;
+  grid-auto-rows: 216px;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: var(--grid-gap);
+}
+
+.tile {
+  position: relative;
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  justify-content: space-between;
+  overflow: hidden;
+  padding: 26px;
+  border-radius: var(--r-card);
+  background: var(--color-surface);
+  color: var(--color-text);
+  transition: transform var(--dur-hover) var(--ease-out);
+}
+
+.tile:hover {
+  transform: translateY(-6px);
+}
+
+.tileLarge {
+  grid-column: span 2;
+  grid-row: span 2;
+  padding: var(--space-8);
+  background: var(--color-primary);
+  color: var(--color-surface);
+}
+
+.tileAccent {
+  grid-column: span 2;
+  background: var(--color-accent);
+}
+
+.tileIcon {
+  display: inline-flex;
+  width: 48px;
+  height: 48px;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--r-icon);
+  background: var(--color-bg);
+}
+
+.tileAccent .tileIcon {
+  background: color-mix(in srgb, var(--color-surface) 35%, transparent);
+}
+
+.tileLarge .tileIcon {
+  background: color-mix(in srgb, var(--color-surface) 12%, transparent);
+  color: var(--color-surface);
+}
+
+.tileBody {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.tileTitle {
+  font-size: var(--fs-title-s);
+  font-weight: 500;
+  line-height: 1.3;
+  letter-spacing: -0.02em;
+}
+
+.tileLarge .tileTitle {
+  font-size: var(--fs-title-l);
+  line-height: 1;
+}
+
+.tileAccent .tileTitle {
+  font-size: var(--fs-title-l);
+  line-height: 1;
+}
+
+.tileDescription {
+  max-width: 48ch;
+  color: var(--color-text-muted);
+  font-size: var(--fs-small);
+  line-height: 1.45;
+}
+
+.tileLarge .tileDescription {
+  color: var(--color-text-on-dark);
+  font-size: var(--fs-body);
+}
+
+.tileAccent .tileDescription {
+  color: var(--color-text);
+}
+
+.tileArrow {
+  position: absolute;
+  top: 22px;
+  right: 22px;
+}
+
+.tileLarge .tileArrow {
+  background: color-mix(in srgb, var(--color-surface) 12%, transparent);
+  color: var(--color-surface);
+}
+
+.tileImage {
+  grid-column: span 2;
+  padding: 0;
+  background: var(--color-deep);
+  color: var(--color-text);
+}
+
+.tilePhoto,
+.tileOverlay {
+  position: absolute;
+  inset: 0;
+}
+
+.tileImagePanel {
+  position: absolute;
+  right: var(--space-3);
+  bottom: var(--space-3);
+  left: var(--space-3);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  padding: var(--space-4) 18px;
+  border-radius: var(--r-field);
+  background: var(--color-surface);
+}
+
+.timetable {
+  display: grid;
+  max-width: 460px;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: var(--space-2);
+  margin-top: var(--space-2);
+}
+
+.timetableColumn {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.timetableDay {
+  color: var(--color-label-on-dark);
+  font-size: var(--fs-micro);
+  font-weight: 500;
+}
+
+.timetableBlock {
+  height: 44px;
+  border-radius: var(--r-mini);
+  background: color-mix(in srgb, var(--color-surface) 8%, transparent);
+}
+
+.timetableBlock:nth-of-type(3) {
+  height: 64px;
+}
+
+.timetableBlock:nth-of-type(4) {
+  height: 36px;
+}
+
+.timetableBlockAccent {
+  background: var(--color-accent);
+}
+
+.timetableBlockMid {
+  background: color-mix(in srgb, var(--color-surface) 18%, transparent);
+}
+
+.tile:is(:hover, :focus-visible) .tileArrow {
+  transform: rotate(-45deg);
+}
+
+@media (max-width: 1080px) {
+  .bento {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 720px) {
+  .quick {
+    padding-block: var(--space-24);
+  }
+
+  .sectionHead {
+    gap: var(--space-6);
+    margin-bottom: var(--space-8);
+  }
+
+  .sectionHeadLeft {
+    gap: var(--space-4);
+  }
+
+  .bento {
+    grid-auto-rows: minmax(180px, auto);
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .tileLarge,
+  .tileAccent,
+  .tileImage {
+    grid-column: span 1;
+    grid-row: span 1;
+  }
+
+  .tileLarge {
+    min-height: 420px;
+  }
+
+  .tileImage {
+    min-height: 240px;
+  }
+
+  .timetable {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tile:hover {
+    transform: none;
+  }
+}
+
+.tileShot {
+  position: relative;
+  display: block;
+  flex: 1;
+  min-height: 180px;
+  margin-block: var(--space-6);
+  overflow: hidden;
+  border: 1px solid color-mix(in srgb, var(--color-surface) 18%, transparent);
+  border-radius: var(--r-field);
+}
+
+.tileShot img {
+  object-fit: cover;
+  object-position: top left;
+}
+
+/* "Raspored nastave" tile with the live timetable wall (TimetableMarquee) */
+.tileTimetable {
+  isolation: isolate;
+  background: var(--color-surface);
+  color: var(--color-primary);
+}
+
+.tileTimetable .tileIcon {
+  background: var(--color-bg);
+  color: var(--color-primary);
+}
+
+.tileTimetable .tileDescription {
+  color: var(--color-text-muted);
+}

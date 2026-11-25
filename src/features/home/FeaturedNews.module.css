@@ -1,0 +1,296 @@
+.wrap {
+  width: min(100%, var(--container));
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+
+.sectionHeadLeft {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-6);
+}
+
+.sectionTitle {
+  max-width: 15ch;
+  font-size: var(--fs-h2);
+  font-weight: 600;
+  line-height: 0.95;
+  letter-spacing: var(--ls-display);
+}
+
+.highlightsActions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.highlights {
+  padding-top: var(--space-6);
+}
+
+.highlightsInner {
+  padding-bottom: var(--section-y);
+  overflow: hidden;
+}
+
+.highlightsHead {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: var(--space-8);
+  margin-bottom: 44px;
+}
+
+.highlightsActions {
+  gap: var(--space-6);
+}
+
+.featuredCard,
+.newsCard,
+.archiveCard {
+  position: relative;
+  display: flex;
+  flex: none;
+}
+
+.featuredCard {
+  width: 680px;
+  height: 620px;
+  overflow: hidden;
+  border-radius: var(--r-feature);
+  background: var(--color-deep);
+  color: var(--color-text);
+}
+
+.featuredPhoto {
+  position: absolute;
+  inset: 0;
+}
+
+.featuredPanel {
+  position: absolute;
+  right: 14px;
+  bottom: 14px;
+  left: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  padding: var(--space-6) 26px;
+  border-radius: var(--r-panel);
+  background: var(--color-surface);
+}
+
+.newsMeta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2);
+  color: var(--color-text-muted);
+  font-size: var(--fs-meta);
+  font-weight: 500;
+}
+
+.newsMeta time {
+  margin-right: var(--space-1);
+}
+
+.featuredTitle {
+  font-size: var(--fs-title-l);
+  font-weight: 600;
+  line-height: 1.04;
+  letter-spacing: var(--ls-display);
+}
+
+/* Same height as .featuredCard; the photo fills what the meta row and
+   title leave. */
+.newsCard {
+  width: 360px;
+  height: 620px;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.newsPhoto {
+  position: relative;
+  display: block;
+  width: 100%;
+  min-height: 0;
+  flex: 1;
+  overflow: hidden;
+  border-radius: var(--r-card);
+}
+
+/* Up to three lines, and always the room of three, so every photo in the
+   strip is the same height whatever the title length. */
+.newsTitle {
+  display: -webkit-box;
+  min-height: calc(3 * 1.25em);
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+  line-clamp: 3;
+  font-size: var(--fs-title-m);
+  font-weight: 500;
+  line-height: 1.25;
+  letter-spacing: -0.025em;
+}
+
+.archiveCard {
+  width: 320px;
+  height: 540px;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 30px;
+  border-radius: var(--r-feature);
+  background: var(--color-primary);
+  color: var(--color-surface);
+}
+
+.archiveLabel {
+  color: var(--color-text-on-dark);
+  font-size: var(--fs-label);
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.archiveTitle {
+  max-width: 10ch;
+  font-size: var(--fs-h3);
+  font-weight: 600;
+  line-height: 0.98;
+  letter-spacing: var(--ls-display);
+}
+
+.emptyHighlights {
+  color: var(--color-text-muted);
+}
+
+.featuredCard:is(:hover, :focus-visible) .featuredPhoto img,
+.newsCard:is(:hover, :focus-visible) .newsPhoto img {
+  transform: scale(1.06);
+}
+
+/* ---- News hover / focus: frame pulls in, arrow after the title, chip
+   turns modra (same as components/news/NewsCard) ---- */
+.featuredPhoto {
+  clip-path: inset(0 round var(--r-feature));
+  transition: clip-path 0.8s var(--ease-out);
+}
+
+.newsPhoto {
+  clip-path: inset(0 round var(--r-card));
+  transition: clip-path 0.8s var(--ease-out);
+}
+
+.featuredCard:is(:hover, :focus-visible) .featuredPhoto {
+  clip-path: inset(10px round 20px);
+}
+
+.newsCard:is(:hover, :focus-visible) .newsPhoto {
+  clip-path: inset(10px round 16px);
+}
+
+.featuredTitle,
+.newsTitle {
+  transition: transform 0.6s var(--ease-out);
+}
+
+.titleArrow {
+  display: inline-block;
+  margin-left: 6px;
+  vertical-align: -2px;
+  opacity: 0;
+  transform: translateX(-10px);
+  transition:
+    opacity 0.4s,
+    transform 0.6s var(--ease-out);
+}
+
+.featuredCard:is(:hover, :focus-visible) .featuredTitle,
+.newsCard:is(:hover, :focus-visible) .newsTitle {
+  transform: translateX(6px);
+}
+
+:is(.featuredCard, .newsCard):is(:hover, :focus-visible) .titleArrow {
+  opacity: 1;
+  transform: none;
+}
+
+.newsChip {
+  transition:
+    background var(--dur-hover) var(--ease-out),
+    color var(--dur-hover) var(--ease-out);
+}
+
+:is(.featuredCard, .newsCard):is(:hover, :focus-visible) .newsChip {
+  background: var(--color-primary);
+  color: var(--color-surface);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .featuredPhoto,
+  .newsPhoto,
+  .featuredTitle,
+  .newsTitle,
+  .titleArrow,
+  .newsChip {
+    transition: none;
+  }
+}
+
+.archiveCard:is(:hover, :focus-visible) > span:last-child {
+  transform: rotate(-45deg);
+}
+
+.archiveCard > span:last-child {
+  transition: transform var(--dur-hover) var(--ease-out);
+}
+
+@media (max-width: 900px) {
+  .highlightsInner {
+    padding-bottom: var(--space-24);
+  }
+}
+
+@media (max-width: 720px) {
+  .highlightsHead {
+    margin-bottom: var(--space-8);
+  }
+
+  .sliderControls {
+    display: none;
+  }
+
+  .featuredCard {
+    width: 320px;
+    height: 460px;
+  }
+
+  .featuredPanel {
+    padding: var(--space-4);
+  }
+
+  .featuredTitle {
+    font-size: var(--fs-title-m);
+  }
+
+  .newsCard {
+    width: 300px;
+    height: 460px;
+  }
+
+  .archiveCard {
+    width: 300px;
+    height: 460px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .archiveCard > span:last-child {
+    transition: none;
+  }
+}
