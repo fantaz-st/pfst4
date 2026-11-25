@@ -13,9 +13,9 @@ import {
   MEDIA,
   EASE,
 } from "@/components/motion/gsap";
-import { getChromeCopy } from "@/lib/chromeCopy";
-import { localizedHomeUri } from "@/lib/language";
-import { ENROLL_URL } from "@/lib/siteLinks";
+import { getChromeCopy } from "@/lib/i18n/chromeCopy";
+import { localizedHomeUri } from "@/lib/i18n/language";
+import { ENROLL_URL } from "@/lib/i18n/siteLinks";
 import { NAV_BEHAVIOUR, NAV_REVEAL_TOLERANCE } from "@/lib/navSettings";
 import { isCurrentSection } from "./navUtils";
 import MegaPanel from "./MegaPanel";

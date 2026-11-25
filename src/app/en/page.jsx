@@ -1,4 +1,4 @@
-import HomePage from "@/components/home/HomePage";
+import HomePage from "@/features/home/HomePage";
 import { buildPageMetadata, SITE, toAbsoluteUrl } from "@/lib/seo";
 
 const LANGUAGE = "en";

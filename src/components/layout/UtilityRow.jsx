@@ -1,9 +1,9 @@
 import Link from "next/link";
 import Icon from "@/components/ui/Icon";
-import { getChromeCopy } from "@/lib/chromeCopy";
-import { getSiteLinks } from "@/lib/siteLinks";
-import { getLanguageLinks } from "@/lib/languageLinks";
-import SearchLink from "./SearchLink";
+import { getChromeCopy } from "@/lib/i18n/chromeCopy";
+import { getSiteLinks } from "@/lib/i18n/siteLinks";
+import { getLanguageLinks } from "@/lib/i18n/languageLinks";
+import SearchLink from "@/features/search/SearchLink";
 import styles from "./UtilityRow.module.css";
 
 // The 40px row above the hero (STYLEGUIDE §6): tagline, utility links,

@@ -1,9 +1,9 @@
-import { getMainMenu } from "@/lib/menu";
-import { getChromeCopy } from "@/lib/chromeCopy";
-import { getSiteLinks } from "@/lib/siteLinks";
-import { getLanguageLinks } from "@/lib/languageLinks";
+import { getMainMenu } from "@/lib/wp/menu";
+import { getChromeCopy } from "@/lib/i18n/chromeCopy";
+import { getSiteLinks } from "@/lib/i18n/siteLinks";
+import { getLanguageLinks } from "@/lib/i18n/languageLinks";
 import UtilityRow from "./UtilityRow";
-import SiteHeader from "./header/SiteHeader";
+import SiteHeader from "@/components/layout/header/SiteHeader";
 import SiteFooter from "./SiteFooter";
 import PageMotion from "@/components/motion/PageMotion";
 import styles from "./SiteChrome.module.css";

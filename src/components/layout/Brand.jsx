@@ -1,6 +1,6 @@
 import Link from "next/link";
-import { getChromeCopy } from "@/lib/chromeCopy";
-import { localizedHomeUri } from "@/lib/language";
+import { getChromeCopy } from "@/lib/i18n/chromeCopy";
+import { localizedHomeUri } from "@/lib/i18n/language";
 import styles from "./Brand.module.css";
 
 /**

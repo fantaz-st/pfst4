@@ -1,4 +1,4 @@
-import { enContentRoute } from "@/lib/contentRoute";
+import { enContentRoute } from "@/features/pages/contentRoute";
 
 export const dynamicParams = true;
 

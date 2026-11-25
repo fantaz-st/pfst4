@@ -1,4 +1,4 @@
-import { getChromeCopy } from "@/lib/chromeCopy";
+import { getChromeCopy } from "@/lib/i18n/chromeCopy";
 import styles from "./PreviewBanner.module.css";
 
 // Draft-mode notice: a modra pill fixed at the bottom, above the content.

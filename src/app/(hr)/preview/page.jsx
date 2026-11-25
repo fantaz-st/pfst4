@@ -1,8 +1,8 @@
 import { notFound, redirect } from "next/navigation";
 import { draftMode } from "next/headers";
-import { wpFetch } from "@/lib/wp";
-import { PREVIEW_PAGE, PREVIEW_POST } from "@/lib/queries";
-import ContentView from "@/components/content/ContentView";
+import { wpFetch } from "@/lib/wp/wp";
+import { PREVIEW_PAGE, PREVIEW_POST } from "@/lib/wp/queries";
+import ContentView from "@/features/pages/ContentView";
 import PreviewBanner from "@/components/layout/PreviewBanner";
 
 export const metadata = {

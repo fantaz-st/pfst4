@@ -6,14 +6,14 @@ import { usePathname } from "next/navigation";
 import Brand from "@/components/layout/Brand";
 import Button from "@/components/ui/Button";
 import Icon from "@/components/ui/Icon";
-import { getChromeCopy } from "@/lib/chromeCopy";
-import { ENROLL_URL } from "@/lib/siteLinks";
+import { getChromeCopy } from "@/lib/i18n/chromeCopy";
+import { ENROLL_URL } from "@/lib/i18n/siteLinks";
 import { isCurrentSection } from "./navUtils";
 import MegaPanel from "./MegaPanel";
 import FloatingNav from "./FloatingNav";
 import MobileMenu from "./MobileMenu";
-import SearchOverlay from "./SearchOverlay";
-import { OPEN_SEARCH_EVENT } from "./openSiteSearch";
+import SearchOverlay from "@/features/search/SearchOverlay";
+import { OPEN_SEARCH_EVENT } from "@/features/search/openSiteSearch";
 import styles from "./SiteHeader.module.css";
 
 /**

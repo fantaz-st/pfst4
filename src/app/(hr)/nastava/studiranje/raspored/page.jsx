@@ -1,4 +1,4 @@
-import TimetablePage from "@/components/timetable/TimetablePage";
+import TimetablePage from "@/features/timetable/TimetablePage";
 import { TIMETABLE_URI } from "@/lib/timetable";
 import { buildPageMetadata } from "@/lib/seo";
 

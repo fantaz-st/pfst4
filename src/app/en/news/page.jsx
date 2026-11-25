@@ -1,4 +1,4 @@
-import NewsArchive, { getNewsArchiveMetadata } from "@/components/news/NewsArchive";
+import NewsArchive, { getNewsArchiveMetadata } from "@/features/news/NewsArchive";
 
 const LANGUAGE = "en";
 

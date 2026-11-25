@@ -1,5 +1,5 @@
 import SiteChrome from "@/components/layout/SiteChrome";
-import NotFoundView from "@/components/content/NotFoundView";
+import NotFoundView from "@/features/pages/NotFoundView";
 
 export const metadata = {
   title: "Page not found",

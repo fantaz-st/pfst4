@@ -1,4 +1,4 @@
-import { getAllContentNodes } from "@/lib/content";
+import { getAllContentNodes } from "@/lib/wp/content";
 import { toAbsoluteUrl } from "@/lib/seo";
 
 export default async function sitemap() {

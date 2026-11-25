@@ -1,4 +1,4 @@
-import SearchResults from "@/components/search/SearchResults";
+import SearchResults from "@/features/search/SearchResults";
 import { buildPageMetadata } from "@/lib/seo";
 
 // Result pages are thin, infinite (one per query) and duplicate content

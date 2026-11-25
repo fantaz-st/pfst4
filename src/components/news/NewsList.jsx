@@ -6,13 +6,13 @@ import ArrowCircle from "@/components/ui/ArrowCircle";
 import Button from "@/components/ui/Button";
 import Icon from "@/components/ui/Icon";
 import Photo from "@/components/ui/Photo";
-import { loadMoreNews, loadMoreSearch } from "@/lib/actions";
+import { loadMoreNews, loadMoreSearch } from "@/lib/wp/actions";
 import {
   excerptText,
   getFallbackCategoryLabel,
   getPostCategories,
 } from "@/lib/posts";
-import { getNewsCopy } from "@/lib/newsCopy";
+import { getNewsCopy } from "@/lib/i18n/newsCopy";
 import styles from "./NewsList.module.css";
 
 const MONTHS_SHORT = {

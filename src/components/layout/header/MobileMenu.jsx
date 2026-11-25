@@ -8,10 +8,10 @@ import Button from "@/components/ui/Button";
 import Icon from "@/components/ui/Icon";
 import { gsap, MOTION_OK, EASE } from "@/components/motion/gsap";
 import { getLenis } from "@/components/motion/lenisStore";
-import { getChromeCopy } from "@/lib/chromeCopy";
-// import { ENROLL_URL } from "@/lib/siteLinks";
+import { getChromeCopy } from "@/lib/i18n/chromeCopy";
+// import { ENROLL_URL } from "@/lib/i18n/siteLinks";
 import { isCurrentPage, isCurrentSection } from "./navUtils";
-import { openSiteSearch } from "./openSiteSearch";
+import { openSiteSearch } from "@/features/search/openSiteSearch";
 import { EMPTY_LIST, KEYS, useStored } from "@/lib/personal";
 import styles from "./MobileMenu.module.css";
 

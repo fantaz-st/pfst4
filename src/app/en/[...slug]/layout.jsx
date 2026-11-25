@@ -1,5 +1,5 @@
 import SiteChrome from "@/components/layout/SiteChrome";
-import { enContentRoute } from "@/lib/contentRoute";
+import { enContentRoute } from "@/features/pages/contentRoute";
 
 export default async function SlugLayout({ children, params }) {
   const { slug } = await params;

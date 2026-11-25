@@ -1,6 +1,6 @@
-import { wpFetch } from "@/lib/wp";
-import { SEARCH_PREVIEW } from "@/lib/queries";
-import { toLanguageCodeEnum } from "@/lib/language";
+import { wpFetch } from "@/lib/wp/wp";
+import { SEARCH_PREVIEW } from "@/lib/wp/queries";
+import { toLanguageCodeEnum } from "@/lib/i18n/language";
 
 const FIRST = 5;
 const EMPTY = { pages: [], posts: [] };

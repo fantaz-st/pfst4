@@ -5,9 +5,9 @@ import Link from "next/link";
 import Icon from "@/components/ui/Icon";
 import { useGsap } from "@/components/motion/useGsap";
 import { EASE } from "@/components/motion/gsap";
-import { getChromeCopy } from "@/lib/chromeCopy";
+import { getChromeCopy } from "@/lib/i18n/chromeCopy";
 import { toColumns } from "./navUtils";
-import { openSiteSearch } from "./openSiteSearch";
+import { openSiteSearch } from "@/features/search/openSiteSearch";
 import styles from "./MegaPanel.module.css";
 
 /**

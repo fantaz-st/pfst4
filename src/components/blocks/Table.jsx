@@ -1,7 +1,7 @@
 import { useId } from "react";
 import { renderWpHtml } from "@/lib/html";
-import { getChromeCopy } from "@/lib/chromeCopy";
-import ConsultationsBlock from "@/components/consultations/ConsultationsBlock";
+import { getChromeCopy } from "@/lib/i18n/chromeCopy";
+import ConsultationsBlock from "@/features/consultations/ConsultationsBlock";
 import styles from "./Table.module.css";
 
 // Staff tables run to five columns, so the table scrolls sideways on narrow

@@ -2,9 +2,9 @@ import Link from "next/link";
 import Brand from "@/components/layout/Brand";
 import Button from "@/components/ui/Button";
 import SplitReveal from "@/components/motion/SplitReveal";
-import { getChromeCopy } from "@/lib/chromeCopy";
-import { ENROLL_URL, getSiteLinks } from "@/lib/siteLinks";
-import CookieSettingsButton from "@/components/consent/CookieSettingsButton";
+import { getChromeCopy } from "@/lib/i18n/chromeCopy";
+import { ENROLL_URL, getSiteLinks } from "@/lib/i18n/siteLinks";
+import CookieSettingsButton from "@/features/consent/CookieSettingsButton";
 import styles from "./SiteFooter.module.css";
 
 function LinkList({ links }) {
