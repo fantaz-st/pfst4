@@ -41,6 +41,9 @@ export default async function PageView({ node }) {
         lead={node.seo?.metaDesc || undefined}
         crumbs={ancestors.map((item) => ({ label: item.title, uri: item.uri }))}
         image={node.featuredImage?.node}
+        // Section pages (top level: Fakultet, Nastava…) without a featured
+        // image get the flag wall; deeper pages keep the quiet contours.
+        fallback={ancestors.length === 0 ? "wall" : undefined}
       />
 
       <div className={styles.wrap}>

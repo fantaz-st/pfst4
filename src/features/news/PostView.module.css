@@ -90,6 +90,16 @@
   object-fit: cover;
 }
 
+/* No featured image: the flag wall in a banner the shape of the faculty's
+   own default cover (1200×500). */
+.coverWall {
+  position: relative;
+  overflow: hidden;
+  margin: var(--space-4) 0 0;
+  aspect-ratio: 12 / 5;
+  border-radius: var(--r-card);
+}
+
 .caption {
   margin-top: var(--space-3);
   color: var(--color-text-muted);
@@ -325,7 +335,8 @@
     font-size: var(--fs-body-l);
   }
 
-  .coverImage {
+  .coverImage,
+  .coverWall {
     border-radius: var(--r-panel);
   }
 

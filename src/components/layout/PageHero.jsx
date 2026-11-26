@@ -6,7 +6,8 @@ import styles from "./PageHero.module.css";
 /**
  * Without a featured image the hero shows the design's contour texture on
  * modra — a valid permanent state, so no "TODO" photo tag unless a
- * `placeholder` label is passed.
+ * `placeholder` label is passed — or, with fallback="wall", the turning
+ * signal-flag wall (section pages, 404).
  *
  * Inner-page hero (design/reference/page.html, opcenito.html): breadcrumbs
  * pill at the top; eyebrow + title (chars reveal) bottom-left, an optional
@@ -17,7 +18,8 @@ import styles from "./PageHero.module.css";
  *   language?: string, title: string, eyebrow?: string, lead?: string,
  *   crumbs?: { label: string, uri: string }[], showCrumbs?: boolean,
  *   image?: { sourceUrl: string, altText?: string } | null,
- *   placeholder?: string, titleSize?: "page" | "post", children?: React.ReactNode,
+ *   placeholder?: string, fallback?: "wall", titleSize?: "page" | "post",
+ *   children?: React.ReactNode,
  * }} props
  */
 export default function PageHero({
@@ -29,12 +31,15 @@ export default function PageHero({
   showCrumbs = true,
   image,
   placeholder,
+  fallback,
   titleSize = "page",
   children,
 }) {
   const photo = image?.sourceUrl
     ? { src: image.sourceUrl, alt: image.altText ?? "" }
-    : { tag: placeholder };
+    : fallback
+      ? { fallback }
+      : { tag: placeholder };
 
   return (
     <Hero photo={photo} labelledBy="page-title">

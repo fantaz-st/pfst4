@@ -16,6 +16,7 @@ export default function NotFoundView({ language = "hr" }) {
         eyebrow={copy.notFoundEyebrow}
         lead={copy.notFoundDescription}
         showCrumbs={false}
+        fallback="wall"
       />
       <div className={styles.wrap}>
         <Button href={localizedHomeUri(language)}>{copy.notFoundHomeLink}</Button>

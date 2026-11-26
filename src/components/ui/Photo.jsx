@@ -1,6 +1,7 @@
 import Image from "next/image";
 import PhotoTag from "./PhotoTag";
 import FlagPlaceholder from "./FlagPlaceholder";
+import FlagWall from "./FlagWall";
 import styles from "./Photo.module.css";
 
 const RATIOS = { "4/3": "r4x3", "5/4": "r5x4", "1/1": "r1x1", "16/9": "r16x9" };
@@ -17,7 +18,8 @@ const RADII = new Set(["panel", "card", "feature", "block"]);
  *
  * fallback="flags" is the exception, for content that may legitimately
  * have no image (news without a featured image): the animated signal-flag
- * field (FlagPlaceholder) in the same tone, no tag.
+ * field (FlagPlaceholder) in the same tone, no tag. fallback="wall" is the
+ * big turning flag wall (FlagWall) for heroes and post covers.
  *
  * @param {{
  *   src?: string, alt?: string, sizes: string,
@@ -26,7 +28,7 @@ const RADII = new Set(["panel", "card", "feature", "block"]);
  *   tone?: "dark" | "light",
  *   tag?: string, tagPosition?: "top-left" | "bottom-left" | "right",
  *   hideTagOnMobile?: boolean,
- *   fallback?: "flags",  // no src: animated flag field instead of the TODO placeholder
+ *   fallback?: "flags" | "wall",  // no src: animated flags instead of the TODO placeholder
  *   zoom?: boolean,      // scale 1.06 when an ancestor link is hovered
  *   priority?: boolean,
  *   className?: string,
@@ -34,11 +36,12 @@ const RADII = new Set(["panel", "card", "feature", "block"]);
  */
 export default function Photo({ src, alt = "", sizes, ratio, radius, tone = "dark", tag, tagPosition, hideTagOnMobile = false, fallback, zoom = false, priority = false, className }) {
   const flags = !src && fallback === "flags";
+  const wall = !src && fallback === "wall";
   const classes = [
     styles.photo,
     ratio ? styles[RATIOS[ratio]] : styles.fill,
     RADII.has(radius) ? styles[radius] : null,
-    !src && !flags ? styles[tone === "light" ? "placeholderLight" : "placeholder"] : null,
+    !src && !flags && !wall ? styles[tone === "light" ? "placeholderLight" : "placeholder"] : null,
     zoom ? styles.zoom : null,
     className,
   ]
@@ -49,6 +52,8 @@ export default function Photo({ src, alt = "", sizes, ratio, radius, tone = "dar
     <span className={classes}>
       {src ? (
         <Image src={src} alt={alt} fill sizes={sizes} priority={priority} className={styles.media} />
+      ) : wall ? (
+        <FlagWall className={styles.media} />
       ) : flags ? (
         <FlagPlaceholder tone={tone} className={styles.media} />
       ) : (

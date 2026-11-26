@@ -5,6 +5,7 @@ import Breadcrumbs from "@/components/layout/Breadcrumbs";
 import Hero from "@/components/layout/Hero";
 import Button from "@/components/ui/Button";
 import Chip from "@/components/ui/Chip";
+import FlagWall from "@/components/ui/FlagWall";
 import Icon from "@/components/ui/Icon";
 import NewsCard from "@/features/news/NewsCard";
 import RecordVisit from "@/features/personal/RecordVisit";
@@ -122,7 +123,7 @@ export default async function PostView({ node }) {
               {renderWpHtml(excerpt)}
             </div>
           )}
-          {hasCover && (
+          {hasCover ? (
             <figure className={styles.cover}>
               <div className={styles.coverImage} data-post-cover>
                 <Image
@@ -136,6 +137,12 @@ export default async function PostView({ node }) {
               </div>
               {coverImage.caption && <figcaption className={styles.caption}>{renderWpHtml(coverImage.caption)}</figcaption>}
             </figure>
+          ) : (
+            // No featured image: a banner of the turning flag wall, seeded
+            // by the post so each one keeps its own arrangement.
+            <div className={styles.coverWall} data-post-cover>
+              <FlagWall seed={node.id} />
+            </div>
           )}
         </header>
 
