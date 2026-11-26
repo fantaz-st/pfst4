@@ -246,6 +246,11 @@
   }
 }
 
+/* ---- Mobile list (≤720px) ---- */
+.list {
+  display: none;
+}
+
 @media (max-width: 720px) {
   .quick {
     padding-block: var(--space-24);
@@ -272,16 +277,156 @@
     grid-row: span 1;
   }
 
-  .tileLarge {
-    min-height: 420px;
+  /* Only the timetable tile stays a card; the rest is the list below. */
+  .bento > :not(:first-child) {
+    display: none;
   }
 
-  .tileImage {
-    min-height: 240px;
+  .tileLarge {
+    min-height: 270px;
+  }
+
+  .tileTimetable .tileTitle {
+    font-size: 30px;
+    font-weight: 700;
+  }
+
+  .myTimetable {
+    display: inline-flex;
+    align-self: flex-start;
+    align-items: center;
+    min-height: 28px;
+    padding: 0 var(--space-3);
+    border-radius: var(--r-pill);
+    background: var(--color-primary);
+    color: var(--color-surface);
+    font-size: var(--fs-meta);
+    font-weight: 700;
+  }
+
+  .tileTimetable .myTimetable {
+    color: var(--color-surface);
   }
 
   .timetable {
     display: none;
+  }
+
+  .list {
+    display: block;
+    margin: var(--grid-gap) 0 0;
+    padding: 0;
+    overflow: hidden;
+    border-radius: var(--r-card);
+    background: var(--color-surface);
+    list-style: none;
+  }
+
+  .list > li + li .row {
+    border-top: 1px solid var(--color-line);
+  }
+
+  .row {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    min-height: 76px;
+    padding: var(--space-3) 14px var(--space-3) var(--space-3);
+    color: var(--color-text);
+  }
+
+  .row:active {
+    background: var(--color-bg);
+  }
+
+  .rowIcon,
+  .rowThumb {
+    position: relative;
+    display: grid;
+    flex: none;
+    width: 48px;
+    height: 48px;
+    place-items: center;
+    overflow: hidden;
+    border-radius: var(--r-icon);
+  }
+
+  .rowThumb img {
+    object-fit: cover;
+  }
+
+  .rowIcon[data-tone="accent"] {
+    background: var(--color-accent);
+  }
+
+  .rowIcon[data-tone="navy"] {
+    background: var(--color-primary);
+    color: var(--color-surface);
+  }
+
+  .rowIcon[data-tone="plava"] {
+    background: var(--tint-plava-1);
+  }
+
+  .rowIcon[data-tone="modra"] {
+    background: var(--tint-modra-1);
+  }
+
+  .rowIcon[data-tone="light"] {
+    background: var(--tint-plava-3);
+  }
+
+  .rowText {
+    display: flex;
+    flex: 1;
+    min-width: 0;
+    flex-direction: column;
+    gap: var(--space-1);
+  }
+
+  .rowTitle {
+    font-size: var(--fs-body-l);
+    font-weight: 700;
+    line-height: 1.25;
+    letter-spacing: -0.015em;
+  }
+
+  .rowMeta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-1) var(--space-2);
+    color: var(--color-text-muted);
+    font-size: var(--fs-meta);
+    font-weight: 500;
+    line-height: 1.35;
+  }
+
+  .rowChip {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    min-height: 22px;
+    padding: 0 var(--space-2);
+    border-radius: var(--r-pill);
+    background: var(--tint-plava-3);
+    color: var(--color-text);
+    font-size: var(--fs-micro);
+    font-weight: 700;
+  }
+
+  .rowChip[data-live]::before {
+    width: 6px;
+    height: 6px;
+    border-radius: var(--r-pill);
+    background: var(--color-accent);
+    content: "";
+  }
+
+  .rowChevron {
+    flex: none;
+    color: var(--color-input-border-hover);
+    transform: rotate(-90deg);
   }
 }
 

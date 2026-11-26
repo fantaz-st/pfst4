@@ -11,6 +11,7 @@ import StudyProgrammes from "./StudyProgrammes";
 import HomeNews from "./HomeNews";
 import CallsToAction from "./CallsToAction";
 import { TIMETABLE_SAMPLE } from "./timetableSample";
+import { getQuickStats } from "./quickStats";
 
 const EMPTY_POSTS = { nodes: [] };
 
@@ -187,7 +188,7 @@ export default async function HomePage({ language }) {
   const languageCode = toLanguageCodeEnum(language);
   const featuredSlugPromise = getFeaturedCategorySlug(language);
   const recentPromise = wpFetch(NEWS_POSTS, { first: 24, after: null, where: { language: languageCode } }, { tags: ["wp"] });
-  const [featuredSlug, recentData] = await Promise.all([featuredSlugPromise, recentPromise]);
+  const [featuredSlug, recentData, quickStats] = await Promise.all([featuredSlugPromise, recentPromise, getQuickStats(language)]);
   // Timetable wall in the "Raspored nastave" tile — hr only (Croatian
   // subject names); the English tile keeps the drawn timetable.
   const marquee = language === "hr" ? TIMETABLE_SAMPLE : [];
@@ -212,7 +213,7 @@ export default async function HomePage({ language }) {
     <SiteChrome language={language}>
       <HomeHero copy={copy} language={language} post={featuredPosts[0]} />
 
-      <QuickLinks language={language} copy={copy} marquee={marquee} />
+      <QuickLinks language={language} copy={copy} marquee={marquee} stats={quickStats} />
       <FeaturedNews copy={copy} language={language} posts={featuredPosts} featuredSlug={featuredSlug} />
       <Statement copy={copy} language={language} />
       <StudyProgrammes copy={copy} language={language} />

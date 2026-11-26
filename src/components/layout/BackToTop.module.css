@@ -1,0 +1,168 @@
+/* "Na vrh" — design: "PFST — Na vrh" canvas, A (Prsten). */
+
+.button {
+  position: fixed;
+  right: var(--space-6);
+  bottom: var(--space-6);
+  z-index: 65;
+  display: inline-flex;
+  align-items: center;
+  height: 56px;
+  padding: 0;
+  border: 0;
+  border-radius: var(--r-pill);
+  background: var(--color-surface);
+  color: var(--color-text);
+  font: inherit;
+  font-size: var(--fs-body);
+  font-weight: 700;
+  box-shadow: 0 14px 34px -14px color-mix(in srgb, var(--color-deep) 60%, transparent);
+  cursor: pointer;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(16px) scale(0.9);
+  transition:
+    opacity var(--dur-hover) var(--ease-out),
+    transform var(--dur-hover) var(--ease-out),
+    visibility 0s linear var(--dur-hover),
+    background var(--dur-hover) var(--ease-out),
+    color var(--dur-hover) var(--ease-out);
+}
+
+.button[data-visible] {
+  opacity: 1;
+  visibility: visible;
+  transform: none;
+  transition:
+    opacity var(--dur-hover) var(--ease-out),
+    transform var(--dur-hover) var(--ease-out),
+    visibility 0s,
+    background var(--dur-hover) var(--ease-out),
+    color var(--dur-hover) var(--ease-out);
+}
+
+/* "Na vrh" slides out to the left of the circle on hover / focus. */
+.label {
+  max-width: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  opacity: 0;
+  transition:
+    max-width var(--dur-hover) var(--ease-out),
+    opacity var(--dur-hover) var(--ease-out),
+    padding var(--dur-hover) var(--ease-out);
+}
+
+.circle {
+  position: relative;
+  display: grid;
+  width: 56px;
+  height: 56px;
+  flex: none;
+  place-items: center;
+}
+
+.ring {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  transform: rotate(-90deg);
+}
+
+.track,
+.fill {
+  fill: none;
+  stroke-width: 3;
+}
+
+.track {
+  stroke: var(--tint-modra-2);
+}
+
+/* Dash length and offset are set in px by BackToTop.jsx as you scroll. */
+.fill {
+  stroke: var(--color-accent);
+  stroke-linecap: round;
+}
+
+.arrow {
+  position: relative;
+  transition: transform var(--dur-hover) var(--ease-out);
+}
+
+@media (hover: hover) {
+  .button:hover {
+    background: var(--color-primary);
+    color: var(--color-surface);
+  }
+
+  .button:hover .label {
+    max-width: 120px;
+    padding-left: 22px;
+    opacity: 1;
+  }
+
+  .button:hover .track {
+    stroke: color-mix(in srgb, var(--pfst-bijela) 18%, transparent);
+  }
+
+  .button:hover .arrow {
+    transform: translateY(-2px);
+  }
+}
+
+.button:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 3px;
+  background: var(--color-primary);
+  color: var(--color-surface);
+}
+
+.button:focus-visible .label {
+  max-width: 120px;
+  padding-left: 22px;
+  opacity: 1;
+}
+
+.button:focus-visible .track {
+  stroke: color-mix(in srgb, var(--pfst-bijela) 18%, transparent);
+}
+
+/* End of the page: solid plava, ring complete. */
+.button[data-end] {
+  background: var(--color-accent);
+  color: var(--color-text);
+}
+
+.button[data-end] .ring {
+  opacity: 0;
+}
+
+@media (max-width: 720px) {
+  .button {
+    right: var(--space-4);
+    bottom: calc(var(--space-4) + env(safe-area-inset-bottom));
+    height: 52px;
+  }
+
+  .circle {
+    width: 52px;
+    height: 52px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .button,
+  .button[data-visible],
+  .label,
+  .arrow {
+    transition: none;
+  }
+}
+
+@media print {
+  .button {
+    display: none;
+  }
+}

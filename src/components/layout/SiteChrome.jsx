@@ -6,6 +6,7 @@ import UtilityRow from "./UtilityRow";
 import SiteHeader from "@/components/layout/header/SiteHeader";
 import SiteFooter from "./SiteFooter";
 import PageMotion from "@/components/motion/PageMotion";
+import BackToTop from "./BackToTop";
 import styles from "./SiteChrome.module.css";
 
 // The shell around every route: skip link, utility row, header (nav over
@@ -32,10 +33,11 @@ export default async function SiteChrome({ language, translations = null, childr
         languages={languages}
         utility={links.utility}
       />
-      <main id="main-content" className={styles.main}>
+      <main id="main-content" className={styles.main} tabIndex={-1}>
         {children}
       </main>
       <SiteFooter language={language} />
+      <BackToTop label={copy.backToTop} ariaLabel={copy.backToTopLabel} />
       <PageMotion />
     </div>
   );
