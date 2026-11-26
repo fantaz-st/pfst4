@@ -1,4 +1,4 @@
-import { revalidateTag } from "next/cache";
+import { revalidatePath, revalidateTag } from "next/cache";
 import { NextResponse } from "next/server";
 
 export async function POST(request) {
@@ -22,6 +22,10 @@ export async function POST(request) {
   // "Update" should see their change on first reload. (The single-argument
   // form behaved the same way but is deprecated in Next 16.)
   revalidateTag("wp", { expire: 0 });
+  // Belt and braces: also drop every rendered page. Every route carries the
+  // root "_N_T_/layout" soft tag, so this covers hr and /en alike, even a page
+  // whose cache entry somehow didn't pick up the "wp" fetch tag.
+  revalidatePath("/", "layout");
 
   return NextResponse.json({ revalidated: true, now: Date.now() });
 }
