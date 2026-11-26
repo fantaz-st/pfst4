@@ -38,6 +38,39 @@ export default function PageMotion() {
         intro.from(heroFades, { y: 24, opacity: 0, duration: 1.1, stagger: 0.08 }, 0.5);
       }
 
+      // Home hero photo fan (features/home/HomeHero): every card starts
+      // stacked behind the centre one, untilted, then spreads out to its
+      // place — nearest pair first — and the chips and flags pop in after.
+      // Positions come from layout offsets, which ignore the tilt; cards
+      // hidden on phones (no offsetParent) are skipped.
+      const fan = homeHero?.querySelector("[data-hero-fan]");
+      const fanCenter = fan?.querySelector("[data-fan-center]");
+      if (fan && fanCenter) {
+        const cx = fanCenter.offsetLeft + fanCenter.offsetWidth / 2;
+        const cy = fanCenter.offsetTop + fanCenter.offsetHeight / 2;
+        const cards = gsap.utils
+          .toArray("[data-fan-card]", fan)
+          .filter((card) => card !== fanCenter && card.offsetParent)
+          .map((card) => ({
+            card,
+            dx: cx - (card.offsetLeft + card.offsetWidth / 2),
+            dy: cy - (card.offsetTop + card.offsetHeight / 2),
+            tilt: parseFloat(getComputedStyle(card).rotate) || 0,
+          }))
+          .sort((a, b) => Math.abs(a.dx) - Math.abs(b.dx));
+        cards.forEach(({ card, dx, dy, tilt }, index) => {
+          intro.from(
+            card,
+            { x: dx, y: dy, rotation: -tilt, scale: 0.92, duration: 1.5, ease: EASE.out },
+            1.05 + Math.floor(index / 2) * 0.09,
+          );
+        });
+        const extras = fan.querySelectorAll("[data-fan-extra]");
+        if (extras.length) {
+          intro.from(extras, { scale: 0, opacity: 0, duration: 0.8, stagger: 0.07, ease: "back.out(2)" }, 1.6);
+        }
+      }
+
       document.querySelectorAll("[data-split]").forEach((el) => {
         const mode = el.getAttribute("data-split");
         if (mode === "words-scrub") return;

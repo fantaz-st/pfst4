@@ -18,7 +18,7 @@ const EMPTY_POSTS = { nodes: [] };
 
 // Which home hero to show: "fan" (HomeHero — photo fan on the sky) or
 // "cards" (HomeHeroCards — light, a row of most-visited-page cards).
-const HERO_VERSION = "cards";
+const HERO_VERSION = "fan";
 
 const COPY = {
   hr: {

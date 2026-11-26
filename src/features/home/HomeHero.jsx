@@ -16,6 +16,10 @@ import styles from "./HomeHero.module.css";
  * turns a design px into real px for the fan's width (never above 1px).
  * z: stacking, centre card on top. Phones use their own 390px layout (--mx/--my/--mw/--mh/--mr) and show only
  * the three cards that have one. Study cards link to their programme.
+ *
+ * Intro (PageMotion): the fan rises in with only the centre card showing —
+ * the others start stacked behind it, untilted — then they spread out to
+ * their places, inner pair first, and the chips and flags pop in.
  */
 
 // program: index into copy.studyPrograms (label + link). m: phone layout.
@@ -68,6 +72,9 @@ function Card({ card, copy }) {
   const label = program ? program.short ?? program.title : card.training ? copy.training : null;
   const className = [styles.card, card.m ? null : styles.desktopOnly].filter(Boolean).join(" ");
   const style = { ...vars(card), zIndex: card.z };
+  // PageMotion: the centre card comes in first, the rest start stacked
+  // behind it and spread out to their places.
+  const fanData = card.z === 5 ? { "data-fan-card": "", "data-fan-center": "" } : { "data-fan-card": "" };
   const content = (
     <>
       <Image src={card.src} alt="" fill sizes="(max-width: 720px) 45vw, 280px" priority={card.z === 5} className={styles.cardImage} style={{ objectPosition: card.position ?? "50% 50%" }} />
@@ -76,11 +83,11 @@ function Card({ card, copy }) {
   );
 
   return program?.href ? (
-    <Link href={program.href} className={className} style={style} data-hero-fade>
+    <Link href={program.href} className={className} style={style} {...fanData}>
       {content}
     </Link>
   ) : (
-    <span className={className} style={style} aria-hidden={label ? undefined : "true"} data-hero-fade>
+    <span className={className} style={style} aria-hidden={label ? undefined : "true"} {...fanData}>
       {content}
     </span>
   );
@@ -89,7 +96,7 @@ function Card({ card, copy }) {
 function Chip({ chip, tone, className }) {
   if (!chip) return null;
   return (
-    <span className={`${styles.chip} ${className}`} data-hero-fade>
+    <span className={`${styles.chip} ${className}`} data-fan-extra>
       <span className={styles.chipValue} data-tone={tone}>
         {chip.value}
       </span>
@@ -125,7 +132,7 @@ export default function HomeHero({ copy, language }) {
         </div>
       </div>
 
-      <div className={styles.fan}>
+      <div className={styles.fan} data-hero-fade data-hero-fan>
         <span className={styles.wordmark} aria-hidden="true">
           POMORSKI
         </span>
@@ -140,6 +147,7 @@ export default function HomeHero({ copy, language }) {
             className={`${styles.flag} ${flag.m ? "" : styles.desktopOnly}`}
             style={{ ...vars(flag), animationDelay: `${flag.r * 0.2}s` }}
             aria-hidden="true"
+            data-fan-extra
           >
             <Flag design={flag.design} />
           </span>
