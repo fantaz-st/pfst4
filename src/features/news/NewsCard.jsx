@@ -8,7 +8,7 @@ import styles from "./NewsCard.module.css";
 
 /**
  * News card (STYLEGUIDE §6): 4:3 image r24, date + chip row, Title M.
- * Posts without an image get the animated flag field (Photo fallback).
+ * Posts without an image get the turning flag wall (Photo fallback).
  * Hover / focus: the image frame pulls in and zooms, an arrow slides in after
  * the title, and the category chip turns modra.
  */
@@ -30,7 +30,8 @@ export default function NewsCard({
         ratio="4/3"
         radius="card"
         tone="dark"
-        fallback="flags"
+        fallback="wall"
+        seed={post.id ?? post.uri}
         sizes={sizes ?? "(max-width: 720px) 100vw, 420px"}
         className={styles.photo}
         zoom

@@ -94,6 +94,7 @@
    own default cover (1200×500). */
 .coverWall {
   position: relative;
+  width: 100%; /* the header aligns items to the start; without this it collapses to 0 */
   overflow: hidden;
   margin: var(--space-4) 0 0;
   aspect-ratio: 12 / 5;

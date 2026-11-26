@@ -12,15 +12,19 @@ import styles from "./FlagWall.module.css";
  * full-width hero at any screen size, and the parent clips the rest.
  * Reduced motion: the wall stands still. Decorative, so aria-hidden.
  *
- * @param {{ seed?: string | number, className?: string }} props
+ * size="hero": fixed 260px tiles (180px on phones) for full-width boxes.
+ * size="card": tiles scale with the box (about three across), for cards.
+ *
+ * @param {{ seed?: string | number, size?: "hero" | "card", className?: string }} props
  */
 
-const COLS = 10;
-const ROWS = 7;
+// Enough tiles to cover the box once the grid is tilted.
+const GRID = { hero: [10, 7], card: [6, 5] };
 const WAVE_STEP = 0.55; // s between neighbouring diagonals
 const JITTER = 1.2; // s of random offset per tile
 
-export default function FlagWall({ seed = 1, className }) {
+export default function FlagWall({ seed = 1, size = "hero", className }) {
+  const [COLS, ROWS] = GRID[size] ?? GRID.hero;
   const random = seededRandom(seed);
   const pick = () => Math.floor(random() * FLAG_DESIGNS.length);
 
@@ -36,11 +40,11 @@ export default function FlagWall({ seed = 1, className }) {
   }
 
   return (
-    <span className={[styles.wall, className].filter(Boolean).join(" ")} aria-hidden="true">
+    <span className={[styles.wall, size === "card" ? styles.sizeCard : null, className].filter(Boolean).join(" ")} aria-hidden="true">
       <span className={styles.grid} style={{ "--cols": COLS, "--rows": ROWS }}>
         {tiles.map((tile) => (
           <span key={`${tile.col}-${tile.row}`} className={styles.tile} style={{ "--c": tile.col, "--r": tile.row }}>
-            <span className={styles.card} style={{ animationDelay: tile.delay }}>
+            <span className={styles.turn} style={{ animationDelay: tile.delay }}>
               <span className={styles.face}>
                 <Flag design={tile.front} />
               </span>

@@ -19,7 +19,9 @@ const RADII = new Set(["panel", "card", "feature", "block"]);
  * fallback="flags" is the exception, for content that may legitimately
  * have no image (news without a featured image): the animated signal-flag
  * field (FlagPlaceholder) in the same tone, no tag. fallback="wall" is the
- * big turning flag wall (FlagWall) for heroes and post covers.
+ * big turning flag wall (FlagWall): hero-sized tiles without a `ratio`
+ * (heroes, post covers), card-sized ones with a `ratio` (news cards).
+ * `seed` keeps each post's wall the same on every visit.
  *
  * @param {{
  *   src?: string, alt?: string, sizes: string,
@@ -29,12 +31,13 @@ const RADII = new Set(["panel", "card", "feature", "block"]);
  *   tag?: string, tagPosition?: "top-left" | "bottom-left" | "right",
  *   hideTagOnMobile?: boolean,
  *   fallback?: "flags" | "wall",  // no src: animated flags instead of the TODO placeholder
+ *   seed?: string | number,  // fallback="wall": which arrangement
  *   zoom?: boolean,      // scale 1.06 when an ancestor link is hovered
  *   priority?: boolean,
  *   className?: string,
  * }} props
  */
-export default function Photo({ src, alt = "", sizes, ratio, radius, tone = "dark", tag, tagPosition, hideTagOnMobile = false, fallback, zoom = false, priority = false, className }) {
+export default function Photo({ src, alt = "", sizes, ratio, radius, tone = "dark", tag, tagPosition, hideTagOnMobile = false, fallback, seed, zoom = false, priority = false, className }) {
   const flags = !src && fallback === "flags";
   const wall = !src && fallback === "wall";
   const classes = [
@@ -53,7 +56,7 @@ export default function Photo({ src, alt = "", sizes, ratio, radius, tone = "dar
       {src ? (
         <Image src={src} alt={alt} fill sizes={sizes} priority={priority} className={styles.media} />
       ) : wall ? (
-        <FlagWall className={styles.media} />
+        <FlagWall seed={seed} size={ratio ? "card" : "hero"} className={styles.media} />
       ) : flags ? (
         <FlagPlaceholder tone={tone} className={styles.media} />
       ) : (

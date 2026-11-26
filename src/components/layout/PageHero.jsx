@@ -4,10 +4,9 @@ import SplitReveal from "@/components/motion/SplitReveal";
 import styles from "./PageHero.module.css";
 
 /**
- * Without a featured image the hero shows the design's contour texture on
- * modra — a valid permanent state, so no "TODO" photo tag unless a
- * `placeholder` label is passed — or, with fallback="wall", the turning
- * signal-flag wall (section pages, 404).
+ * Without a featured image (WordPress "Featured image" on the page) the
+ * hero shows the turning signal-flag wall — a valid permanent state. Pass a
+ * `placeholder` label to show the TODO photo placeholder instead.
  *
  * Inner-page hero (design/reference/page.html, opcenito.html): breadcrumbs
  * pill at the top; eyebrow + title (chars reveal) bottom-left, an optional
@@ -22,32 +21,12 @@ import styles from "./PageHero.module.css";
  *   children?: React.ReactNode,
  * }} props
  */
-export default function PageHero({
-  language = "hr",
-  title,
-  eyebrow,
-  lead,
-  crumbs = [],
-  showCrumbs = true,
-  image,
-  placeholder,
-  fallback,
-  titleSize = "page",
-  children,
-}) {
-  const photo = image?.sourceUrl
-    ? { src: image.sourceUrl, alt: image.altText ?? "" }
-    : fallback
-      ? { fallback }
-      : { tag: placeholder };
+export default function PageHero({ language = "hr", title, eyebrow, lead, crumbs = [], showCrumbs = true, image, placeholder, fallback = "wall", titleSize = "page", children }) {
+  const photo = image?.sourceUrl ? { src: image.sourceUrl, alt: image.altText ?? "" } : placeholder ? { tag: placeholder } : { fallback };
 
   return (
     <Hero photo={photo} labelledBy="page-title">
-      {showCrumbs ? (
-        <Breadcrumbs items={crumbs} current={title} language={language} />
-      ) : (
-        <span />
-      )}
+      {showCrumbs ? <Breadcrumbs items={crumbs} current={title} language={language} /> : <span />}
       <div className={styles.row}>
         <div className={styles.heading}>
           {eyebrow && (
@@ -56,13 +35,7 @@ export default function PageHero({
               {eyebrow}
             </span>
           )}
-          <SplitReveal
-            as="h1"
-            id="page-title"
-            mode="chars"
-            start="top bottom"
-            className={`${styles.title} ${styles[titleSize]}`}
-          >
+          <SplitReveal as="h1" id="page-title" mode="chars" start="top bottom" className={`${styles.title} ${styles[titleSize]}`}>
             {title}
           </SplitReveal>
         </div>
