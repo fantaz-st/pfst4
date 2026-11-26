@@ -4,6 +4,7 @@ import { getFeaturedCategorySlug } from "@/lib/wp/news";
 import { toLanguageCodeEnum } from "@/lib/i18n/language";
 import SiteChrome from "@/components/layout/SiteChrome";
 import HomeHero from "./HomeHero";
+import HomeHeroCards from "./HomeHeroCards";
 import QuickLinks from "./QuickLinks";
 import FeaturedNews from "./FeaturedNews";
 import Statement from "./Statement";
@@ -15,6 +16,10 @@ import { getQuickStats } from "./quickStats";
 
 const EMPTY_POSTS = { nodes: [] };
 
+// Which home hero to show: "fan" (HomeHero — photo fan on the sky) or
+// "cards" (HomeHeroCards — light, a row of most-visited-page cards).
+const HERO_VERSION = "cards";
+
 const COPY = {
   hr: {
     heroTitle: "Od učionice do zapovjednog mosta.",
@@ -22,6 +27,24 @@ const COPY = {
     // Chips floating over the home hero's photo fan.
     heroYears: { value: "65+", label: "godina tradicije", detail: "od obuke do diplome" },
     heroStudies: { value: "4", label: "prijediplomska studija", detail: "nautika · stroj · ETI · menadžment" },
+    // Card row of the hero version 2 (HomeHeroCards); its timetable card
+    // is the first quick link (QuickLinks.jsx).
+    heroCards: {
+      admissions: { title: "Upisi", href: "/nastava/upisi" },
+      studiesNote: "4 prijediplomska studija",
+      consultations: { title: "Konzultacije", text: "Uvijek znaš tko je danas na konzultacijama", href: "/nastava/studiranje/konzultacije" },
+      exams: {
+        title: "Ispitni rokovi",
+        meta: "izmijenjeno 12. 11. 2026.",
+        upcoming: "Nadolazeći rokovi",
+        href: "/nastava/studiranje/ispitni-rokovi",
+        terms: [
+          { month: "SIJ", title: "Zimski rok", detail: "1. termin" },
+          { month: "VELJ", title: "Zimski rok", detail: "2. termin" },
+        ],
+      },
+      training: { title: "Trening centar", text: "Simulatori i tečajevi za pomorce", href: "/edukacija-pomoraca/trening-centar" },
+    },
     exploreStudies: "Istraži studije",
     admissions: "Upisi",
     newLabel: "Novo",
@@ -115,6 +138,22 @@ const COPY = {
     heroLead: "[FACULTY INTRODUCTION — TO BE PROVIDED]",
     heroYears: { value: "65+", label: "years of tradition", detail: "from training to diploma" },
     heroStudies: { value: "4", label: "undergraduate programmes", detail: "nautical · engineering · ETI · management" },
+    heroCards: {
+      admissions: { title: "Admissions", href: "/en/studies" },
+      studiesNote: "4 undergraduate programmes",
+      consultations: { title: "Office hours", text: "[CONSULTATIONS TEXT — TO BE PROVIDED]", href: "/en/faculty/student-services" },
+      exams: {
+        title: "Exam periods",
+        meta: "[UPDATED — TO BE PROVIDED]",
+        upcoming: "Upcoming periods",
+        href: "/en/faculty/student-services",
+        terms: [
+          { month: "JAN", title: "Winter period", detail: "1st session" },
+          { month: "FEB", title: "Winter period", detail: "2nd session" },
+        ],
+      },
+      training: { title: "Training centre", text: "Simulators and seafarer courses", href: "/en/seafarer-education/training-center" },
+    },
     exploreStudies: "Explore studies",
     admissions: "Admissions",
     newLabel: "New",
@@ -218,7 +257,11 @@ export default async function HomePage({ language }) {
 
   return (
     <SiteChrome language={language}>
-      <HomeHero copy={copy} language={language} />
+      {HERO_VERSION === "cards" ? (
+        <HomeHeroCards copy={copy} language={language} stats={quickStats} />
+      ) : (
+        <HomeHero copy={copy} language={language} />
+      )}
 
       <QuickLinks language={language} copy={copy} marquee={marquee} stats={quickStats} />
       <FeaturedNews copy={copy} language={language} posts={featuredPosts} featuredSlug={featuredSlug} />

@@ -9,7 +9,7 @@ import TimetableMarquee from "./TimetableMarquee";
 import ConsultationsToday from "./ConsultationsToday";
 import { formatDate } from "@/lib/format";
 
-const QUICK_LINKS = {
+export const QUICK_LINKS = {
   hr: [
     {
       title: "Raspored nastave",

@@ -197,33 +197,35 @@ export default function PageMotion() {
       // by one copy of its cards (alternate columns reversed). Still until the tile is near, then the columns start fast
       // and ease into their slow drift over 4s.
       homeMotion.add("(min-width: 0px)", () => {
-        const wall = document.querySelector("[data-timetable-wall]");
-        if (!wall) return;
+        // Every wall on the page: the home hero's timetable card and the
+        // quick-links tile can both carry one.
         const START_SPEED = 60;
-        // One loop = one copy of the cards (TimetableMarquee renders COPIES).
-        const step = -100 / (Number(wall.dataset.copies) || 2);
-        const loops = gsap.utils.toArray("[data-wall-column]", wall).map((column) => {
-          const reverse = column.dataset.reverse === "true";
-          return gsap.fromTo(
-            column,
-            { yPercent: reverse ? step : 0 },
-            { yPercent: reverse ? 0 : step, duration: Number(column.dataset.duration) || 60, ease: "none", repeat: -1, paused: true },
-          );
-        });
-        // Trigger on the tile-sized marquee box, never the wall itself: the
-        // tilted wall (4 copies per column) reaches far above the tile —
-        // above the fold even with the hero in view — so ScrollTrigger would
-        // count it as already passed and fire on page load. "top bottom" =
-        // the moment the tile's top edge enters the screen.
-        ScrollTrigger.create({
-          trigger: wall.parentElement,
-          start: "top bottom",
-          once: true,
-          onEnter: () =>
-            loops.forEach((loop) => {
-              loop.play();
-              gsap.fromTo(loop, { timeScale: START_SPEED }, { timeScale: 1, duration: 4, ease: EASE.fade });
-            }),
+        document.querySelectorAll("[data-timetable-wall]").forEach((wall) => {
+          // One loop = one copy of the cards (TimetableMarquee renders COPIES).
+          const step = -100 / (Number(wall.dataset.copies) || 2);
+          const loops = gsap.utils.toArray("[data-wall-column]", wall).map((column) => {
+            const reverse = column.dataset.reverse === "true";
+            return gsap.fromTo(
+              column,
+              { yPercent: reverse ? step : 0 },
+              { yPercent: reverse ? 0 : step, duration: Number(column.dataset.duration) || 60, ease: "none", repeat: -1, paused: true },
+            );
+          });
+          // Trigger on the tile-sized marquee box, never the wall itself: the
+          // tilted wall (4 copies per column) reaches far above the tile —
+          // above the fold even with the hero in view — so ScrollTrigger would
+          // count it as already passed and fire on page load. "top bottom" =
+          // the moment the tile's top edge enters the screen.
+          ScrollTrigger.create({
+            trigger: wall.parentElement,
+            start: "top bottom",
+            once: true,
+            onEnter: () =>
+              loops.forEach((loop) => {
+                loop.play();
+                gsap.fromTo(loop, { timeScale: START_SPEED }, { timeScale: 1, duration: 4, ease: EASE.fade });
+              }),
+          });
         });
       });
 

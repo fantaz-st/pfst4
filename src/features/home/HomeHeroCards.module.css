@@ -1,0 +1,448 @@
+/* Light hero: page background, modra text. Clears the shared header that
+   sits over the top (utility row + nav bar). */
+.hero {
+  padding: 168px 0 var(--space-16);
+  color: var(--color-text);
+}
+
+.intro {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-6);
+  padding: 0 var(--gutter);
+  text-align: center;
+}
+
+.title {
+  max-width: 1100px;
+  font-size: clamp(44px, 7.6vw, 112px);
+  font-weight: 700;
+  line-height: 0.94;
+  letter-spacing: var(--ls-hero);
+  text-wrap: balance;
+}
+
+.lead {
+  max-width: 540px;
+  color: var(--color-text-muted);
+  font-size: var(--fs-body-l);
+  line-height: 1.55;
+}
+
+.mobileActions {
+  display: none;
+}
+
+/* ---- Card row: design sizes, bottom-aligned; scrolls when it doesn't fit ---- */
+.row {
+  display: flex;
+  align-items: flex-end;
+  justify-content: safe center;
+  gap: var(--space-6);
+  margin-top: var(--space-16);
+  padding: var(--space-4) var(--gutter);
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scroll-padding-inline: var(--gutter);
+  scrollbar-width: none;
+}
+
+.row::-webkit-scrollbar {
+  display: none;
+}
+
+.card {
+  position: relative;
+  display: flex;
+  flex: none;
+  flex-direction: column;
+  overflow: hidden;
+  border-radius: 26px;
+  scroll-snap-align: start;
+  transition: translate var(--dur-hover) var(--ease-out);
+}
+
+.card:hover {
+  translate: 0 -8px;
+}
+
+.photo {
+  object-fit: cover;
+}
+
+/* 1 · Timetable — the quick-links "Raspored nastave" tile at card size:
+   white with the moving timetable wall behind (TimetableMarquee fades it
+   out towards the bottom), modra without it (English). */
+.timetable {
+  isolation: isolate;
+  width: 270px;
+  height: 350px;
+  justify-content: space-between;
+  padding: 20px;
+  background: var(--color-primary);
+  color: var(--color-surface);
+}
+
+.timetableWall {
+  background: var(--color-surface);
+  color: var(--color-primary);
+}
+
+.timetableIcon {
+  display: inline-flex;
+  width: 44px;
+  height: 44px;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--r-icon);
+  background: color-mix(in srgb, var(--color-surface) 12%, transparent);
+}
+
+.timetableWall .timetableIcon {
+  background: var(--color-bg);
+}
+
+.timetableArrow {
+  position: absolute;
+  top: 18px;
+  right: 18px;
+}
+
+.card:is(:hover, :focus-visible) .timetableArrow {
+  transform: rotate(-45deg);
+}
+
+.timetableBody {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-2);
+}
+
+.timetableTitle {
+  font-size: 26px;
+  font-weight: 700;
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+}
+
+.timetableDescription {
+  color: var(--color-text-on-dark);
+  font-size: var(--fs-small);
+}
+
+.timetableWall .timetableDescription {
+  color: var(--color-text-muted);
+}
+
+.myTimetable {
+  display: inline-flex;
+  align-items: center;
+  min-height: 28px;
+  padding: 0 var(--space-3);
+  border-radius: var(--r-pill);
+  background: var(--color-primary);
+  color: var(--color-surface);
+  font-size: var(--fs-meta);
+  font-weight: 700;
+}
+
+/* 2 · Admissions */
+.admissions {
+  width: 216px;
+  height: 270px;
+  background: var(--color-deep);
+}
+
+.pill {
+  position: absolute;
+  bottom: 12px;
+  left: 12px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  height: 40px;
+  padding: 0 5px 0 16px;
+  border-radius: var(--r-pill);
+  background: var(--pfst-bijela);
+  color: var(--pfst-modra);
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.pillArrow,
+.trainingArrow {
+  display: grid;
+  place-items: center;
+  border-radius: var(--r-pill);
+}
+
+.pillArrow {
+  width: 30px;
+  height: 30px;
+  background: var(--pfst-modra);
+  color: var(--pfst-bijela);
+}
+
+/* 3 · Studies CTA + consultations */
+.stack {
+  display: flex;
+  flex: none;
+  flex-direction: column;
+  gap: var(--space-4);
+  width: 228px;
+}
+
+.cta {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: var(--space-2);
+  padding: 8px 8px 10px;
+  border-radius: 20px;
+  background: var(--color-bg-hover);
+  text-align: center;
+}
+
+.ctaButton {
+  justify-content: center;
+}
+
+.ctaNote {
+  color: var(--color-text-muted);
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.consultations {
+  width: 228px;
+  height: 170px;
+  justify-content: space-between;
+  padding: 18px;
+  background: var(--tint-plava-1);
+  color: var(--color-text);
+}
+
+.consultationsText {
+  font-size: 19px;
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+}
+
+.consultationsFoot {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.liveChip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 22px;
+  padding: 0 var(--space-2);
+  border-radius: var(--r-pill);
+  background: var(--color-surface);
+  font-size: 11px;
+}
+
+.liveChip[data-live]::before {
+  width: 7px;
+  height: 7px;
+  border-radius: var(--r-pill);
+  background: var(--pfst-plava);
+  content: "";
+}
+
+/* 4 · Exam periods */
+.exams {
+  width: 216px;
+  height: 270px;
+  gap: 12px;
+  padding: 14px;
+  background: var(--pfst-plava);
+  color: var(--pfst-modra);
+}
+
+.examsHead {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.avatar {
+  width: 36px;
+  height: 36px;
+  flex: none;
+  overflow: hidden;
+  border: 2px solid var(--pfst-bijela);
+  border-radius: var(--r-pill);
+}
+
+.avatar svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.examsTitle {
+  display: flex;
+  flex-direction: column;
+  font-size: 15px;
+  font-weight: 700;
+}
+
+.examsMeta {
+  font-size: 11px;
+  font-weight: 500;
+}
+
+.examsLabel {
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.terms {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.term {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 7px;
+  border-radius: 14px;
+  background: var(--pfst-modra);
+  color: var(--pfst-bijela);
+}
+
+.termMonth {
+  display: grid;
+  width: 40px;
+  height: 40px;
+  flex: none;
+  place-items: center;
+  border-radius: 10px;
+  background: var(--pfst-bijela);
+  color: var(--pfst-modra);
+  font-size: 11px;
+  font-weight: 800;
+}
+
+.termText {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.termDetail {
+  color: color-mix(in srgb, var(--pfst-bijela) 75%, transparent);
+  font-size: 11px;
+  font-weight: 500;
+}
+
+.p {
+  fill: var(--pfst-plava);
+}
+
+.m,
+.b {
+  fill: var(--pfst-modra);
+}
+
+.w {
+  fill: var(--pfst-bijela);
+}
+
+/* 5 · Training centre */
+.training {
+  width: 270px;
+  height: 350px;
+  background: var(--color-deep);
+  color: var(--pfst-bijela);
+}
+
+.trainingShade {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, color-mix(in srgb, var(--pfst-modra) 70%, transparent) 0%, transparent 45%);
+}
+
+.trainingText {
+  position: absolute;
+  top: 18px;
+  right: 18px;
+  left: 18px;
+  font-size: 22px;
+  font-weight: 700;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+}
+
+.trainingBar {
+  position: absolute;
+  right: 12px;
+  bottom: 12px;
+  left: 12px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  height: 52px;
+  padding: 0 6px;
+  border-radius: 16px;
+  background: var(--glass);
+  font-size: 13px;
+  font-weight: 600;
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+}
+
+.trainingArrow {
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  background: var(--pfst-bijela);
+  color: var(--pfst-modra);
+}
+
+@media (max-width: 720px) {
+  .hero {
+    padding-top: 128px;
+  }
+
+  .mobileActions {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: var(--space-2);
+  }
+
+  .cta {
+    display: none;
+  }
+
+  .row {
+    justify-content: flex-start;
+    margin-top: var(--space-10);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .card {
+    transition: none;
+  }
+
+  .card:hover {
+    translate: none;
+  }
+}

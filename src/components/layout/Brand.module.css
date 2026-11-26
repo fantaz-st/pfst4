@@ -55,3 +55,8 @@
 .l .text {
   font-size: var(--fs-meta);
 }
+
+/* Header logo over a light hero (data-hero-tone="light"): modra band. */
+:global(html:has([data-hero-tone="light"])) :global([data-hero-nav]) .line {
+  fill: var(--pfst-modra);
+}

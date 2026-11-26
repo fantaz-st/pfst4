@@ -134,3 +134,37 @@
     display: none;
   }
 }
+
+/* ---- Light hero (data-hero-tone="light", e.g. the home hero with the
+   card row): the bar sits on the page background, so it turns modra. ---- */
+:global(html:has([data-hero-tone="light"])) .frame {
+  --focus-ring: var(--color-primary);
+  color: var(--color-text);
+}
+
+:global(html:has([data-hero-tone="light"])) .gnav {
+  background: color-mix(in srgb, var(--pfst-modra) 6%, transparent);
+}
+
+:global(html:has([data-hero-tone="light"])) .navItem {
+  color: var(--color-text);
+}
+
+:global(html:has([data-hero-tone="light"])) .navItem:hover {
+  background: color-mix(in srgb, var(--pfst-modra) 8%, transparent);
+}
+
+:global(html:has([data-hero-tone="light"])) .navItem.on {
+  background: var(--pfst-modra);
+  color: var(--pfst-bijela);
+  --focus-ring: var(--color-primary);
+}
+
+:global(html:has([data-hero-tone="light"])) .actions :global(a) {
+  box-shadow: 0 0 0 1px color-mix(in srgb, var(--pfst-modra) 14%, transparent);
+}
+
+:global(html:has([data-hero-tone="light"])) .menuButton {
+  background: color-mix(in srgb, var(--pfst-modra) 8%, transparent);
+  color: var(--color-text);
+}
