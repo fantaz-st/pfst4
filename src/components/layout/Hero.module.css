@@ -81,3 +81,15 @@
     padding: 104px var(--gutter) var(--space-6);
   }
 }
+
+/* fit: the box grows with its content (home hero) — last, so it also wins
+   over the fixed heights above at every breakpoint. */
+.fit {
+  height: auto;
+}
+
+.fit .content {
+  position: relative;
+  inset: auto;
+  min-height: 0;
+}

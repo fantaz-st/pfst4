@@ -17,8 +17,11 @@ const EMPTY_POSTS = { nodes: [] };
 
 const COPY = {
   hr: {
-    heroTitle: "POMORSKI FAKULTET",
+    heroTitle: "Od učionice do zapovjednog mosta.",
     heroLead: "Više od 65 godina tradicije u obuci, podučavanju i prenošenju znanja budućim pomorcima i inženjerima.",
+    // Chips floating over the home hero's photo fan.
+    heroYears: { value: "65+", label: "godina tradicije", detail: "od obuke do diplome" },
+    heroStudies: { value: "4", label: "prijediplomska studija", detail: "nautika · stroj · ETI · menadžment" },
     exploreStudies: "Istraži studije",
     admissions: "Upisi",
     newLabel: "Novo",
@@ -70,6 +73,7 @@ const COPY = {
       },
       {
         title: "Pomorske elektrotehničke i informatičke tehnologije",
+        short: "Elektrotehnika i IT",
         href: "/nastava/studiji/prijediplomski-studiji/pomorske-elektrotehnicke-i-informaticke-tehnologije",
         photo: "[FOTO: LABORATORIJ]",
         description: "Elektrotehnika, automatizacija i informacijski sustavi za suvremene brodove i luke.",
@@ -109,6 +113,8 @@ const COPY = {
   en: {
     heroTitle: "[TITLE]",
     heroLead: "[FACULTY INTRODUCTION — TO BE PROVIDED]",
+    heroYears: { value: "65+", label: "years of tradition", detail: "from training to diploma" },
+    heroStudies: { value: "4", label: "undergraduate programmes", detail: "nautical · engineering · ETI · management" },
     exploreStudies: "Explore studies",
     admissions: "Admissions",
     newLabel: "New",
@@ -145,6 +151,7 @@ const COPY = {
       },
       {
         title: "Marine Electrical Engineering and Information Technologies",
+        short: "Electrical Engineering & IT",
         href: "/en/studies/undergraduate-studies/marine-electrical-engineering-and-information-technologies",
         photo: "[PHOTO: LABORATORY]",
         description: "Electrical engineering, automation and information systems for modern ships and ports.",
@@ -211,7 +218,7 @@ export default async function HomePage({ language }) {
 
   return (
     <SiteChrome language={language}>
-      <HomeHero copy={copy} language={language} post={featuredPosts[0]} />
+      <HomeHero copy={copy} language={language} />
 
       <QuickLinks language={language} copy={copy} marquee={marquee} stats={quickStats} />
       <FeaturedNews copy={copy} language={language} posts={featuredPosts} featuredSlug={featuredSlug} />

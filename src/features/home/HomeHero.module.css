@@ -1,133 +1,291 @@
-.heroContent {
-  display: flex;
-  flex: 1;
-  flex-direction: column;
-  justify-content: flex-end;
-  min-width: 0;
-}
-
-.heroNews {
+/* ---- Sky: modra at the top fading through plava into the page
+   background, so the hero's bottom edge dissolves into the page. ---- */
+.sky {
   position: absolute;
-  top: 104px;
-  right: 24px;
-  display: flex;
-  max-width: 380px;
-  align-items: center;
-  gap: 14px;
-  padding: 10px 18px 10px 10px;
-  border-radius: var(--r-panel);
-  background: var(--glass);
-  color: var(--color-surface);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(
+    180deg,
+    var(--pfst-modra) 0%,
+    color-mix(in srgb, var(--pfst-modra) 85%, var(--pfst-plava)) 34%,
+    color-mix(in srgb, var(--pfst-modra) 45%, var(--pfst-plava)) 62%,
+    color-mix(in srgb, var(--pfst-plava) 60%, var(--color-bg)) 80%,
+    color-mix(in srgb, var(--pfst-plava) 12%, var(--color-bg)) 93%,
+    var(--color-bg) 100%
+  );
 }
 
-.heroNewsPhoto {
-  width: 64px;
-  height: 64px;
-  flex: none;
-}
-
-.heroNewsText {
-  display: flex;
-  min-width: 0;
-  flex-direction: column;
-  gap: var(--space-1);
-}
-
-.heroNewsMeta {
-  color: var(--color-text-on-dark-strong);
-  font-size: var(--fs-micro);
-  font-weight: 500;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-}
-
-.heroNewsTitle {
-  font-size: var(--fs-small);
-  font-weight: 500;
-  line-height: 1.35;
-}
-
-.heroChips,
-.heroActions {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: var(--space-2);
-}
-
-.heroChips {
-  margin-bottom: var(--space-6);
-}
-
-.glassChip {
-  display: inline-flex;
-  min-height: 32px;
-  align-items: center;
-  padding-inline: var(--space-4);
-  border-radius: var(--r-pill);
-  background: var(--glass);
-  color: var(--color-surface);
-  font-size: var(--fs-small);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-}
-
-.heroBottom {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) 380px;
-  gap: var(--space-12);
-  align-items: end;
-}
-
-.heroTitle {
-  max-width: 10.5ch;
-  font-size: var(--fs-hero);
-  font-weight: 600;
-  line-height: 0.9;
-  letter-spacing: var(--ls-hero);
-}
-
-.heroSide {
+/* ---- Title block, centred ---- */
+.intro {
   display: flex;
   flex-direction: column;
+  align-items: center;
   gap: var(--space-6);
-  padding-bottom: var(--space-2);
+  padding-top: var(--space-6);
+  text-align: center;
 }
 
-.heroLead {
-  max-width: 42ch;
+.title {
+  max-width: 1240px;
+  font-size: clamp(44px, 7.2vw, 104px);
+  font-weight: 700;
+  line-height: 0.95;
+  letter-spacing: var(--ls-hero);
+  text-wrap: balance;
+}
+
+.lead {
+  max-width: 600px;
   color: var(--color-text-on-dark-strong);
   font-size: var(--fs-body-l);
   line-height: 1.55;
 }
 
-@media (max-width: 1080px) {
-  .heroBottom {
-    grid-template-columns: minmax(0, 1fr);
-    gap: var(--space-8);
-  }
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--space-3);
+  margin-top: var(--space-1);
+}
 
-  .heroSide {
-    max-width: 560px;
+/* ---- Fan: design px × --u (fan width / 1440, at most 1px) ---- */
+.fan {
+  --u: min(100cqw / 1440, 1px);
+  position: relative;
+  container-type: inline-size;
+  height: calc(500 * var(--u));
+  margin-top: var(--space-12);
+}
+
+.wordmark {
+  position: absolute;
+  top: calc(210 * var(--u));
+  left: 50%;
+  translate: -50% 0;
+  color: color-mix(in srgb, var(--pfst-bijela) 16%, transparent);
+  font-size: calc(300 * var(--u));
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: -0.06em;
+  white-space: nowrap;
+  pointer-events: none;
+  user-select: none;
+}
+
+.card,
+.flag {
+  position: absolute;
+  top: calc(var(--y) * var(--u));
+  left: calc(50% + var(--x) * var(--u));
+  width: calc(var(--w) * var(--u));
+  height: calc(var(--h) * var(--u));
+  rotate: calc(var(--r) * 1deg);
+}
+
+.card {
+  display: block;
+  overflow: hidden;
+  border: calc(5 * var(--u)) solid color-mix(in srgb, var(--pfst-bijela) 90%, transparent);
+  border-radius: calc(28 * var(--u));
+  background: var(--color-deep);
+  box-shadow: 0 30px 60px -24px color-mix(in srgb, var(--pfst-modra) 55%, transparent);
+  transition: translate var(--dur-hover) var(--ease-out);
+}
+
+a.card:hover,
+a.card:focus-visible {
+  translate: 0 -10px;
+}
+
+.cardImage {
+  object-fit: cover;
+}
+
+.caption {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  padding: 44px 16px 16px;
+  background: linear-gradient(180deg, transparent, color-mix(in srgb, var(--pfst-modra) 85%, transparent));
+  color: var(--pfst-bijela);
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 1.25;
+  letter-spacing: -0.01em;
+}
+
+/* ---- Chips ---- */
+.chip {
+  position: absolute;
+  z-index: 6;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 16px 10px 10px;
+  border-radius: 18px;
+  background: var(--color-surface);
+  color: var(--color-text);
+  box-shadow: 0 18px 40px -16px color-mix(in srgb, var(--pfst-modra) 50%, transparent);
+  font-size: 13px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.chipYears {
+  top: calc(70 * var(--u));
+  left: calc(50% - 300 * var(--u));
+}
+
+.chipStudies {
+  top: calc(300 * var(--u));
+  left: calc(50% + 105 * var(--u));
+}
+
+.chipValue {
+  display: grid;
+  width: 40px;
+  height: 40px;
+  flex: none;
+  place-items: center;
+  border-radius: 12px;
+  font-size: 15px;
+  font-weight: 800;
+}
+
+.chipValue[data-tone="modra"] {
+  background: var(--pfst-modra);
+  color: var(--pfst-bijela);
+}
+
+.chipValue[data-tone="plava"] {
+  background: var(--pfst-plava);
+  color: var(--pfst-modra);
+}
+
+.chipText {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.25;
+}
+
+.chipDetail {
+  color: var(--color-text-muted);
+  font-size: 12px;
+  font-weight: 500;
+}
+
+/* ---- Floating signal flags ---- */
+.flag {
+  z-index: 6;
+  overflow: hidden;
+  border: 3px solid var(--pfst-bijela);
+  border-radius: 14px;
+  box-shadow: 0 14px 30px -12px color-mix(in srgb, var(--pfst-modra) 55%, transparent);
+  animation: bob 6s ease-in-out infinite alternate;
+}
+
+.flag svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.p {
+  fill: var(--pfst-plava);
+}
+
+.m,
+.b {
+  fill: var(--pfst-modra);
+}
+
+.w {
+  fill: var(--pfst-bijela);
+}
+
+@keyframes bob {
+  to {
+    translate: 0 -12px;
   }
 }
 
+/* ---- Tablet: chips get in the way of smaller cards ---- */
+@media (max-width: 1080px) {
+  .chipStudies {
+    display: none;
+  }
+}
+
+/* ---- Phone: the 390px layout, three cards ---- */
 @media (max-width: 720px) {
-  .heroNews {
+  .intro {
+    padding-top: 0;
+    gap: var(--space-4);
+  }
+
+  .fan {
+    --u: min(100cqw / 350, 1.15px);
+    height: calc(330 * var(--u));
+    margin-top: var(--space-10);
+  }
+
+  .desktopOnly {
     display: none;
   }
 
-  .heroBottom {
-    gap: var(--space-6);
+  .card,
+  .flag {
+    top: calc(var(--my) * var(--u));
+    left: calc(50% + var(--mx) * var(--u));
+    width: calc(var(--mw) * var(--u));
+    height: calc(var(--mh) * var(--u));
+    rotate: calc(var(--mr) * 1deg);
   }
 
-  .heroTitle {
-    max-width: 9ch;
+  .card {
+    border-width: 4px;
+    border-radius: 22px;
   }
 
-  .heroSide {
-    gap: var(--space-4);
+  .caption {
+    padding: 32px 12px 12px;
+    font-size: 12.5px;
+  }
+
+  .wordmark {
+    top: calc(200 * var(--u));
+    font-size: calc(96 * var(--u));
+  }
+
+  .chip {
+    padding: 8px 12px 8px 8px;
+    font-size: 12px;
+  }
+
+  .chipYears {
+    top: calc(230 * var(--u));
+    left: calc(50% - 181 * var(--u));
+  }
+
+  .chipValue {
+    width: 32px;
+    height: 32px;
+    font-size: 13px;
+  }
+
+  .chipDetail {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .flag {
+    animation: none;
+  }
+
+  .card {
+    transition: none;
   }
 }

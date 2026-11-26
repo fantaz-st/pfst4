@@ -10,14 +10,15 @@ import styles from "./Hero.module.css";
  * size: "home" (880px) · "page" (520px, inner pages)
  * photo: props for <Photo> (src/alt, or `tag` for a placeholder)
  * solid: render the hero without a photo or scrim
+ * fit: height follows the content instead of the fixed size (home hero)
  * Children fill the box below the nav: first child at the top, last at the
  * bottom (components/layout/PageHero).
  */
-export default function Hero({ size = "page", photo, solid = false, labelledBy, children }) {
+export default function Hero({ size = "page", photo, solid = false, fit = false, labelledBy, children }) {
   return (
     <section className={styles.hero} aria-labelledby={labelledBy}>
       <div
-        className={`${styles.box} ${styles[size]}`}
+        className={`${styles.box} ${styles[size]}${fit ? ` ${styles.fit}` : ""}`}
         data-hero
         data-home-hero={size === "home" ? "true" : undefined}
       >
