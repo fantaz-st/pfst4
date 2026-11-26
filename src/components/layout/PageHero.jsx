@@ -16,17 +16,31 @@ import styles from "./PageHero.module.css";
  * @param {{
  *   language?: string, title: string, eyebrow?: string, lead?: string,
  *   crumbs?: { label: string, uri: string }[], showCrumbs?: boolean,
+ *   crumbCurrent?: string,  // last breadcrumb, if not the title (news posts)
  *   image?: { sourceUrl: string, altText?: string } | null,
  *   placeholder?: string, fallback?: "wall", titleSize?: "page" | "post",
  *   children?: React.ReactNode,
  * }} props
  */
-export default function PageHero({ language = "hr", title, eyebrow, lead, crumbs = [], showCrumbs = true, image, placeholder, fallback = "wall", titleSize = "page", children }) {
+export default function PageHero({
+  language = "hr",
+  title,
+  eyebrow,
+  lead,
+  crumbs = [],
+  showCrumbs = true,
+  crumbCurrent,
+  image,
+  placeholder,
+  fallback = "wall",
+  titleSize = "page",
+  children,
+}) {
   const photo = image?.sourceUrl ? { src: image.sourceUrl, alt: image.altText ?? "" } : placeholder ? { tag: placeholder } : { fallback };
 
   return (
     <Hero photo={photo} labelledBy="page-title">
-      {showCrumbs ? <Breadcrumbs items={crumbs} current={title} language={language} /> : <span />}
+      {showCrumbs ? <Breadcrumbs items={crumbs} current={crumbCurrent ?? title} language={language} /> : <span />}
       <div className={styles.row}>
         <div className={styles.heading}>
           {eyebrow && (

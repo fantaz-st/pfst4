@@ -1,11 +1,9 @@
 import Image from "next/image";
 import Link from "next/link";
 import BlockRenderer from "@/components/blocks/BlockRenderer";
-import Breadcrumbs from "@/components/layout/Breadcrumbs";
-import Hero from "@/components/layout/Hero";
+import PageHero from "@/components/layout/PageHero";
 import Button from "@/components/ui/Button";
 import Chip from "@/components/ui/Chip";
-import FlagWall from "@/components/ui/FlagWall";
 import Icon from "@/components/ui/Icon";
 import NewsCard from "@/features/news/NewsCard";
 import RecordVisit from "@/features/personal/RecordVisit";
@@ -92,16 +90,22 @@ export default async function PostView({ node }) {
   }
   const readingTime = getReadingTime(node.blocks);
   const coverImage = node.featuredImage?.node;
-  const hasCover = Boolean(coverImage?.sourceUrl);
   const excerpt = getManualExcerpt(node);
 
   return (
     <>
       <div className={styles.progress} data-post-progress aria-hidden="true" />
       <RecordVisit uri={node.uri} title={node.title} />
-      <Hero size="post" solid>
-        <Breadcrumbs items={categories[0] ? [{ label: copy.archiveTitle, uri: archiveUri }] : []} current={categories[0]?.name ?? copy.archiveTitle} language={language} />
-      </Hero>
+      {/* Same hero as inner pages: the featured image, or the flag wall
+          when there is none, with the title bottom-left. */}
+      <PageHero
+        language={language}
+        title={node.title}
+        titleSize="post"
+        crumbs={categories[0] ? [{ label: copy.archiveTitle, uri: archiveUri }] : []}
+        crumbCurrent={categories[0]?.name ?? copy.archiveTitle}
+        image={coverImage}
+      />
 
       <div className={styles.main}>
         <header className={styles.header}>
@@ -115,35 +119,12 @@ export default async function PostView({ node }) {
               <time dateTime={node.date}>{formatDate(node.date, language)}</time> · {copy.readingTime(readingTime)}
             </span>
           </div>
-          <SplitReveal as="h1" id="post-title" mode="lines" start="top bottom" className={styles.title}>
-            {node.title}
-          </SplitReveal>
           {excerpt && (
             <div className={styles.excerpt} data-fade>
               {renderWpHtml(excerpt)}
             </div>
           )}
-          {hasCover ? (
-            <figure className={styles.cover}>
-              <div className={styles.coverImage} data-post-cover>
-                <Image
-                  src={coverImage.sourceUrl}
-                  alt={coverImage.altText || node.title}
-                  width={coverImage.mediaDetails?.width ?? 1600}
-                  height={coverImage.mediaDetails?.height ?? 900}
-                  sizes="(max-width: 1080px) 100vw, 996px"
-                  priority
-                />
-              </div>
-              {coverImage.caption && <figcaption className={styles.caption}>{renderWpHtml(coverImage.caption)}</figcaption>}
-            </figure>
-          ) : (
-            // No featured image: a banner of the turning flag wall, seeded
-            // by the post so each one keeps its own arrangement.
-            <div className={styles.coverWall} data-post-cover>
-              <FlagWall seed={node.id} />
-            </div>
-          )}
+          {coverImage?.caption && <div className={styles.caption}>{renderWpHtml(coverImage.caption)}</div>}
         </header>
 
         <div className={styles.layout}>

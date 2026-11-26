@@ -8,7 +8,8 @@
   background: var(--color-accent);
 }
 
-/* ---- Header: meta, title, excerpt and the cover, above rail + article ---- */
+/* ---- Header: meta, excerpt and the photo credit, above rail + article.
+   The title and the featured image live in the hero (PageHero). ---- */
 /* 996px = rail (220) + gap (56) + article (720), so it lines up with both. */
 .header {
   display: flex;
@@ -47,17 +48,6 @@
   color: var(--color-text);
 }
 
-.title {
-  max-width: 24ch;
-  margin: 0;
-  color: var(--color-text);
-  font-size: clamp(34px, 4vw, 60px);
-  font-weight: 600;
-  line-height: 1.04;
-  letter-spacing: var(--ls-display);
-  overflow-wrap: break-word;
-}
-
 .excerpt {
   max-width: 52ch;
   color: var(--color-text-muted);
@@ -69,40 +59,7 @@
   margin: 0;
 }
 
-.cover {
-  width: 100%;
-  margin: var(--space-4) 0 0;
-}
-
-/* The whole image, at its own aspect ratio: covers are often banners with
-   text in them, so they are never cropped — only very tall ones are capped. */
-.coverImage {
-  overflow: hidden;
-  border-radius: var(--r-card);
-  background: var(--color-deep);
-}
-
-.coverImage img {
-  display: block;
-  width: 100%;
-  height: auto;
-  max-height: 720px;
-  object-fit: cover;
-}
-
-/* No featured image: the flag wall in a banner the shape of the faculty's
-   own default cover (1200×500). */
-.coverWall {
-  position: relative;
-  width: 100%; /* the header aligns items to the start; without this it collapses to 0 */
-  overflow: hidden;
-  margin: var(--space-4) 0 0;
-  aspect-ratio: 12 / 5;
-  border-radius: var(--r-card);
-}
-
 .caption {
-  margin-top: var(--space-3);
   color: var(--color-text-muted);
   font-size: var(--fs-small);
   line-height: 1.5;
@@ -334,11 +291,6 @@
 
   .excerpt {
     font-size: var(--fs-body-l);
-  }
-
-  .coverImage,
-  .coverWall {
-    border-radius: var(--r-panel);
   }
 
   .main {
