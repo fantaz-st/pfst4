@@ -115,11 +115,24 @@ html.lenis body {
   overflow: clip;
 }
 
-/* SplitText line masks (components/motion/SplitReveal): a little room so
-   descenders aren't clipped by the mask. */
+/* SplitText line masks (SplitReveal, PageMotion). Plus Jakarta Sans
+   descends .24em below the baseline, which at the display line-heights
+   (.86–.95) sits up to ~.22em below the line box, so the mask gets .25em
+   of room or g/j/y are clipped until revert(). Negative margins keep the
+   line pitch identical to the reverted text (overflow: clip on the mask
+   doesn't stop the margin collapsing through it). */
 .split-line {
-  padding-bottom: 0.08em;
-  margin-bottom: -0.08em;
+  padding-bottom: 0.25em;
+  margin-bottom: -0.25em;
+}
+
+/* Chars rise by yPercent of their own box, so the box grows by the same
+   kind of room: at 110% the start position then clears the taller mask
+   (tall and accented glyphs included) instead of peeking over its bottom
+   edge. The negative margin keeps the line box unchanged. */
+.split-char {
+  padding-bottom: 0.3em;
+  margin-bottom: -0.3em;
 }
 
 /* ---- Focus & selection ---- */

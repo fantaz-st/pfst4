@@ -87,6 +87,7 @@ export default function PageMotion() {
           type: chars ? "lines,words,chars" : "lines",
           mask: "lines",
           linesClass: "split-line",
+          charsClass: "split-char",
         });
         splits.add(split);
         const vars = {

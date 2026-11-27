@@ -33,6 +33,7 @@ export default function SplitReveal({
       type: chars ? "lines,words,chars" : "lines",
       mask: "lines",
       linesClass: "split-line",
+      charsClass: "split-char",
     });
     gsap.from(chars ? split.chars : split.lines, {
       yPercent: chars ? 110 : 105,
