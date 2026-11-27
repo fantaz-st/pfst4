@@ -42,6 +42,9 @@
 .title {
   max-width: 18ch;
   overflow-wrap: break-word;
+  /* SplitReveal splits into chars (no kerning) and reverts when done; keep
+     both states identical so the lines don't reflow after the reveal. */
+  font-kerning: none;
 }
 
 .page {
