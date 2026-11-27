@@ -179,7 +179,8 @@ html.lenis body {
   html:not(.motion-ready) [data-hero-nav],
   html:not(.motion-ready) [data-hero] h1,
   html:not(.motion-ready) [data-hero] [data-split],
-  html:not(.motion-ready) [data-hero] [data-hero-fade] {
+  html:not(.motion-ready) [data-hero] [data-hero-fade],
+  html:not(.motion-ready) [data-hero-fan] {
     visibility: hidden;
     animation: intro-failsafe-show 0s 3s forwards;
   }

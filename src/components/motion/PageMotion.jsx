@@ -38,14 +38,17 @@ export default function PageMotion() {
         intro.from(heroFades, { y: 24, opacity: 0, duration: 1.1, stagger: 0.08 }, 0.5);
       }
 
-      // Home hero photo fan (features/home/HomeHero): every card starts
-      // stacked behind the centre one, untilted, then spreads out to its
-      // place — nearest pair first — and the chips and flags pop in after.
+      // Home hero photo fan (features/home/HomeHero): the fan slides up
+      // from below the hero's bottom edge (the hero clips it) with every
+      // card stacked behind the centre one, untilted; then each spreads out
+      // to its place — nearest pair first — and the chips and flags pop in.
       // Positions come from layout offsets, which ignore the tilt; cards
       // hidden on phones (no offsetParent) are skipped.
       const fan = homeHero?.querySelector("[data-hero-fan]");
       const fanCenter = fan?.querySelector("[data-fan-center]");
       if (fan && fanCenter) {
+        const rise = homeHero.getBoundingClientRect().bottom - fan.getBoundingClientRect().top;
+        intro.from(fan, { y: rise, duration: 1.3, ease: EASE.out }, 0.5);
         const cx = fanCenter.offsetLeft + fanCenter.offsetWidth / 2;
         const cy = fanCenter.offsetTop + fanCenter.offsetHeight / 2;
         const cards = gsap.utils

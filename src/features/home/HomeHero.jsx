@@ -1,5 +1,4 @@
 import Image from "next/image";
-import Link from "next/link";
 import Hero from "@/components/layout/Hero";
 import Button from "@/components/ui/Button";
 import { FLAG_DESIGNS } from "@/components/ui/flagDesigns";
@@ -15,22 +14,23 @@ import styles from "./HomeHero.module.css";
  * the centre, size and tilt in design px (--x/--y/--w/--h/--r), and --u
  * turns a design px into real px for the fan's width (never above 1px).
  * z: stacking, centre card on top. Phones use their own 390px layout (--mx/--my/--mw/--mh/--mr) and show only
- * the three cards that have one. Study cards link to their programme.
+ * the three cards that have one. The cards are decorative photos.
  *
- * Intro (PageMotion): the fan rises in with only the centre card showing —
+ * Intro (PageMotion): the fan slides up from below the hero's bottom edge
+ * with only the centre card showing —
  * the others start stacked behind it, untilted — then they spread out to
  * their places, inner pair first, and the chips and flags pop in.
  */
 
-// program: index into copy.studyPrograms (label + link). m: phone layout.
+// m: phone layout.
 const CARDS = [
   { src: "/images/statement/port.webp", x: -648, y: 150, w: 176, h: 300, r: -15, z: 1 },
-  { src: "/images/studies-banners/electrical.webp", program: 2, x: -488, y: 95, w: 196, h: 340, r: -10, z: 2 },
-  { src: "/images/statement/bridge.webp", program: 0, x: -313, y: 55, w: 216, h: 380, r: -5, z: 3, m: { x: -187, y: 40, w: 150, h: 260, r: -10 } },
+  { src: "/images/studies-banners/electrical.webp", x: -488, y: 95, w: 196, h: 340, r: -10, z: 2 },
+  { src: "/images/statement/bridge.webp", x: -313, y: 55, w: 216, h: 380, r: -5, z: 3, m: { x: -187, y: 40, w: 150, h: 260, r: -10 } },
   { src: "/images/PFST - hero -sailing -team.png", x: -140, y: 0, w: 280, h: 470, r: 0, z: 5, position: "42% 50%", m: { x: -93, y: 0, w: 186, h: 320, r: 0 } },
-  { src: "/images/statement/engine room.webp", program: 1, x: 97, y: 55, w: 216, h: 380, r: 5, z: 3, m: { x: 37, y: 40, w: 150, h: 260, r: 10 } },
-  { src: "/images/studies-banners/luka split PFST.webp", program: 3, x: 292, y: 95, w: 196, h: 340, r: 10, z: 2 },
-  { src: "/images/trening centar PFST 2.webp", training: true, x: 472, y: 150, w: 176, h: 300, r: 15, z: 1, position: "50% 30%" },
+  { src: "/images/statement/engine room.webp", x: 97, y: 55, w: 216, h: 380, r: 5, z: 3, m: { x: 37, y: 40, w: 150, h: 260, r: 10 } },
+  { src: "/images/studies-banners/luka split PFST.webp", x: 292, y: 95, w: 196, h: 340, r: 10, z: 2 },
+  { src: "/images/trening centar PFST 2.webp", x: 472, y: 150, w: 176, h: 300, r: 15, z: 1, position: "50% 30%" },
 ];
 
 const FLAGS = [
@@ -67,28 +67,15 @@ function Flag({ design }) {
   );
 }
 
-function Card({ card, copy }) {
-  const program = card.program !== undefined ? copy.studyPrograms?.[card.program] : null;
-  const label = program ? program.short ?? program.title : card.training ? copy.training : null;
+function Card({ card }) {
   const className = [styles.card, card.m ? null : styles.desktopOnly].filter(Boolean).join(" ");
-  const style = { ...vars(card), zIndex: card.z };
   // PageMotion: the centre card comes in first, the rest start stacked
   // behind it and spread out to their places.
   const fanData = card.z === 5 ? { "data-fan-card": "", "data-fan-center": "" } : { "data-fan-card": "" };
-  const content = (
-    <>
-      <Image src={card.src} alt="" fill sizes="(max-width: 720px) 45vw, 280px" priority={card.z === 5} className={styles.cardImage} style={{ objectPosition: card.position ?? "50% 50%" }} />
-      {label && <span className={styles.caption}>{label}</span>}
-    </>
-  );
 
-  return program?.href ? (
-    <Link href={program.href} className={className} style={style} {...fanData}>
-      {content}
-    </Link>
-  ) : (
-    <span className={className} style={style} aria-hidden={label ? undefined : "true"} {...fanData}>
-      {content}
+  return (
+    <span className={className} style={{ ...vars(card), zIndex: card.z }} aria-hidden="true" {...fanData}>
+      <Image src={card.src} alt="" fill sizes="(max-width: 720px) 45vw, 280px" priority={card.z === 5} className={styles.cardImage} style={{ objectPosition: card.position ?? "50% 50%" }} />
     </span>
   );
 }
@@ -132,12 +119,12 @@ export default function HomeHero({ copy, language }) {
         </div>
       </div>
 
-      <div className={styles.fan} data-hero-fade data-hero-fan>
+      <div className={styles.fan} data-hero-fan>
         <span className={styles.wordmark} aria-hidden="true">
           POMORSKI
         </span>
         {CARDS.map((card) => (
-          <Card key={card.src} card={card} copy={copy} />
+          <Card key={card.src} card={card} />
         ))}
         <Chip chip={copy.heroYears} tone="modra" className={styles.chipYears} />
         <Chip chip={copy.heroStudies} tone="plava" className={styles.chipStudies} />

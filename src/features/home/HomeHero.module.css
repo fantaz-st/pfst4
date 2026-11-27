@@ -90,30 +90,10 @@
   border-radius: calc(28 * var(--u));
   background: var(--color-deep);
   box-shadow: 0 30px 60px -24px color-mix(in srgb, var(--pfst-modra) 55%, transparent);
-  transition: translate var(--dur-hover) var(--ease-out);
-}
-
-a.card:hover,
-a.card:focus-visible {
-  translate: 0 -10px;
 }
 
 .cardImage {
   object-fit: cover;
-}
-
-.caption {
-  position: absolute;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  padding: 44px 16px 16px;
-  background: linear-gradient(180deg, transparent, color-mix(in srgb, var(--pfst-modra) 85%, transparent));
-  color: var(--pfst-bijela);
-  font-size: 14px;
-  font-weight: 700;
-  line-height: 1.25;
-  letter-spacing: -0.01em;
 }
 
 /* ---- Chips ---- */
@@ -249,11 +229,6 @@ a.card:focus-visible {
     border-radius: 22px;
   }
 
-  .caption {
-    padding: 32px 12px 12px;
-    font-size: 12.5px;
-  }
-
   .wordmark {
     top: calc(200 * var(--u));
     font-size: calc(96 * var(--u));
@@ -283,9 +258,5 @@ a.card:focus-visible {
 @media (prefers-reduced-motion: reduce) {
   .flag {
     animation: none;
-  }
-
-  .card {
-    transition: none;
   }
 }
