@@ -48,7 +48,13 @@ export default function PageMotion() {
       const fanCenter = fan?.querySelector("[data-fan-center]");
       if (fan && fanCenter) {
         const rise = homeHero.getBoundingClientRect().bottom - fan.getBoundingClientRect().top;
-        intro.from(fan, { y: rise, duration: 0.75, ease: EASE.out }, 0.5);
+        // The spread starts while the rise is still settling (expo.out has
+        // covered most of the distance by ~55%), so the two read as one move;
+        // the chips and flags follow the spread. All timed off the rise.
+        const riseStart = 0.5;
+        const riseDuration = 0.75;
+        const spreadStart = riseStart + riseDuration * 0.55;
+        intro.from(fan, { y: rise, duration: riseDuration, ease: EASE.out }, riseStart);
         const cx = fanCenter.offsetLeft + fanCenter.offsetWidth / 2;
         const cy = fanCenter.offsetTop + fanCenter.offsetHeight / 2;
         const cards = gsap.utils
@@ -62,11 +68,11 @@ export default function PageMotion() {
           }))
           .sort((a, b) => Math.abs(a.dx) - Math.abs(b.dx));
         cards.forEach(({ card, dx, dy, tilt }, index) => {
-          intro.from(card, { x: dx, y: dy, rotation: -tilt, scale: 0.92, duration: 1.5, ease: EASE.out }, 1.05 + Math.floor(index / 2) * 0.09);
+          intro.from(card, { x: dx, y: dy, rotation: -tilt, scale: 0.92, duration: 1.1, ease: EASE.out }, spreadStart + Math.floor(index / 2) * 0.06);
         });
         const extras = fan.querySelectorAll("[data-fan-extra]");
         if (extras.length) {
-          intro.from(extras, { scale: 0, opacity: 0, duration: 0.8, stagger: 0.07, ease: "back.out(2)" }, 1.6);
+          intro.from(extras, { scale: 0, opacity: 0, duration: 0.8, stagger: 0.07, ease: "back.out(2)" }, spreadStart + 0.45);
         }
       }
 
