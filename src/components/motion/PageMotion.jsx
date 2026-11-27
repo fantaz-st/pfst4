@@ -48,13 +48,14 @@ export default function PageMotion() {
       const fanCenter = fan?.querySelector("[data-fan-center]");
       if (fan && fanCenter) {
         const rise = homeHero.getBoundingClientRect().bottom - fan.getBoundingClientRect().top;
-        // The spread starts while the rise is still settling (expo.out has
-        // covered most of the distance by ~55%), so the two read as one move;
-        // the chips and flags follow the spread. All timed off the rise.
+        // The rise overshoots a touch and settles (back.out(1): ~4% of the
+        // distance). The spread starts while it is still settling (by 35%
+        // the rise has covered ~87% of the distance), so the two read as one
+        // move; the chips and flags follow the spread. All timed off the rise.
         const riseStart = 0.5;
         const riseDuration = 0.75;
-        const spreadStart = riseStart + riseDuration * 0.55;
-        intro.from(fan, { y: rise, duration: riseDuration, ease: EASE.out }, riseStart);
+        const spreadStart = riseStart + riseDuration * 0.35;
+        intro.from(fan, { y: rise, duration: riseDuration, ease: "back.out(1)" }, riseStart);
         const cx = fanCenter.offsetLeft + fanCenter.offsetWidth / 2;
         const cy = fanCenter.offsetTop + fanCenter.offsetHeight / 2;
         const cards = gsap.utils
